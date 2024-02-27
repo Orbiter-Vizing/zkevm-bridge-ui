@@ -21,3 +21,5 @@ dist
 
 # Generated types
 src/types
+
+deploy.sh
