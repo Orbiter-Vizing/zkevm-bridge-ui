@@ -1,5 +1,5 @@
 [
-  /*{
+  {
     "name": "Matic Token",
     "address": "0x4701Aa9471d7bfAc765D87dcb1Ea6BB23AD32733",
     "chainId": 5,
@@ -134,5 +134,5 @@
     "decimals": 18,
     "chainId": 1,
     "logoURI": "https://assets.coingecko.com/coins/images/13573/large/Lido_DAO.png"
-  }*/
+  }
 ]
