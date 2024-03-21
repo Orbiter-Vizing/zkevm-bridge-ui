@@ -262,7 +262,7 @@ export enum Permit {
 
 export enum ProviderError {
   Ethereum = "ethereum",
-  PolygonZkEVM = "polygon-zkevm",
+  PolygonZkEVM = "vizing",
 }
 
 export interface MetaMaskUserRejectedRequestError {

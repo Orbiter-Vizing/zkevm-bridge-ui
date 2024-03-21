@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="dabe01e2-d1d2-4279-8b3c-c60104017503" name="bridge-ui">
+        <fileTransfer accessType="SFTP" host="ec2-18-177-24-236.ap-northeast-1.compute.amazonaws.com" port="22" sshConfigId="8d821fd8-b563-41db-a95c-5ef562e355e6" sshConfig="ec2-user@ec2-18-177-24-236.ap-northeast-1.compute.amazonaws.com:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

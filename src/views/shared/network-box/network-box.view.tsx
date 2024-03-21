@@ -113,7 +113,7 @@ export const NetworkBox: FC = () => {
             <MetaMaskIcon className={classes.buttonIcon} />
             Add to MetaMask
           </button>
-          <a
+          {/*<a
             className={classes.button}
             href={POLYGON_SUPPORT_URL}
             rel="noopener noreferrer"
@@ -121,7 +121,7 @@ export const NetworkBox: FC = () => {
           >
             <NewWindowIcon className={classes.buttonIcon} />
             Report an issue
-          </a>
+          </a>*/}
         </div>
       </div>
     </Card>

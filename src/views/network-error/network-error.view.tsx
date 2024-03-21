@@ -2,7 +2,7 @@ import { FC, useEffect } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { providerError } from "src/adapters/error";
-import { ReactComponent as PolygonZkEVMLogo } from "src/assets/polygon-zkevm-logo.svg";
+import { ReactComponent as PolygonZkEVMLogo } from "src/assets/vizing-logo.svg";
 import { useEnvContext } from "src/contexts/env.context";
 import { ProviderError } from "src/domain";
 import { routes } from "src/routes";

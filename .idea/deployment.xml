@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="bridge-ui">
+    <serverData>
+      <paths name="bridge-ui">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/ec2-user/zkevm-bridge-ui" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

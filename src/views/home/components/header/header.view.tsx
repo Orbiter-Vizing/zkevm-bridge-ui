@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { ReactComponent as ClockIcon } from "src/assets/icons/clock.svg";
 import { ReactComponent as SettingIcon } from "src/assets/icons/setting.svg";
-import { ReactComponent as PolygonZkEVMLogo } from "src/assets/polygon-zkevm-logo.svg";
+import { ReactComponent as PolygonZkEVMLogo } from "src/assets/vizing-logo.svg";
 import { useEnvContext } from "src/contexts/env.context";
 import { routes } from "src/routes";
 import { areSettingsVisible } from "src/utils/feature-toggles";
