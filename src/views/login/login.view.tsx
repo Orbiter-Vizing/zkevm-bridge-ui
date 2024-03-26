@@ -94,14 +94,14 @@ export const Login: FC = () => {
         <ConfirmationModal
           message={
             <Typography type="body1">
-              DISCLAIMER: This version of the Polygon zkEVM will require frequent maintenance and
+              DISCLAIMER: This version of the Vizing will require frequent maintenance and
               may be restarted if upgrades are needed.
             </Typography>
           }
           onClose={() => setShowPolicyModal(false)}
           onConfirm={onConnectProvider}
           showCancelButton={false}
-          title={`Welcome to the Polygon zkEVM ${deploymentName || ""}`}
+          title={`Welcome to the Vizing ${deploymentName || ""}`}
         />
       )}
     </div>
