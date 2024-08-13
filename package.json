@@ -13,6 +13,7 @@
     "dev": "vite",
     "test": "vite --mode test",
     "build": "vite build",
+    "build:test": "vite build --mode test",
     "preview": "vite preview"
   },
   "dependencies": {
