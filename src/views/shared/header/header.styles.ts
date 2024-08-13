@@ -45,7 +45,7 @@ export const useHeaderStyles = createUseStyles((theme: Theme) => ({
       backgroundColor: theme.palette.grey.main,
     },
     alignItems: "center",
-    backgroundColor: theme.palette.white,
+    backgroundColor: theme.palette.white.default,
     borderRadius: 50,
     cursor: "pointer ",
     display: "flex",

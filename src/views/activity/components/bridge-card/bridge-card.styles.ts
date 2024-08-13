@@ -8,6 +8,10 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
     display: "flex",
     justifyContent: "center",
   },
+  amountTokenIcon: {
+    height: 20,
+    width: 20,
+  },
   bottom: {
     alignItems: "center",
     borderTop: [1, "solid", theme.palette.grey.light],
@@ -17,14 +21,19 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
     paddingTop: theme.spacing(2),
   },
   card: {
-    "&:hover": {
-      backgroundColor: theme.palette.grey.main,
-    },
-    cursor: "pointer",
+    alignItems: "center",
+    // "&:hover": {
+    //   backgroundColor: theme.palette.grey.main,
+    // },
+    // cursor: "pointer",
+    // border: "1px solid pink",
+    color: theme.palette.white.default,
+    display: "flex",
+    height: 60,
     margin: "auto",
-    maxWidth: theme.maxWidth,
-    padding: [theme.spacing(2), theme.spacing(3)],
+    padding: [0, theme.spacing(2)],
     transition: theme.hoverTransition,
+    width: "100%",
   },
   circle: {
     alignItems: "center",
@@ -34,6 +43,14 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
     height: theme.spacing(6),
     justifyContent: "center",
     width: theme.spacing(6),
+  },
+  claimButton: {
+    border: 'none',
+    background: 'transparent',
+    padding: 0,
+  },
+  disabledTxHash: {
+    border: "none",
   },
   fiat: {
     color: theme.palette.grey.dark,
@@ -51,11 +68,14 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
     backgroundColor: theme.palette.primary.main,
     border: "none",
     borderRadius: 32,
-    color: theme.palette.white,
+    color: theme.palette.white.default,
     cursor: "pointer",
     fontWeight: 700,
     lineHeight: "20px",
     padding: [theme.spacing(0.75), theme.spacing(3)],
+  },
+  fromInfo: {
+    width: 174,
   },
   greenStatus: {
     backgroundColor: theme.palette.success.light,
@@ -74,6 +94,25 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
   },
   label: {
     marginRight: "auto",
+  },
+  netName: {
+    color: theme.palette.white.transparency60,
+    fontSize: 14,
+    fontWeight: 400,
+    marginBottom: theme.spacing(0.5),
+    // borderBottom: "1px solid transparent",
+    // overflow: "hidden",
+    // textOverflow: "ellipsis",
+    // whiteSpace: "nowrap",
+    // width: 98,
+  },
+  networkIcon: {
+    height: 16,
+    width: 16,
+  },
+  networkIconWrap: {
+    display: "inline-block",
+    marginRight: theme.spacing(0.5),
   },
   pendingStatus: {
     backgroundColor: theme.palette.warning.light,
@@ -99,9 +138,18 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
     marginBottom: theme.spacing(2),
     marginTop: 0,
   },
+  timeInfo: {
+    width: 218,
+  },
+  toInfo: {
+    width: 174,
+  },
   token: {
     alignItems: "center",
     display: "flex",
+    fontSize: 18,
+    fontWeight: 500,
+    width: 202,
   },
   tokenIcon: {
     marginRight: theme.spacing(1),
@@ -109,5 +157,16 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
   top: {
     display: "flex",
     flexDirection: "column",
+  },
+  txHash: {
+    "&:hover": {
+      borderColor: theme.palette.white.default,
+      cursor: "pointer",
+    },
+    borderBottom: "1px solid transparent",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    width: 98,
   },
 }));

@@ -1,0 +1,360 @@
+Date : 2024-08-01 15:39:02
+Directory : /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui
+Total : 228 files,  32180 codes, 949 comments, 1469 blanks, all 34598 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |         11 |     18,826 |          0 |         12 |     18,838 |
+| TypeScript JSX     |         63 |      7,138 |        650 |        795 |      8,583 |
+| TypeScript         |         82 |      5,313 |        271 |        512 |      6,096 |
+| XML                |         53 |        594 |          2 |         41 |        637 |
+| Markdown           |          7 |        129 |          9 |         64 |        202 |
+| YAML               |          4 |         80 |          2 |         17 |         99 |
+| JSON with Comments |          1 |         26 |          0 |          1 |         27 |
+| HTML               |          1 |         24 |          0 |          1 |         25 |
+| Ignore             |          2 |         19 |          9 |          8 |         36 |
+| Properties         |          2 |         14 |          1 |          4 |         19 |
+| Docker             |          1 |         10 |          0 |          8 |         18 |
+| Shell Script       |          1 |          7 |          5 |          6 |         18 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                               | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                  |        228 |     32,180 |        949 |      1,469 |     34,598 |
+| . (Files)                                                                                                                          |         12 |     14,489 |         10 |         49 |     14,548 |
+| .github                                                                                                                            |         10 |        145 |         11 |         57 |        213 |
+| .github (Files)                                                                                                                    |          2 |         24 |          2 |         14 |         40 |
+| .github/ISSUE_TEMPLATE                                                                                                             |          3 |         36 |          5 |         13 |         54 |
+| .github/PULL_REQUEST_TEMPLATE                                                                                                      |          2 |         16 |          2 |         14 |         32 |
+| .github/workflows                                                                                                                  |          3 |         69 |          2 |         16 |         87 |
+| .idea                                                                                                                              |         10 |         88 |          0 |          0 |         88 |
+| .idea (Files)                                                                                                                      |          7 |         64 |          0 |          0 |         64 |
+| .idea/codeStyles                                                                                                                   |          2 |         18 |          0 |          0 |         18 |
+| .idea/inspectionProfiles                                                                                                           |          1 |          6 |          0 |          0 |          6 |
+| abis                                                                                                                               |          5 |      4,465 |          0 |          5 |      4,470 |
+| deployment                                                                                                                         |          1 |         13 |          1 |          3 |         17 |
+| public                                                                                                                             |          1 |         20 |          0 |          2 |         22 |
+| scripts                                                                                                                            |          1 |          7 |          5 |          6 |         18 |
+| src                                                                                                                                |        188 |     12,953 |        922 |      1,347 |     15,222 |
+| src (Files)                                                                                                                        |          4 |        264 |          6 |         50 |        320 |
+| src/adapters                                                                                                                       |          8 |      1,302 |         11 |        157 |      1,470 |
+| src/assets                                                                                                                         |         45 |        722 |         13 |         45 |        780 |
+| src/assets (Files)                                                                                                                 |          5 |        261 |         11 |          7 |        279 |
+| src/assets/icons                                                                                                                   |         40 |        461 |          2 |         38 |        501 |
+| src/assets/icons (Files)                                                                                                           |         31 |        242 |          2 |         29 |        273 |
+| src/assets/icons/chains                                                                                                            |          3 |         44 |          0 |          3 |         47 |
+| src/assets/icons/currencies                                                                                                        |          5 |        166 |          0 |          5 |        171 |
+| src/assets/icons/tokens                                                                                                            |          1 |          9 |          0 |          1 |         10 |
+| src/contexts                                                                                                                       |          8 |      1,841 |         44 |        222 |      2,107 |
+| src/domain                                                                                                                         |          1 |        294 |          5 |         55 |        354 |
+| src/hooks                                                                                                                          |          5 |         80 |          0 |         21 |        101 |
+| src/styles                                                                                                                         |          1 |         58 |          1 |          2 |         61 |
+| src/utils                                                                                                                          |         11 |        473 |          1 |         75 |        549 |
+| src/views                                                                                                                          |        105 |      7,919 |        841 |        720 |      9,480 |
+| src/views (Files)                                                                                                                  |          2 |        112 |          0 |          6 |        118 |
+| src/views/activity                                                                                                                 |          6 |        940 |        161 |         67 |      1,168 |
+| src/views/activity (Files)                                                                                                         |          2 |        560 |         20 |         32 |        612 |
+| src/views/activity/components                                                                                                      |          4 |        380 |        141 |         35 |        556 |
+| src/views/activity/components/bridge-card                                                                                          |          2 |        311 |        141 |         21 |        473 |
+| src/views/activity/components/infinite-scroll                                                                                      |          2 |         69 |          0 |         14 |         83 |
+| src/views/bridge-confirmation                                                                                                      |          5 |        685 |          5 |         47 |        737 |
+| src/views/bridge-confirmation (Files)                                                                                              |          2 |        615 |          5 |         35 |        655 |
+| src/views/bridge-confirmation/components                                                                                           |          3 |         70 |          0 |         12 |         82 |
+| src/views/bridge-confirmation/components/approval-info                                                                             |          2 |         22 |          0 |          7 |         29 |
+| src/views/bridge-confirmation/components/bridge-button                                                                             |          1 |         48 |          0 |          5 |         53 |
+| src/views/bridge-details                                                                                                           |          4 |        510 |          2 |         38 |        550 |
+| src/views/bridge-details (Files)                                                                                                   |          2 |        477 |          2 |         31 |        510 |
+| src/views/bridge-details/components                                                                                                |          2 |         33 |          0 |          7 |         40 |
+| src/views/bridge-details/components/chain                                                                                          |          2 |         33 |          0 |          7 |         40 |
+| src/views/core                                                                                                                     |          5 |        233 |         27 |         24 |        284 |
+| src/views/core/components                                                                                                          |          2 |         76 |          8 |          8 |         92 |
+| src/views/core/components/header                                                                                                   |          2 |         76 |          8 |          8 |         92 |
+| src/views/core/layout                                                                                                              |          2 |        104 |          2 |          9 |        115 |
+| src/views/core/router                                                                                                              |          1 |         53 |         17 |          7 |         77 |
+| src/views/home                                                                                                                     |         38 |      3,780 |        607 |        341 |      4,728 |
+| src/views/home (Files)                                                                                                             |          2 |        180 |         25 |         14 |        219 |
+| src/views/home/components                                                                                                          |         36 |      3,600 |        582 |        327 |      4,509 |
+| src/views/home/components/amount-input                                                                                             |          2 |        105 |          8 |         14 |        127 |
+| src/views/home/components/bridge-deposit-form                                                                                      |          2 |        574 |         81 |         38 |        693 |
+| src/views/home/components/bridge-form                                                                                              |          2 |        267 |        238 |         37 |        542 |
+| src/views/home/components/bridge-gas-fee                                                                                           |          2 |        461 |        158 |         54 |        673 |
+| src/views/home/components/bridge-withdraw-form                                                                                     |          2 |        485 |         53 |         33 |        571 |
+| src/views/home/components/deposit-warning-modal                                                                                    |          2 |        121 |          0 |          8 |        129 |
+| src/views/home/components/header                                                                                                   |          2 |         86 |          0 |          8 |         94 |
+| src/views/home/components/max-button                                                                                               |          2 |         98 |          8 |         14 |        120 |
+| src/views/home/components/pending-list                                                                                             |          2 |         60 |          1 |          8 |         69 |
+| src/views/home/components/pending-list-card                                                                                        |          2 |        199 |          6 |         11 |        216 |
+| src/views/home/components/pending-status-icon                                                                                      |          2 |         56 |          0 |          8 |         64 |
+| src/views/home/components/text-match-form                                                                                          |          2 |         86 |          0 |          8 |         94 |
+| src/views/home/components/token-adder                                                                                              |          2 |         77 |          0 |          8 |         85 |
+| src/views/home/components/token-info                                                                                               |          2 |         66 |          0 |          9 |         75 |
+| src/views/home/components/token-info-table                                                                                         |          2 |        231 |          0 |         20 |        251 |
+| src/views/home/components/token-list                                                                                               |          2 |        383 |         28 |         21 |        432 |
+| src/views/home/components/token-selector                                                                                           |          2 |        160 |          0 |         20 |        180 |
+| src/views/home/components/token-selector-header                                                                                    |          2 |         85 |          1 |          8 |         94 |
+| src/views/login                                                                                                                    |          6 |        260 |          0 |         30 |        290 |
+| src/views/login (Files)                                                                                                            |          2 |        150 |          0 |         13 |        163 |
+| src/views/login/components                                                                                                         |          4 |        110 |          0 |         17 |        127 |
+| src/views/login/components/wallet-icon                                                                                             |          2 |         51 |          0 |          9 |         60 |
+| src/views/login/components/wallet-list                                                                                             |          2 |         59 |          0 |          8 |         67 |
+| src/views/network-error                                                                                                            |          2 |         78 |          0 |          9 |         87 |
+| src/views/settings                                                                                                                 |          2 |        136 |          0 |          9 |        145 |
+| src/views/shared                                                                                                                   |         35 |      1,185 |         39 |        149 |      1,373 |
+| src/views/shared/button                                                                                                            |          2 |         57 |          0 |          8 |         65 |
+| src/views/shared/card                                                                                                              |          2 |         23 |          0 |          8 |         31 |
+| src/views/shared/chain-list                                                                                                        |          2 |        134 |          6 |          9 |        149 |
+| src/views/shared/confirmation-modal                                                                                                |          2 |         97 |          0 |          9 |        106 |
+| src/views/shared/error-message                                                                                                     |          2 |         29 |          0 |          8 |         37 |
+| src/views/shared/external-link                                                                                                     |          2 |         24 |          0 |          8 |         32 |
+| src/views/shared/header                                                                                                            |          2 |         98 |          0 |          8 |        106 |
+| src/views/shared/icon                                                                                                              |          2 |         32 |          0 |          7 |         39 |
+| src/views/shared/info-banner                                                                                                       |          2 |         35 |          0 |          8 |         43 |
+| src/views/shared/network-box                                                                                                       |          2 |        161 |         30 |         10 |        201 |
+| src/views/shared/network-selector                                                                                                  |          2 |        106 |          3 |         10 |        119 |
+| src/views/shared/page-loader                                                                                                       |          2 |         21 |          0 |          5 |         26 |
+| src/views/shared/portal                                                                                                            |          2 |         28 |          0 |          9 |         37 |
+| src/views/shared/private-route                                                                                                     |          1 |         24 |          0 |          4 |         28 |
+| src/views/shared/snackbar                                                                                                          |          2 |        137 |          0 |         11 |        148 |
+| src/views/shared/spinner                                                                                                           |          2 |         62 |          0 |          9 |         71 |
+| src/views/shared/token-balance                                                                                                     |          2 |         58 |          0 |         10 |         68 |
+| src/views/shared/typography                                                                                                        |          2 |         59 |          0 |          8 |         67 |
++------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                                                           | language           | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.dockerignore                                                                   | Ignore             |         10 |          7 |          7 |         24 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.github/CONTIBUTING.md                                                          | Markdown           |         14 |          0 |          5 |         19 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.github/ISSUE_TEMPLATE/bug.md                                                   | Markdown           |         16 |          0 |          8 |         24 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.github/ISSUE_TEMPLATE/config.yml                                               | YAML               |         11 |          0 |          1 |         12 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.github/ISSUE_TEMPLATE/feature.md                                               | Markdown           |          9 |          5 |          4 |         18 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.github/PULL_REQUEST_TEMPLATE.md                                                | Markdown           |         10 |          2 |          9 |         21 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.github/PULL_REQUEST_TEMPLATE/develop.md                                        | Markdown           |         10 |          2 |          9 |         21 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.github/PULL_REQUEST_TEMPLATE/main.md                                           | Markdown           |          6 |          0 |          5 |         11 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.github/workflows/push-docker-develop.yml                                       | YAML               |         26 |          0 |          6 |         32 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.github/workflows/push-docker-main.yml                                          | YAML               |         26 |          0 |          6 |         32 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.github/workflows/sonarqube.yml                                                 | YAML               |         17 |          2 |          4 |         23 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.idea/codeStyles/Project.xml                                                    | XML                |         13 |          0 |          0 |         13 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.idea/codeStyles/codeStyleConfig.xml                                            | XML                |          5 |          0 |          0 |          5 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.idea/deployment.xml                                                            | XML                |         14 |          0 |          0 |         14 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.idea/inspectionProfiles/Project_Default.xml                                    | XML                |          6 |          0 |          0 |          6 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.idea/misc.xml                                                                  | XML                |          6 |          0 |          0 |          6 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.idea/modules.xml                                                               | XML                |          8 |          0 |          0 |          8 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.idea/sshConfigs.xml                                                            | XML                |          8 |          0 |          0 |          8 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.idea/vcs.xml                                                                   | XML                |          6 |          0 |          0 |          6 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.idea/webServers.xml                                                            | XML                |         14 |          0 |          0 |         14 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.idea/zkevm-bridge-ui.iml                                                       | XML                |          8 |          0 |          0 |          8 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.prettierignore                                                                 | Ignore             |          9 |          2 |          1 |         12 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/.prettierrc.json                                                                | JSON               |          4 |          0 |          1 |          5 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/Dockerfile                                                                      | Docker             |         10 |          0 |          8 |         18 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/README.md                                                                       | Markdown           |         64 |          0 |         24 |         88 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/abis/bridge.json                                                                | JSON               |        774 |          0 |          1 |        775 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/abis/erc-20.json                                                                | JSON               |        386 |          0 |          1 |        387 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/abis/proof-of-efficiency.json                                                   | JSON               |      1,645 |          0 |          1 |      1,646 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/abis/uniswap-v2-pair.json                                                       | JSON               |        707 |          0 |          1 |        708 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/abis/uniswap-v2-router-02.json                                                  | JSON               |        953 |          0 |          1 |        954 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/deployment/nginx.conf                                                           | Properties         |         13 |          1 |          3 |         17 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/index.html                                                                      | HTML               |         24 |          0 |          1 |         25 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/package-lock.json                                                               | JSON               |     14,219 |          0 |          1 |     14,220 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/package.json                                                                    | JSON               |         82 |          0 |          1 |         83 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/public/manifest.json                                                            | JSON               |         20 |          0 |          2 |         22 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/scripts/generate-contract-types.sh                                              | Shell Script       |          7 |          5 |          6 |         18 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/sonar-project.properties                                                        | Properties         |          1 |          0 |          1 |          2 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/adapters/bridge-api.ts                                                      | TypeScript         |        217 |          0 |         21 |        238 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/adapters/browser.ts                                                         | TypeScript         |          5 |          0 |          4 |          9 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/adapters/env.ts                                                             | TypeScript         |        285 |          0 |         26 |        311 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/adapters/error.ts                                                           | TypeScript         |        132 |          4 |         15 |        151 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/adapters/ethereum.ts                                                        | TypeScript         |        334 |          0 |         44 |        378 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/adapters/fiat-exchange-rates-api.ts                                         | TypeScript         |         97 |          0 |         13 |        110 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/adapters/storage.ts                                                         | TypeScript         |        205 |          6 |         30 |        241 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/adapters/tokens.ts                                                          | TypeScript         |         27 |          1 |          4 |         32 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/background-pattern.svg                                               | XML                |         15 |          0 |          1 |         16 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/ethereum-erc20-tokens.json                                           | JSON               |         26 |          0 |          1 |         27 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/ethereum-erc20-tokens.ts                                             | TypeScript         |        190 |         11 |          3 |        204 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/arrow-down.svg                                                 | XML                |          5 |          0 |          1 |          6 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/arrow-left.svg                                                 | XML                |          5 |          0 |          1 |          6 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/arrow-right.svg                                                | XML                |         16 |          0 |          1 |         17 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/caret-down-old.svg                                             | XML                |          3 |          0 |          1 |          4 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/caret-down.svg                                                 | XML                |         19 |          0 |          1 |         20 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/caret-right.svg                                                | XML                |          4 |          0 |          1 |          5 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/chains/arbitrum.svg                                            | XML                |         20 |          0 |          1 |         21 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/chains/ethereum.svg                                            | XML                |         14 |          0 |          1 |         15 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/chains/vizing-zkevm.svg                                        | XML                |         10 |          0 |          1 |         11 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/checkbox-checked.svg                                           | XML                |          4 |          0 |          1 |          5 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/checkbox-unchecked.svg                                         | XML                |          3 |          0 |          1 |          4 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/clock.svg                                                      | XML                |          4 |          0 |          1 |          5 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/copy.svg                                                       | XML                |          3 |          0 |          1 |          4 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/currencies/cny.svg                                             | XML                |         10 |          0 |          1 |         11 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/currencies/eur.svg                                             | XML                |        123 |          0 |          1 |        124 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/currencies/gbp.svg                                             | XML                |          9 |          0 |          1 |         10 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/currencies/jpy.svg                                             | XML                |         11 |          0 |          1 |         12 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/currencies/usd.svg                                             | XML                |         13 |          0 |          1 |         14 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/currency-conversion.svg                                        | XML                |          4 |          0 |          1 |          5 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/delete.svg                                                     | XML                |          3 |          0 |          1 |          4 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/error.svg                                                      | XML                |          1 |          0 |          0 |          1 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/icon-back.svg                                                  | XML                |         19 |          0 |          1 |         20 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/info.svg                                                       | XML                |          3 |          0 |          1 |          4 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/l1-bridge.svg                                                  | XML                |          6 |          0 |          1 |          7 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/l2-bridge.svg                                                  | XML                |          6 |          0 |          1 |          7 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/logout.svg                                                     | XML                |          3 |          0 |          1 |          4 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/magnifying-glass.svg                                           | XML                |          3 |          0 |          1 |          4 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/metamask.svg                                                   | XML                |         60 |          1 |          1 |         62 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/new-window.svg                                                 | XML                |          4 |          0 |          1 |          5 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/polygon-hermez.svg                                             | XML                |          7 |          0 |          1 |          8 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/search.svg                                                     | XML                |          3 |          0 |          1 |          4 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/setting.svg                                                    | XML                |          3 |          0 |          1 |          4 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/spinner.svg                                                    | XML                |         10 |          0 |          1 |         11 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/success.svg                                                    | XML                |          3 |          0 |          1 |          4 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/tokens/erc20-icon.svg                                          | XML                |          9 |          0 |          1 |         10 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/walletconnect.svg                                              | XML                |         11 |          1 |          0 |         12 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/warning.svg                                                    | XML                |          3 |          0 |          1 |          4 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/withdraw-pending.svg                                           | XML                |          9 |          0 |          1 |         10 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/withdraw-success.svg                                           | XML                |          7 |          0 |          1 |          8 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/icons/xmark.svg                                                      | XML                |          8 |          0 |          1 |          9 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/vizing-logo-old.svg                                                  | XML                |         12 |          0 |          1 |         13 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/assets/vizing-logo.svg                                                      | XML                |         18 |          0 |          1 |         19 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/constants.ts                                                                | TypeScript         |        167 |          1 |         35 |        203 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/contexts/bridge.context.tsx                                                 | TypeScript JSX     |        841 |          0 |         83 |        924 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/contexts/env.context.tsx                                                    | TypeScript JSX     |         51 |          0 |         10 |         61 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/contexts/error.context.tsx                                                  | TypeScript JSX     |         30 |          0 |         12 |         42 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/contexts/form.context.tsx                                                   | TypeScript JSX     |         23 |          0 |         10 |         33 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/contexts/price-oracle.context.tsx                                           | TypeScript JSX     |        148 |          0 |         30 |        178 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/contexts/providers.context.tsx                                              | TypeScript JSX     |        375 |         31 |         30 |        436 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/contexts/tokens.context.tsx                                                 | TypeScript JSX     |        310 |         13 |         33 |        356 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/contexts/ui.context.tsx                                                     | TypeScript JSX     |         63 |          0 |         14 |         77 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/domain/index.ts                                                             | TypeScript         |        294 |          5 |         55 |        354 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/hooks/use-call-if-mounted.ts                                                | TypeScript         |         13 |          0 |          3 |         16 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/hooks/use-debounce.ts                                                       | TypeScript         |         13 |          0 |          5 |         18 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/hooks/use-debounced-block.ts                                                | TypeScript         |         22 |          0 |          7 |         29 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/hooks/use-intersection.ts                                                   | TypeScript         |         21 |          0 |          1 |         22 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/hooks/use-is-mounted.ts                                                     | TypeScript         |         11 |          0 |          5 |         16 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/main.tsx                                                                    | TypeScript JSX     |         20 |          0 |          5 |         25 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/routes.ts                                                                   | TypeScript         |         51 |          0 |          2 |         53 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/styles/theme.ts                                                             | TypeScript         |         58 |          1 |          2 |         61 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/utils/addresses.ts                                                          | TypeScript         |         15 |          0 |          7 |         22 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/utils/amounts.ts                                                            | TypeScript         |         30 |          0 |          6 |         36 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/utils/browser.ts                                                            | TypeScript         |         12 |          0 |          3 |         15 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/utils/feature-toggles.ts                                                    | TypeScript         |          4 |          0 |          2 |          6 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/utils/fees.ts                                                               | TypeScript         |         44 |          0 |          8 |         52 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/utils/labels.ts                                                             | TypeScript         |         66 |          0 |          6 |         72 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/utils/serializers.ts                                                        | TypeScript         |        198 |          0 |         25 |        223 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/utils/time.ts                                                               | TypeScript         |         39 |          0 |          4 |         43 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/utils/tokens.ts                                                             | TypeScript         |         11 |          0 |          5 |         16 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/utils/type-safety.ts                                                        | TypeScript         |         14 |          1 |          3 |         18 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/utils/types.ts                                                              | TypeScript         |         40 |          0 |          6 |         46 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/activity/activity.styles.ts                                           | TypeScript         |        104 |         15 |          4 |        123 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/activity/activity.view.tsx                                            | TypeScript JSX     |        456 |          5 |         28 |        489 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/activity/components/bridge-card/bridge-card.styles.ts                 | TypeScript         |        132 |          5 |          3 |        140 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/activity/components/bridge-card/bridge-card.view.tsx                  | TypeScript JSX     |        179 |        136 |         18 |        333 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/activity/components/infinite-scroll/infinite-scroll.styles.ts         | TypeScript         |         14 |          0 |          3 |         17 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/activity/components/infinite-scroll/infinite-scroll.view.tsx          | TypeScript JSX     |         55 |          0 |         11 |         66 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/app.styles.ts                                                         | TypeScript         |         77 |          0 |          3 |         80 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/app.view.tsx                                                          | TypeScript JSX     |         35 |          0 |          3 |         38 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/bridge-confirmation/bridge-confirmation.styles.ts                     | TypeScript         |        160 |          0 |          3 |        163 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/bridge-confirmation/bridge-confirmation.view.tsx                      | TypeScript JSX     |        455 |          5 |         32 |        492 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/bridge-confirmation/components/approval-info/approval-info.styles.ts  | TypeScript         |          9 |          0 |          3 |         12 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/bridge-confirmation/components/approval-info/approval-info.view.tsx   | TypeScript JSX     |         13 |          0 |          4 |         17 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/bridge-confirmation/components/bridge-button/bridge-button.view.tsx   | TypeScript JSX     |         48 |          0 |          5 |         53 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/bridge-details/bridge-details.styles.ts                               | TypeScript         |        100 |          0 |          3 |        103 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/bridge-details/bridge-details.view.tsx                                | TypeScript JSX     |        377 |          2 |         28 |        407 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/bridge-details/components/chain/chain.styles.ts                       | TypeScript         |          7 |          0 |          2 |          9 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/bridge-details/components/chain/chain.tsx                             | TypeScript JSX     |         26 |          0 |          5 |         31 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/core/components/header/header.styles.ts                               | TypeScript         |         40 |          8 |          3 |         51 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/core/components/header/header.view.tsx                                | TypeScript JSX     |         36 |          0 |          5 |         41 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/core/layout/layout.styles.ts                                          | TypeScript         |         34 |          0 |          3 |         37 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/core/layout/layout.view.tsx                                           | TypeScript JSX     |         70 |          2 |          6 |         78 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/core/router/router.view.tsx                                           | TypeScript JSX     |         53 |         17 |          7 |         77 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/amount-input/amount-input.styles.ts                   | TypeScript         |         37 |          7 |          3 |         47 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/amount-input/amount-input.view.tsx                    | TypeScript JSX     |         68 |          1 |         11 |         80 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/bridge-deposit-form/bridge-deposit-form.styles.ts     | TypeScript         |        154 |         31 |          3 |        188 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/bridge-deposit-form/bridge-deposit-form.view.tsx      | TypeScript JSX     |        420 |         50 |         35 |        505 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/bridge-form/bridge-form.styles.ts                     | TypeScript         |         35 |        125 |          3 |        163 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/bridge-form/bridge-form.view.tsx                      | TypeScript JSX     |        232 |        113 |         34 |        379 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/bridge-gas-fee/bridge-gas-fee.styles.ts               | TypeScript         |         37 |          0 |          3 |         40 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/bridge-gas-fee/bridge-gas-fee.view.tsx                | TypeScript JSX     |        424 |        158 |         51 |        633 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/bridge-withdraw-form/bridge-withdraw-form.styles.ts   | TypeScript         |        139 |         24 |          3 |        166 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/bridge-withdraw-form/bridge-withdraw-form.view.tsx    | TypeScript JSX     |        346 |         29 |         30 |        405 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/deposit-warning-modal/deposit-warning-modal.styles.ts | TypeScript         |         65 |          0 |          3 |         68 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/deposit-warning-modal/deposit-warning-modal.view.tsx  | TypeScript JSX     |         56 |          0 |          5 |         61 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/header/header.styles.ts                               | TypeScript         |         45 |          0 |          3 |         48 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/header/header.view.tsx                                | TypeScript JSX     |         41 |          0 |          5 |         46 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/max-button/max-button.styles.ts                       | TypeScript         |         37 |          7 |          3 |         47 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/max-button/max-button.view.tsx                        | TypeScript JSX     |         61 |          1 |         11 |         73 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/pending-list-card/pending-list-card.styles.ts         | TypeScript         |        127 |          1 |          3 |        131 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/pending-list-card/pending-list-card.view.tsx          | TypeScript JSX     |         72 |          5 |          8 |         85 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/pending-list/pending-list.styles.ts                   | TypeScript         |         25 |          1 |          3 |         29 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/pending-list/pending-list.view.tsx                    | TypeScript JSX     |         35 |          0 |          5 |         40 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/pending-status-icon/pending-status-icon.styles.ts     | TypeScript         |         30 |          0 |          3 |         33 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/pending-status-icon/pending-status-icon.view.tsx      | TypeScript JSX     |         26 |          0 |          5 |         31 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/text-match-form/text-match-form.styles.ts             | TypeScript         |         41 |          0 |          3 |         44 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/text-match-form/text-match-form.view.tsx              | TypeScript JSX     |         45 |          0 |          5 |         50 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/token-adder/token-adder.styles.ts                     | TypeScript         |         41 |          0 |          3 |         44 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/token-adder/token-adder.view.tsx                      | TypeScript JSX     |         36 |          0 |          5 |         41 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/token-info-table/token-info-table.styles.ts           | TypeScript         |         67 |          0 |          3 |         70 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/token-info-table/token-info-table.view.tsx            | TypeScript JSX     |        164 |          0 |         17 |        181 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/token-info/token-info.styles.ts                       | TypeScript         |         30 |          0 |          3 |         33 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/token-info/token-info.view.tsx                        | TypeScript JSX     |         36 |          0 |          6 |         42 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/token-list/token-list.styles.ts                       | TypeScript         |        150 |          3 |          3 |        156 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/token-list/token-list.view.tsx                        | TypeScript JSX     |        233 |         25 |         18 |        276 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/token-selector-header/token-selector-header.styles.ts | TypeScript         |         55 |          1 |          3 |         59 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/token-selector-header/token-selector-header.view.tsx  | TypeScript JSX     |         30 |          0 |          5 |         35 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/token-selector/token-selector.styles.ts               | TypeScript         |         22 |          0 |          3 |         25 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/components/token-selector/token-selector.view.tsx                | TypeScript JSX     |        138 |          0 |         17 |        155 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/home.styles.ts                                                   | TypeScript         |         67 |          1 |          3 |         71 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/home/home.view.tsx                                                    | TypeScript JSX     |        113 |         24 |         11 |        148 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/login/components/wallet-icon/wallet-icon.styles.ts                    | TypeScript         |         22 |          0 |          4 |         26 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/login/components/wallet-icon/wallet-icon.view.tsx                     | TypeScript JSX     |         29 |          0 |          5 |         34 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/login/components/wallet-list/wallet-list.styles.ts                    | TypeScript         |         29 |          0 |          3 |         32 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/login/components/wallet-list/wallet-list.view.tsx                     | TypeScript JSX     |         30 |          0 |          5 |         35 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/login/login.styles.ts                                                 | TypeScript         |         49 |          0 |          3 |         52 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/login/login.view.tsx                                                  | TypeScript JSX     |        101 |          0 |         10 |        111 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/network-error/network-error.styles.ts                                 | TypeScript         |         38 |          0 |          3 |         41 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/network-error/network-error.view.tsx                                  | TypeScript JSX     |         40 |          0 |          6 |         46 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/settings/settings.styles.ts                                           | TypeScript         |         60 |          0 |          3 |         63 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/settings/settings.view.tsx                                            | TypeScript JSX     |         76 |          0 |          6 |         82 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/button/button.styles.ts                                        | TypeScript         |         29 |          0 |          3 |         32 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/button/button.view.tsx                                         | TypeScript JSX     |         28 |          0 |          5 |         33 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/card/card.styles.ts                                            | TypeScript         |          9 |          0 |          3 |         12 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/card/card.view.tsx                                             | TypeScript JSX     |         14 |          0 |          5 |         19 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/chain-list/chain-list.styles.ts                                | TypeScript         |         94 |          3 |          3 |        100 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/chain-list/chain-list.view.tsx                                 | TypeScript JSX     |         40 |          3 |          6 |         49 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/confirmation-modal/confirmation-modal.styles.ts                | TypeScript         |         50 |          0 |          3 |         53 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/confirmation-modal/confirmation-modal.view.tsx                 | TypeScript JSX     |         47 |          0 |          6 |         53 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/error-message/error-message.styles.ts                          | TypeScript         |         13 |          0 |          3 |         16 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/error-message/error-message.view.tsx                           | TypeScript JSX     |         16 |          0 |          5 |         21 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/external-link/external-link.styles.ts                          | TypeScript         |         11 |          0 |          3 |         14 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/external-link/external-link.view.tsx                           | TypeScript JSX     |         13 |          0 |          5 |         18 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/header/header.styles.ts                                        | TypeScript         |         63 |          0 |          3 |         66 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/header/header.view.tsx                                         | TypeScript JSX     |         35 |          0 |          5 |         40 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/icon/icon.styles.ts                                            | TypeScript         |         14 |          0 |          2 |         16 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/icon/icon.view.tsx                                             | TypeScript JSX     |         18 |          0 |          5 |         23 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/info-banner/info-banner.styles.ts                              | TypeScript         |         16 |          0 |          3 |         19 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/info-banner/info-banner.view.tsx                               | TypeScript JSX     |         19 |          0 |          5 |         24 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/network-box/network-box.styles.ts                              | TypeScript         |         49 |          0 |          3 |         52 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/network-box/network-box.view.tsx                               | TypeScript JSX     |        112 |         30 |          7 |        149 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/network-selector/network-selector.styles.ts                    | TypeScript         |         37 |          3 |          3 |         43 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/network-selector/network-selector.view.tsx                     | TypeScript JSX     |         69 |          0 |          7 |         76 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/page-loader/page-loader.styles.ts                              | TypeScript         |         10 |          0 |          2 |         12 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/page-loader/page-loader.view.tsx                               | TypeScript JSX     |         11 |          0 |          3 |         14 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/portal/portal.styles.ts                                        | TypeScript         |         10 |          0 |          2 |         12 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/portal/portal.view.tsx                                         | TypeScript JSX     |         18 |          0 |          7 |         25 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/private-route/private-route.view.tsx                           | TypeScript JSX     |         24 |          0 |          4 |         28 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/snackbar/snackbar.styles.ts                                    | TypeScript         |         67 |          0 |          3 |         70 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/snackbar/snackbar.view.tsx                                     | TypeScript JSX     |         70 |          0 |          8 |         78 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/spinner/spinner.styles.ts                                      | TypeScript         |         30 |          0 |          4 |         34 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/spinner/spinner.view.tsx                                       | TypeScript JSX     |         32 |          0 |          5 |         37 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/token-balance/token-balance.styles.ts                          | TypeScript         |         13 |          0 |          3 |         16 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/token-balance/token-balance.view.tsx                           | TypeScript JSX     |         45 |          0 |          7 |         52 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/typography/typography.styles.ts                                | TypeScript         |         48 |          0 |          3 |         51 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/views/shared/typography/typography.view.tsx                                 | TypeScript JSX     |         11 |          0 |          5 |         16 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/src/vite-env.d.ts                                                               | TypeScript         |         26 |          5 |          8 |         39 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/tsconfig.json                                                                   | JSON with Comments |         26 |          0 |          1 |         27 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/tsconfig.node.json                                                              | JSON               |         10 |          0 |          1 |         11 |
+| /Users/sheep/Desktop/web3_projects/zkevm-bridge-ui/vite.config.ts                                                                  | TypeScript         |         30 |          1 |          2 |         33 |
+| Total                                                                                                                              |                    |     32,180 |        949 |      1,469 |     34,598 |
++------------------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

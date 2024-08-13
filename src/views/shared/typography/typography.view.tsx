@@ -4,12 +4,12 @@ import { useTypographyStyles } from "src/views/shared/typography/typography.styl
 
 export type TypographyProps = PropsWithChildren<{
   className?: string;
-  type: "h1" | "h2" | "body1" | "body2";
+  type: "h1" | "h2" | "body1" | "body2" | "body3";
 }>;
 
 export const Typography: FC<TypographyProps> = ({ children, className, type }) => {
   const classes = useTypographyStyles();
-  const Component = type === "body1" || type === "body2" ? "p" : type;
+  const Component = type === "body1" || type === "body2" || type === "body3" ? "p" : type;
 
   return <Component className={`${classes[type]} ${className || ""}`}>{children}</Component>;
 };

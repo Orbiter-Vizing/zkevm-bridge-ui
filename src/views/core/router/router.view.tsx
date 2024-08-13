@@ -23,6 +23,24 @@ const components: Record<RouteId, ComponentType> = {
   settings: Settings,
 };
 
+// const routes = {
+//   activity: {
+//     id: "activity",
+//     isPrivate: true,
+//     path: "/activity",
+//   },
+//   home: {
+//     id: "home",
+//     isPrivate: true,
+//     path: "/",
+//   },
+//   login: {
+//     id: "login",
+//     isPrivate: false,
+//     path: "/login",
+//   }
+// }
+
 export const Router: FC = () => {
   const env = useEnvContext();
 
@@ -30,6 +48,7 @@ export const Router: FC = () => {
     !env || areSettingsVisible(env)
       ? routes
       : Object.values(routes).filter((route) => route.path !== routes.settings.path);
+  console.log("filteredRoutes:", filteredRoutes);
 
   return (
     <Routes>

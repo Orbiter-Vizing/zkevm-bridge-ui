@@ -16,6 +16,7 @@ interface CommonPendingTx {
   amount: BigNumber;
   destinationAddress: string;
   from: Chain;
+  // timeAt: string;
   timestamp: number;
   to: Chain;
   token: Token;
@@ -42,6 +43,7 @@ interface CommonSerializedPendingTx {
   amount: string;
   destinationAddress: string;
   from: ChainKey;
+  // timeAt: string;
   timestamp: number;
   to: ChainKey;
   token: Token;
@@ -76,13 +78,27 @@ const pendingTxDepositParser = (env: Env) =>
         depositTxHash: z.string(),
         destinationAddress: z.string(),
         from: chainKeyParser,
+        // timeAt: z.string(),
         timestamp: z.number(),
         to: chainKeyParser,
         token: tokenParser,
         type: z.literal("deposit"),
       })
       .transform(
-        ({ amount, depositTxHash, destinationAddress, from, timestamp, to, token, type }, ctx) => {
+        (
+          {
+            amount,
+            depositTxHash,
+            destinationAddress,
+            from,
+            // timeAt,
+            timestamp,
+            to,
+            token,
+            type,
+          },
+          ctx
+        ) => {
           const fromChain = env.chains.find((chain) => chain.key === from);
           const toChain = env.chains.find((chain) => chain.key === to);
           if (!fromChain) {
@@ -106,6 +122,7 @@ const pendingTxDepositParser = (env: Env) =>
             depositTxHash,
             destinationAddress,
             from: fromChain,
+            // timeAt,
             timestamp,
             to: toChain,
             token,
@@ -124,6 +141,7 @@ const pendingTxClaimParser = (env: Env) =>
         depositTxHash: z.string(),
         destinationAddress: z.string(),
         from: chainKeyParser,
+        // timeAt: z.string(),
         timestamp: z.number(),
         to: chainKeyParser,
         token: tokenParser,
@@ -137,6 +155,7 @@ const pendingTxClaimParser = (env: Env) =>
             depositTxHash,
             destinationAddress,
             from,
+            // timeAt,
             timestamp,
             to,
             token,
@@ -168,6 +187,7 @@ const pendingTxClaimParser = (env: Env) =>
             depositTxHash: depositTxHash,
             destinationAddress,
             from: fromChain,
+            // timeAt,
             timestamp: timestamp,
             to: toChain,
             token: token,
@@ -198,6 +218,7 @@ const serializePendingTx = (pendingTx: PendingTx): SerializedPendingTx => {
     amount: ethersUtils.formatUnits(pendingTx.amount, pendingTx.token.decimals),
     destinationAddress: pendingTx.destinationAddress,
     from: pendingTx.from.key,
+    // timeAt: pendingTx.timeAt,
     timestamp: pendingTx.timestamp,
     to: pendingTx.to.key,
     token: pendingTx.token,

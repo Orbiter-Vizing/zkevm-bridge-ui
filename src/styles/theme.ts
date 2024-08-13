@@ -5,10 +5,22 @@ export const theme = {
   hoverTransition: "all 150ms",
   maxWidth: 644,
   palette: {
-    black: "#0a0b0d",
+    bgBlack: "#040102",
+    black: "rgba(255, 255, 255, 0.4)",
+    dark: {
+      light: "#302D2E",
+      lighter: "rgba(154, 154, 154, 0.12)",
+      main: "#232021",
+      // #040102
+      transparency60: "rgba(0, 0, 0, 0.6)",
+    },
     error: {
       light: "rgba(232,67,12,0.1)",
       main: "#e8430d",
+    },
+    green: {
+      default: "#86DD45",
+      transparency20: "rgba(134, 221, 69, 0.2)",
     },
     grey: {
       dark: "#78798d",
@@ -24,12 +36,23 @@ export const theme = {
       light: "rgba(0,255,0,0.1)",
       main: "#1ccc8d",
     },
+    themeRed: "#FF486D",
     transparency: "rgba(8,17,50,0.5)",
     warning: {
       light: "rgba(225,126,38,0.1)",
       main: "#e17e26",
     },
-    white: "#ffffff",
+    white: {
+      default: "#ffffff",
+      transparency10: "rgba(225, 255, 255, 0.1)",
+      transparency20: "rgba(225, 255, 255, 0.2)",
+      transparency40: "rgba(225, 255, 255, 0.4)",
+      transparency60: "rgba(225, 255, 255, 0.6)",
+    },
+    yellow: {
+      default: "#FFCC2D",
+      transparency20: "rgba(255, 204, 45, 0.2)",
+    },
   },
   spacing: (value: number): number => value * 8,
 };

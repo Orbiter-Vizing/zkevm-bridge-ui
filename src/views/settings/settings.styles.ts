@@ -35,7 +35,7 @@ export const useSettingsStyles = createUseStyles((theme: Theme) => ({
     },
     alignItems: "center",
     backgroundColor: theme.palette.grey.light,
-    border: `1px solid ${theme.palette.white}`,
+    border: `1px solid ${theme.palette.white.default}`,
     borderRadius: 8,
     cursor: "pointer",
     display: "flex",

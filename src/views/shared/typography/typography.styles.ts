@@ -4,18 +4,26 @@ import { Theme } from "src/styles/theme";
 
 export const useTypographyStyles = createUseStyles((theme: Theme) => ({
   body1: {
-    color: theme.palette.black,
-    fontSize: 16,
-    fontWeight: 500,
-    lineHeight: "20px",
+    color: theme.palette.white.default,
+    fontSize: 14,
+    fontWeight: 400,
+    lineHeight: "14px",
     marginBottom: 0,
     marginTop: 0,
   },
   body2: {
-    color: theme.palette.grey.dark,
+    color: theme.palette.white.transparency20,
     fontSize: 14,
     fontWeight: 400,
-    lineHeight: "18px",
+    lineHeight: "14px",
+    marginBottom: 0,
+    marginTop: 0,
+  },
+  body3: {
+    color: theme.palette.white.transparency40,
+    fontSize: 14,
+    fontWeight: 400,
+    lineHeight: "14px",
     marginBottom: 0,
     marginTop: 0,
   },

@@ -1,11 +1,12 @@
 import { BigNumber } from "ethers";
 import { FC, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { parseError } from "src/adapters/error";
 import { getPermit, isContractAllowedToSpendToken } from "src/adapters/ethereum";
 import { getCurrency } from "src/adapters/storage";
 import { ReactComponent as ArrowRightIcon } from "src/assets/icons/arrow-right.svg";
+import { ReactComponent as IconBack } from "src/assets/icons/icon-back.svg";
 import { ETH_TOKEN_LOGO_URI, FIAT_DISPLAY_PRECISION, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
@@ -63,6 +64,7 @@ export const BridgeConfirmation: FC = () => {
     status: "pending",
   });
   const currencySymbol = getCurrencySymbol(getCurrency());
+  const homeRoute = routes["home"].path;
 
   useEffect(() => {
     if (
@@ -312,6 +314,7 @@ export const BridgeConfirmation: FC = () => {
   };
 
   const onBridge = () => {
+    console.log("onBridge formData", formData);
     if (
       formData &&
       isAsyncTaskDataAvailable(connectedProvider) &&
@@ -333,11 +336,13 @@ export const BridgeConfirmation: FC = () => {
         tokenSpendPermission,
       })
         .then(() => {
-          openSnackbar({
-            text: "Transaction successfully submitted",
-            type: "success-msg",
-          });
-          navigate(routes.activity.path);
+          // openSnackbar({
+          //   text: "Transaction successfully submitted",
+          //   type: "success-msg",
+          // });
+          // navigate(routes.activity.path);
+          navigate(routes.home.path);
+          console.log("successfully tx");
           setFormData(undefined);
         })
         .catch((error) => {
@@ -356,6 +361,15 @@ export const BridgeConfirmation: FC = () => {
         });
     }
   };
+
+  console.log("bridge gas fee render3");
+  console.log("env", env);
+  console.log("formData", formData);
+  console.log("tokenBalance", tokenBalance);
+  console.log("isAsyncTaskDataAvailable(estimatedGas)", isAsyncTaskDataAvailable(estimatedGas));
+  console.log("maxAmountConsideringFee", maxAmountConsideringFee);
+  console.log("tokenSpendPermission", tokenSpendPermission);
+  console.log("estimatedGas", estimatedGas);
 
   if (
     !env ||
@@ -400,7 +414,7 @@ export const BridgeConfirmation: FC = () => {
       },
       FIAT_DISPLAY_PRECISION
     );
-
+  console.log("fiat:", fiatFee);
   const tokenAmountString = `${
     maxAmountConsideringFee.gt(0) ? formatTokenAmount(maxAmountConsideringFee, token) : "0"
   } ${token.symbol}`;
@@ -421,44 +435,55 @@ export const BridgeConfirmation: FC = () => {
     ? `${feeBaseErrorString}\nThe maximum transferable amount is 0 after considering the fee`
     : undefined;
 
+  // mark
   const etherFeeString = `${formatTokenAmount(fee, etherToken)} ${etherToken.symbol}`;
   const fiatFeeString = fiatFee ? `${currencySymbol}${formatFiatAmount(fiatFee)}` : undefined;
   const feeString = fiatFeeString ? `${etherFeeString} ~ ${fiatFeeString}` : etherFeeString;
+  const amountString = `${formatTokenAmount(formData.amount, etherToken)} ${etherToken.symbol}`;
 
   return (
     <div className={classes.contentWrapper}>
-      <Header backTo={{ routeKey: "home" }} title="Confirm Bridge" />
-      <Card className={classes.card}>
-        <Icon className={classes.tokenIcon} isRounded size={46} url={token.logoURI} />
-        <Typography type="h1">{tokenAmountString}</Typography>
-        {fiatAmountString && (
-          <Typography className={classes.fiat} type="body2">
-            {fiatAmountString}
-          </Typography>
-        )}
-        <div className={classes.chainsRow}>
-          <div className={classes.chainBox}>
-            <from.Icon />
-            <Typography className={classes.chainName} type="body1">
-              {from.name}
-            </Typography>
-          </div>
-          <ArrowRightIcon className={classes.arrowIcon} />
-          <div className={classes.chainBox}>
-            <to.Icon />
-            <Typography className={classes.chainName} type="body1">
-              {to.name}
-            </Typography>
+      <div className={classes.header}>
+        <Link to={homeRoute}>
+          <span className={classes.iconWrap}>
+            <IconBack />
+          </span>
+        </Link>
+        <p className={classes.headerText}>Confirm Bridge</p>
+      </div>
+      <div className={classes.chainsRow}>
+        <div className={classes.chainBox}>
+          <from.Icon className={classes.chainIcon} />
+          <p className={classes.chainName}>{from.name}</p>
+        </div>
+        <ArrowRightIcon className={classes.arrowIcon} />
+        <div className={classes.chainBox}>
+          <to.Icon className={classes.chainIcon} />
+          <p className={classes.chainName}>{to.name}</p>
+        </div>
+      </div>
+      <div className={classes.bridgeDetail}>
+        <div className={classes.detailRow}>
+          <div className={classes.detailName}>Amount to deposit</div>
+          <div className={classes.detailData}>
+            <div className={classes.tokenData}>{amountString}</div>
+            {/* <div className={classes.dollarData}>$64.62</div> */}
           </div>
         </div>
-        <div className={classes.feeBlock}>
-          <Typography type="body2">Estimated gas fee</Typography>
-          <div className={classes.fee}>
-            <Icon isRounded size={20} url={ETH_TOKEN_LOGO_URI} />
-            <Typography type="body1">{feeString}</Typography>
+        <div className={classes.detailRow}>
+          <div className={classes.detailName}>Estimated gas fee</div>
+          <div className={classes.detailData}>
+            <div className={classes.tokenData}>{feeString}</div>
+            {/* <div className={classes.dollarData}>$64.62</div> */}
           </div>
         </div>
-      </Card>
+        <div className={classes.detailRow}>
+          <div className={classes.detailName}>Time to transfer</div>
+          <div className={classes.detailData}>
+            <div className={classes.tokenData}>~1 minute</div>
+          </div>
+        </div>
+      </div>
       <div className={classes.button}>
         <BridgeButton
           approvalTask={approvalTask}

@@ -21,7 +21,9 @@ export const TokenSelectorHeader: FC<TokenSelectorHeaderProps> = ({ onClose, onG
           <ArrowLeftIcon className={classes.backButtonIcon} />
         </button>
       )}
-      <Typography type="h2">{title}</Typography>
+      <Typography className={classes.title} type="h2">
+        {title}
+      </Typography>
       {onClose && (
         <button className={classes.closeButton} onClick={onClose}>
           <XMarkIcon className={classes.closeButtonIcon} />

@@ -17,7 +17,7 @@ interface AmountInputProps {
 export const AmountInput: FC<AmountInputProps> = ({ balance, onChange, token, value }) => {
   const defaultInputValue = value ? formatTokenAmount(value, token) : "";
   const [inputValue, setInputValue] = useState(defaultInputValue);
-  const classes = useAmountInputStyles(inputValue.length);
+  const classes = useAmountInputStyles();
 
   const processOnChangeCallback = (amount?: BigNumber) => {
     if (amount) {

@@ -7,7 +7,7 @@ export const useTokenListStyles = createUseStyles((theme: Theme) => ({
     "&:hover": {
       background: theme.palette.grey.main,
     },
-    background: theme.palette.white,
+    background: theme.palette.white.default,
     border: "none",
     borderRadius: 8,
     cursor: "pointer",
@@ -42,8 +42,8 @@ export const useTokenListStyles = createUseStyles((theme: Theme) => ({
   },
   clearSearchButtonIcon: {
     "& rect": {
-      fill: theme.palette.white,
-      stroke: theme.palette.white,
+      fill: theme.palette.white.default,
+      stroke: theme.palette.white.default,
       strokeWidth: 2,
     },
   },
@@ -80,20 +80,27 @@ export const useTokenListStyles = createUseStyles((theme: Theme) => ({
     color: theme.palette.black,
   },
   tokenBalanceWrapper: {
-    marginLeft: "auto",
+    alignItems: "center",
+    color: theme.palette.white.transparency40,
+    display: "flex",
+    flex: 1,
+    fontSize: 14,
+    fontWeight: 500,
+    justifyContent: "flex-end",
+    lineHeight: "18px",
   },
   tokenButton: {
-    "&:hover": {
-      background: theme.palette.grey.main,
-    },
+    // "&:hover": {
+    //   background: theme.palette.grey.main,
+    // },
     alignItems: "center",
-    background: theme.palette.grey.light,
+    background: theme.palette.dark.light,
     border: "none",
     borderRadius: 8,
     cursor: "pointer",
     justifyContent: "space-between",
     overflow: "hidden",
-    padding: theme.spacing(2),
+    padding: [theme.spacing(1.5), theme.spacing(2)],
     transition: theme.hoverTransition,
     width: "100%",
   },
@@ -134,11 +141,15 @@ export const useTokenListStyles = createUseStyles((theme: Theme) => ({
   tokenInfoWithBalance: {
     alignItems: "center",
     display: "flex",
-    marginRight: 48,
   },
   tokenList: {
     display: "flex",
     flexDirection: "column",
     height: "100%",
+  },
+  tokenName: {
+    fontSize: 16,
+    color: theme.palette.white.default,
+    fontWeight: 500,
   },
 }));

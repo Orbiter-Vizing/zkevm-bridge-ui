@@ -64,6 +64,6 @@ export const useTokenInfoTableStyles = createUseStyles((theme: Theme) => ({
     paddingRight: theme.spacing(1),
   },
   wrapper: {
-    background: theme.palette.white,
+    background: theme.palette.white.default,
   },
 }));

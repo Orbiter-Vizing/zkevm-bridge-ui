@@ -1,9 +1,34 @@
 import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { ethers } from "ethers";
 
+import { ReactComponent as ArbitrumChainIcon } from "src/assets/icons/chains/arbitrum.svg";
+import { ReactComponent as BaseChainIcon } from "src/assets/icons/chains/base.svg";
+import { ReactComponent as BlastChainIcon } from "src/assets/icons/chains/blast.svg";
+import { ReactComponent as BOBChainIcon } from "src/assets/icons/chains/bob.svg";
 import { ReactComponent as EthChainIcon } from "src/assets/icons/chains/ethereum.svg";
-import { ReactComponent as PolygonZkEVMChainIcon } from "src/assets/icons/chains/vizing-zkevm.svg";
-import { Chain, Currency, EthereumChain, ProviderError, Token, ZkEVMChain } from "src/domain";
+import { ReactComponent as LineaChainIcon } from "src/assets/icons/chains/linea.svg";
+import { ReactComponent as OptimismChainIcon } from "src/assets/icons/chains/optimism.svg";
+import { ReactComponent as PolygonZkEVMChainIcon } from "src/assets/icons/chains/polygon.svg";
+import { ReactComponent as ScrollChainIcon } from "src/assets/icons/chains/scroll.svg";
+import { ReactComponent as TaikoChainIcon } from "src/assets/icons/chains/taiko.svg";
+import { ReactComponent as VizingChainIcon } from "src/assets/icons/chains/vizing.svg";
+import {
+  ArbitrumChain,
+  BOBChain,
+  BaseChain,
+  BlastChain,
+  Chain,
+  Currency,
+  EthereumChain,
+  LineaChain,
+  OptimismChain,
+  ProviderError,
+  ScrollChain,
+  TaikoChain,
+  Token,
+  VizingChain,
+  ZkEVMChain,
+} from "src/domain";
 import { ProofOfEfficiency__factory } from "src/types/contracts/proof-of-efficiency";
 import { getEthereumNetworkName } from "src/utils/labels";
 
@@ -78,24 +103,120 @@ export const TOKEN_BLACKLIST = [
 ];
 
 export const getChains = ({
+  arbitrum,
+  base,
+  blast,
+  bob,
   ethereum,
+  linea,
+  optimism,
   polygonZkEVM,
+  scroll,
+  taiko,
+  vizing,
 }: {
+  arbitrum: {
+    bridgeContractAddress: string;
+    chainId: number;
+    explorerUrl: string;
+    networkId: number;
+    rpcUrl: string;
+  };
+  base: {
+    bridgeContractAddress: string;
+    chainId: number;
+    explorerUrl: string;
+    networkId: number;
+    rpcUrl: string;
+  };
+  blast: {
+    bridgeContractAddress: string;
+    chainId: number;
+    explorerUrl: string;
+    networkId: number;
+    rpcUrl: string;
+  };
+  bob: {
+    bridgeContractAddress: string;
+    chainId: number;
+    explorerUrl: string;
+    networkId: number;
+    rpcUrl: string;
+  };
   ethereum: {
     bridgeContractAddress: string;
     explorerUrl: string;
     poeContractAddress: string;
     rpcUrl: string;
   };
-  polygonZkEVM: {
+  linea: {
     bridgeContractAddress: string;
+    chainId: number;
     explorerUrl: string;
     networkId: number;
     rpcUrl: string;
   };
-}): Promise<[EthereumChain, ZkEVMChain]> => {
+  optimism: {
+    bridgeContractAddress: string;
+    chainId: number;
+    explorerUrl: string;
+    networkId: number;
+    rpcUrl: string;
+  };
+  polygonZkEVM: {
+    bridgeContractAddress: string;
+    chainId: number;
+    explorerUrl: string;
+    networkId: number;
+    rpcUrl: string;
+  };
+  scroll: {
+    bridgeContractAddress: string;
+    chainId: number;
+    explorerUrl: string;
+    networkId: number;
+    rpcUrl: string;
+  };
+  taiko: {
+    bridgeContractAddress: string;
+    chainId: number;
+    explorerUrl: string;
+    networkId: number;
+    rpcUrl: string;
+  };
+  vizing: {
+    bridgeContractAddress: string;
+    chainId: number;
+    explorerUrl: string;
+    networkId: number;
+    rpcUrl: string;
+  };
+}): Promise<
+  [
+    EthereumChain,
+    ZkEVMChain,
+    ArbitrumChain,
+    BaseChain,
+    OptimismChain,
+    TaikoChain,
+    LineaChain,
+    ScrollChain,
+    BlastChain,
+    BOBChain,
+    VizingChain
+  ]
+> => {
   const ethereumProvider = new StaticJsonRpcProvider(ethereum.rpcUrl);
   const polygonZkEVMProvider = new StaticJsonRpcProvider(polygonZkEVM.rpcUrl);
+  const arbitrumProvider = new StaticJsonRpcProvider(arbitrum.rpcUrl);
+  const baseProvider = new StaticJsonRpcProvider(base.rpcUrl);
+  const optimismProvider = new StaticJsonRpcProvider(optimism.rpcUrl);
+  const taikoProvider = new StaticJsonRpcProvider(taiko.rpcUrl);
+  const lineaProvider = new StaticJsonRpcProvider(linea.rpcUrl);
+  const scrollProvider = new StaticJsonRpcProvider(scroll.rpcUrl);
+  const blastProvider = new StaticJsonRpcProvider(blast.rpcUrl);
+  const bobProvider = new StaticJsonRpcProvider(bob.rpcUrl);
+  const vizingProvider = new StaticJsonRpcProvider(vizing.rpcUrl);
   const poeContract = ProofOfEfficiency__factory.connect(
     ethereum.poeContractAddress,
     ethereumProvider
@@ -104,40 +225,199 @@ export const getChains = ({
   return Promise.all([
     ethereumProvider.getNetwork().catch(() => Promise.reject(ProviderError.Ethereum)),
     polygonZkEVMProvider.getNetwork().catch(() => Promise.reject(ProviderError.PolygonZkEVM)),
+    arbitrumProvider.getNetwork().catch(() => Promise.reject(ProviderError.Arbitrum)),
+    baseProvider.getNetwork().catch(() => Promise.reject(ProviderError.Base)),
+    optimismProvider.getNetwork().catch(() => Promise.reject(ProviderError.Optimism)),
+    taikoProvider.getNetwork().catch(() => Promise.reject(ProviderError.Taiko)),
+    lineaProvider.getNetwork().catch(() => Promise.reject(ProviderError.Linea)),
+    scrollProvider.getNetwork().catch(() => Promise.reject(ProviderError.Scroll)),
+    blastProvider.getNetwork().catch(() => Promise.reject(ProviderError.Blast)),
+    bobProvider.getNetwork().catch(() => Promise.reject(ProviderError.BOB)),
+    vizingProvider.getNetwork().catch(() => Promise.reject(ProviderError.Vizing)),
     poeContract.networkName().catch(() => Promise.reject(ProviderError.Ethereum)),
-  ]).then(([ethereumNetwork, polygonZkEVMNetwork, polygonZkEVMNetworkName]) => [
-    {
-      bridgeContractAddress: ethereum.bridgeContractAddress,
-      chainId: ethereumNetwork.chainId,
-      explorerUrl: ethereum.explorerUrl,
-      Icon: EthChainIcon,
-      key: "ethereum",
-      name: getEthereumNetworkName(ethereumNetwork.chainId),
-      nativeCurrency: {
-        decimals: 18,
-        name: "Ether",
-        symbol: "ETH",
+  ]).then(
+    ([
+      ethereumNetwork,
+      polygonZkEVMNetwork,
+      arbitrumNetwork,
+      baseNetwork,
+      optimismNetwork,
+      taikoNetwork,
+      lineaNetwork,
+      scrollNetwork,
+      blastNetwork,
+      bobNetwork,
+      vizingNetwork,
+      VizingNetworkName,
+    ]) => [
+      {
+        bridgeContractAddress: ethereum.bridgeContractAddress,
+        chainId: ethereumNetwork.chainId,
+        explorerUrl: ethereum.explorerUrl,
+        Icon: EthChainIcon,
+        key: "ethereum",
+        name: getEthereumNetworkName(ethereumNetwork.chainId),
+        nativeCurrency: {
+          decimals: 18,
+          name: "Ether",
+          symbol: "ETH",
+        },
+        networkId: 0,
+        poeContractAddress: ethereum.poeContractAddress,
+        provider: ethereumProvider,
       },
-      networkId: 0,
-      poeContractAddress: ethereum.poeContractAddress,
-      provider: ethereumProvider,
-    },
-    {
-      bridgeContractAddress: polygonZkEVM.bridgeContractAddress,
-      chainId: polygonZkEVMNetwork.chainId,
-      explorerUrl: polygonZkEVM.explorerUrl,
-      Icon: PolygonZkEVMChainIcon,
-      key: "polygon-zkevm",
-      name: polygonZkEVMNetworkName,
-      nativeCurrency: {
-        decimals: 18,
-        name: "Ether",
-        symbol: "ETH",
+      {
+        bridgeContractAddress: polygonZkEVM.bridgeContractAddress,
+        chainId: polygonZkEVMNetwork.chainId,
+        explorerUrl: polygonZkEVM.explorerUrl,
+        Icon: PolygonZkEVMChainIcon,
+        key: "polygon-zkevm",
+        name: "Polygon ZkEVM",
+        nativeCurrency: {
+          decimals: 18,
+          name: "Ether",
+          symbol: "ETH",
+        },
+        networkId: polygonZkEVM.networkId,
+        provider: polygonZkEVMProvider,
       },
-      networkId: polygonZkEVM.networkId,
-      provider: polygonZkEVMProvider,
-    },
-  ]);
+      {
+        bridgeContractAddress: arbitrum.bridgeContractAddress,
+        chainId: arbitrumNetwork.chainId,
+        explorerUrl: arbitrum.explorerUrl,
+        Icon: ArbitrumChainIcon,
+        key: "arbitrum",
+        name: "Arbitrum One",
+        nativeCurrency: {
+          decimals: 18,
+          name: "Ether",
+          symbol: "ETH",
+        },
+        networkId: arbitrum.networkId,
+        provider: arbitrumProvider,
+      },
+      {
+        bridgeContractAddress: base.bridgeContractAddress,
+        chainId: baseNetwork.chainId,
+        explorerUrl: base.explorerUrl,
+        Icon: BaseChainIcon,
+        key: "base",
+        name: "Base",
+        nativeCurrency: {
+          decimals: 18,
+          name: "Ether",
+          symbol: "ETH",
+        },
+        networkId: base.networkId,
+        provider: baseProvider,
+      },
+      {
+        bridgeContractAddress: optimism.bridgeContractAddress,
+        chainId: optimismNetwork.chainId,
+        explorerUrl: optimism.explorerUrl,
+        Icon: OptimismChainIcon,
+        key: "optimism",
+        name: "Optimism",
+        nativeCurrency: {
+          decimals: 18,
+          name: "Ether",
+          symbol: "ETH",
+        },
+        networkId: optimism.networkId,
+        provider: optimismProvider,
+      },
+      {
+        bridgeContractAddress: taiko.bridgeContractAddress,
+        chainId: taikoNetwork.chainId,
+        explorerUrl: taiko.explorerUrl,
+        Icon: TaikoChainIcon,
+        key: "taiko",
+        name: "Taiko",
+        nativeCurrency: {
+          decimals: 18,
+          name: "Ether",
+          symbol: "ETH",
+        },
+        networkId: taiko.networkId,
+        provider: taikoProvider,
+      },
+      {
+        bridgeContractAddress: linea.bridgeContractAddress,
+        chainId: lineaNetwork.chainId,
+        explorerUrl: linea.explorerUrl,
+        Icon: LineaChainIcon,
+        key: "linea",
+        name: "Linea",
+        nativeCurrency: {
+          decimals: 18,
+          name: "Ether",
+          symbol: "ETH",
+        },
+        networkId: linea.networkId,
+        provider: lineaProvider,
+      },
+      {
+        bridgeContractAddress: scroll.bridgeContractAddress,
+        chainId: scrollNetwork.chainId,
+        explorerUrl: scroll.explorerUrl,
+        Icon: ScrollChainIcon,
+        key: "scroll",
+        name: "Scroll",
+        nativeCurrency: {
+          decimals: 18,
+          name: "Ether",
+          symbol: "ETH",
+        },
+        networkId: scroll.networkId,
+        provider: scrollProvider,
+      },
+      {
+        bridgeContractAddress: blast.bridgeContractAddress,
+        chainId: blastNetwork.chainId,
+        explorerUrl: blast.explorerUrl,
+        Icon: BlastChainIcon,
+        key: "blast",
+        name: "Blast",
+        nativeCurrency: {
+          decimals: 18,
+          name: "Ether",
+          symbol: "ETH",
+        },
+        networkId: blast.networkId,
+        provider: blastProvider,
+      },
+      {
+        bridgeContractAddress: bob.bridgeContractAddress,
+        chainId: bobNetwork.chainId,
+        explorerUrl: bob.explorerUrl,
+        Icon: BOBChainIcon,
+        key: "bob",
+        name: "BOB",
+        nativeCurrency: {
+          decimals: 18,
+          name: "Ether",
+          symbol: "ETH",
+        },
+        networkId: bob.networkId,
+        provider: bobProvider,
+      },
+      {
+        bridgeContractAddress: vizing.bridgeContractAddress,
+        chainId: vizingNetwork.chainId,
+        explorerUrl: vizing.explorerUrl,
+        Icon: VizingChainIcon,
+        key: "vizing",
+        name: VizingNetworkName,
+        nativeCurrency: {
+          decimals: 18,
+          name: "Ether",
+          symbol: "ETH",
+        },
+        networkId: vizing.networkId,
+        provider: vizingProvider,
+      },
+    ]
+  );
 };
 
 export const getEtherToken = (chain: Chain): Token => {

@@ -5,6 +5,7 @@ import { FormProvider } from "src/contexts/form.context";
 import { PriceOracleProvider } from "src/contexts/price-oracle.context";
 import { ProvidersProvider } from "src/contexts/providers.context";
 import { TokensProvider } from "src/contexts/tokens.context";
+import { TxStatusProvider } from "src/contexts/tx-status.context";
 import { UIProvider } from "src/contexts/ui.context";
 import { useAppStyles } from "src/views/app.styles";
 import { Layout } from "src/views/core/layout/layout.view";
@@ -20,13 +21,15 @@ export const App = (): JSX.Element => {
           <ProvidersProvider>
             <TokensProvider>
               <PriceOracleProvider>
-                <BridgeProvider>
-                  <FormProvider>
-                    <Layout>
-                      <Router />
-                    </Layout>
-                  </FormProvider>
-                </BridgeProvider>
+                <TxStatusProvider>
+                  <BridgeProvider>
+                    <FormProvider>
+                      <Layout>
+                        <Router />
+                      </Layout>
+                    </FormProvider>
+                  </BridgeProvider>
+                </TxStatusProvider>
               </PriceOracleProvider>
             </TokensProvider>
           </ProvidersProvider>

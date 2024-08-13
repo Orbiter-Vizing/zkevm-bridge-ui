@@ -19,7 +19,7 @@ export const TokenBalance: FC<TokenBalanceProps> = ({ spinnerSize, token, typogr
   const loader = (
     <div className={classes.loader}>
       <Spinner size={spinnerSize} />
-      <Typography {...typographyProps}>&nbsp;{token.symbol}</Typography>
+      <Typography {...typographyProps}></Typography>
     </div>
   );
 
@@ -41,7 +41,10 @@ export const TokenBalance: FC<TokenBalanceProps> = ({ spinnerSize, token, typogr
       );
 
       return (
-        <Typography {...typographyProps}>{`${formattedTokenAmount} ${token.symbol}`}</Typography>
+        <Typography
+          className={classes.balanceNumber}
+          {...typographyProps}
+        >{`${formattedTokenAmount}`}</Typography>
       );
     }
   }

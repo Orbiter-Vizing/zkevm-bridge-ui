@@ -1,1 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generator: Gravit.io --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="0 0 28 28" width="28pt" height="28pt"><defs><clipPath id="_clipPath_t75WANIjVuP1CHaVtxtsbS8CfusBj8ll"><rect width="28" height="28"/></clipPath></defs><g clip-path="url(#_clipPath_t75WANIjVuP1CHaVtxtsbS8CfusBj8ll)"><g opacity="0.25"><path d=" M 13.999 18.396 L 6.922 14.216 L 13.999 2.475 L 21.072 14.216 L 13.999 18.396 L 13.999 18.396 L 13.999 18.396 Z  M 0 14 C 0 6.273 6.273 0 14 0 C 21.727 0 28 6.273 28 14 C 28 21.727 21.727 28 14 28 C 6.273 28 0 21.727 0 14 L 0 14 L 0 14 Z  M 13.999 25.525 L 6.922 15.556 L 13.999 19.737 L 21.078 15.556 L 13.999 25.525 Z " fill-rule="evenodd" fill="rgb(0,0,0)"/></g></g></svg>
+<svg width="32.000000" height="32.000000" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<desc>
+			Created with Pixso.
+	</desc>
+	<defs/>
+	<path id="路径" d="M16 32C24.83 32 32 24.83 32 16C32 7.16 24.83 0 16 0C7.16 0 0 7.16 0 16C0 24.83 7.16 32 16 32Z" fill="#5F7DEC" fill-opacity="1.000000" fill-rule="evenodd"/>
+	<path id="路径" d="M15.95 6.4L21.77 16.06L15.95 19.5L10.13 16.06L15.95 6.4Z" fill="#FFFFFF" fill-opacity="1.000000" fill-rule="evenodd"/>
+	<path id="路径" d="M10.13 17.16L15.95 20.6L21.78 17.16L15.95 25.37L10.13 17.16Z" fill="#FFFFFF" fill-opacity="1.000000" fill-rule="evenodd"/>
+</svg>

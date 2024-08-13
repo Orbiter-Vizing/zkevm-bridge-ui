@@ -20,7 +20,7 @@ export const Header: FC<HeaderProps> = ({ backTo, Subtitle, title }) => {
 
   return (
     <header className={classes.header}>
-      <div className={classes.topRow}>
+      {/* <div className={classes.topRow}>
         <div className={`${classes.block} ${classes.leftBlock}`}>
           <Link className={classes.sideButton} state={backTo.state} to={route}>
             <ArrowLeftIcon className={classes.icon} />
@@ -32,7 +32,7 @@ export const Header: FC<HeaderProps> = ({ backTo, Subtitle, title }) => {
         <div className={`${classes.block} ${classes.rightBlock}`}>
           <NetworkSelector />
         </div>
-      </div>
+      </div> */}
       {Subtitle && <div className={classes.bottomRow}>{Subtitle}</div>}
     </header>
   );

@@ -36,6 +36,11 @@ interface SelectedChains {
   to: Chain;
 }
 
+// enum BridgeTab {
+//   DEPOSIT = 'deposit',
+//   WITHDRAW = 'withdraw',
+// }
+
 export const BridgeForm: FC<BridgeFormProps> = ({ account, formData, onResetForm, onSubmit }) => {
   const classes = useBridgeFormStyles();
   const callIfMounted = useCallIfMounted();
@@ -261,103 +266,113 @@ export const BridgeForm: FC<BridgeFormProps> = ({ account, formData, onResetForm
     }
   }, [formData, onResetForm]);
 
-  if (!env || !selectedChains || !tokens || !token) {
-    return (
-      <div className={classes.spinner}>
-        <Spinner />
-      </div>
-    );
-  }
+  // if (!env || !selectedChains || !tokens || !token) {
+  //   return (
+  //     <div className={classes.spinner}>
+  //       <Spinner />
+  //     </div>
+  //   );
+  // }
+
+  // new logic
+  // const [selectedTab, setSelectedTab] = useState<BridgeTab>(BridgeTab.DEPOSIT)
+
+  // const handleSelectTab = (bridgeTab: BridgeTab) => {
+  //   setSelectedTab(bridgeTab)
+  // }
 
   return (
-    <form className={classes.form} onSubmit={onFormSubmit}>
-      <Card className={classes.card}>
-        <div className={classes.row}>
-          <div className={classes.leftBox}>
-            <Typography type="body2">From</Typography>
-            <button
-              className={classes.fromChain}
-              onClick={() => setChains(env.chains)}
-              type="button"
-            >
-              <selectedChains.from.Icon />
-              <Typography type="body1">{selectedChains.from.name}</Typography>
-              <CaretDown />
-            </button>
-          </div>
-          <div className={classes.rightBox}>
-            <Typography type="body2">Balance</Typography>
-            <TokenBalance
-              spinnerSize={14}
-              token={{ ...token, balance: balanceFrom }}
-              typographyProps={{ type: "body1" }}
-            />
-          </div>
-        </div>
-        <div className={`${classes.row} ${classes.middleRow}`}>
-          <button className={classes.tokenSelector} onClick={onTokenDropdownClick} type="button">
-            <Icon isRounded size={24} url={token.logoURI} />
-            <Typography type="h2">{token.symbol}</Typography>
-            <CaretDown />
-          </button>
-          <AmountInput
-            balance={
-              balanceFrom && isAsyncTaskDataAvailable(balanceFrom)
-                ? balanceFrom.data
-                : BigNumber.from(0)
-            }
-            onChange={onAmountInputChange}
-            token={token}
-            value={amount}
-          />
-        </div>
-      </Card>
-      <div className={classes.arrowRow}>
-        <ArrowDown className={classes.arrowDownIcon} />
-      </div>
-      <Card className={classes.card}>
-        <div className={classes.row}>
-          <div className={classes.leftBox}>
-            <Typography type="body2">To</Typography>
-            <div className={classes.toChain}>
-              <selectedChains.to.Icon />
-              <Typography type="body1">{selectedChains.to.name}</Typography>
-            </div>
-          </div>
-          <div className={classes.rightBox}>
-            <Typography type="body2">Balance</Typography>
-            <TokenBalance
-              spinnerSize={14}
-              token={{ ...token, balance: balanceTo }}
-              typographyProps={{ type: "body1" }}
-            />
-          </div>
-        </div>
-      </Card>
-      <div className={classes.button}>
-        <Button disabled={!amount || amount.isZero() || inputError !== undefined} type="submit">
-          Continue
-        </Button>
-        {amount && inputError && <ErrorMessage error={inputError} />}
-      </div>
-      {chains && (
-        <ChainList
-          chains={chains}
-          onClick={onChainButtonClick}
-          onClose={() => setChains(undefined)}
-        />
-      )}
-      {isTokenListOpen && (
-        <TokenSelector
-          account={account}
-          chains={selectedChains}
-          onAddToken={onAddToken}
-          onClose={onCloseTokenSelector}
-          onRemoveToken={onRemoveToken}
-          onSelectToken={onSelectToken}
-          tokens={tokens}
-        />
-      )}
-    </form>
+    <div className={classes.formWrap}>
+      <div>{/* <BridgeDepositForm onSubmit={onFormSubmit}></BridgeDepositForm> */}</div>
+    </div>
+    // <form className={classes.form} onSubmit={onFormSubmit}>
+    //   {/* <Card className={classes.card}>
+    //     <div className={classes.row}>
+    //       <div className={classes.leftBox}>
+    //         <Typography type="body2">From</Typography>
+    //         <button
+    //           className={classes.fromChain}
+    //           onClick={() => setChains(env.chains)}
+    //           type="button"
+    //         >
+    //           <selectedChains.from.Icon />
+    //           <Typography type="body1">{selectedChains.from.name}</Typography>
+    //           <CaretDown />
+    //         </button>
+    //       </div>
+    //       <div className={classes.rightBox}>
+    //         <Typography type="body2">Balance</Typography>
+    //         <TokenBalance
+    //           spinnerSize={14}
+    //           token={{ ...token, balance: balanceFrom }}
+    //           typographyProps={{ type: "body1" }}
+    //         />
+    //       </div>
+    //     </div>
+    //     <div className={`${classes.row} ${classes.middleRow}`}>
+    //       <button className={classes.tokenSelector} onClick={onTokenDropdownClick} type="button">
+    //         <Icon isRounded size={24} url={token.logoURI} />
+    //         <Typography type="h2">{token.symbol}</Typography>
+    //         <CaretDown />
+    //       </button>
+    //       <AmountInput
+    //         balance={
+    //           balanceFrom && isAsyncTaskDataAvailable(balanceFrom)
+    //             ? balanceFrom.data
+    //             : BigNumber.from(0)
+    //         }
+    //         onChange={onAmountInputChange}
+    //         token={token}
+    //         value={amount}
+    //       />
+    //     </div>
+    //   </Card> */}
+    //   {/* <div className={classes.arrowRow}>
+    //     <ArrowDown className={classes.arrowDownIcon} />
+    //   </div> */}
+    //   {/* <Card className={classes.card}>
+    //     <div className={classes.row}>
+    //       <div className={classes.leftBox}>
+    //         <Typography type="body2">To</Typography>
+    //         <div className={classes.toChain}>
+    //           <selectedChains.to.Icon />
+    //           <Typography type="body1">{selectedChains.to.name}</Typography>
+    //         </div>
+    //       </div>
+    //       <div className={classes.rightBox}>
+    //         <Typography type="body2">Balance</Typography>
+    //         <TokenBalance
+    //           spinnerSize={14}
+    //           token={{ ...token, balance: balanceTo }}
+    //           typographyProps={{ type: "body1" }}
+    //         />
+    //       </div>
+    //     </div>
+    //   </Card> */}
+    //   {/* <div className={classes.button}>
+    //     <Button disabled={!amount || amount.isZero() || inputError !== undefined} type="submit">
+    //       Continue
+    //     </Button>
+    //     {amount && inputError && <ErrorMessage error={inputError} />}
+    //   </div> */}
+    //   {/* {chains && (
+    //     <ChainList
+    //       chains={chains}
+    //       onClick={onChainButtonClick}
+    //       onClose={() => setChains(undefined)}
+    //     />
+    //   )} */}
+    //   {/* {isTokenListOpen && (
+    //     <TokenSelector
+    //       account={account}
+    //       chains={selectedChains}
+    //       onAddToken={onAddToken}
+    //       onClose={onCloseTokenSelector}
+    //       onRemoveToken={onRemoveToken}
+    //       onSelectToken={onSelectToken}
+    //       tokens={tokens}
+    //     />
+    //   )} */}
+    // </form>
   );
 };

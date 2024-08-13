@@ -7,6 +7,7 @@ import { routes } from "src/routes";
 export const PrivateRoute: FC<PropsWithChildren> = ({ children }) => {
   const { connectedProvider } = useProvidersContext();
   const { pathname, search } = useLocation();
+  console.log("connectedProvider:", connectedProvider);
 
   switch (connectedProvider.status) {
     case "pending":

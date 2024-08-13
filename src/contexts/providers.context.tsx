@@ -57,6 +57,10 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
   const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false);
   const IS_SWITCHING_NETWORK_DELAY = 1000;
 
+  // 返回的 Web3Provider 有以下功能：
+  // 1. 连接 Metamask
+  // 2. 读取写入区块链
+  // 3. 事件监听，监听交易
   const getMetamaskProvider = () => {
     if (window.ethereum && window.ethereum.isMetaMask) {
       return new Web3Provider(window.ethereum, "any");
@@ -80,10 +84,30 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
         }, 3000);
 
         const currentNetwork = await web3Provider.getNetwork();
+        console.log("currentNetwork:", currentNetwork);
+        // vizing
+        // {
+        //   "chainId": 28516,
+        //   "name": "unknown"
+        // }
         clearTimeout(checkMetamaskHeartbeat);
 
         const currentNetworkChainId = currentNetwork.chainId;
+        // env.chains
+        // [
+        //   {
+        //     key: 'ethereum'
+        //   },
+        //   {
+        //     key: 'polygon-zkevm'
+        //   }
+        // ]
         const supportedChainIds = env.chains.map((chain) => chain.chainId);
+        console.log("env.chains:", env.chains);
+        console.log("supportedChainIds", supportedChainIds);
+        console.log("web3Provider", web3Provider);
+        // supportedChainIds [11155111, 28516]
+
         if (!supportedChainIds.includes(currentNetworkChainId)) {
           setConnectedProvider({
             error: `Switch your network to ${env.chains[0].name} or ${env.chains[1].name} to continue`,
@@ -221,10 +245,21 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
       });
   };
 
+  // chain
+  //   {
+  //     Icon: {},
+  //     bridgeContractAddress: "0x05C547a35348775720c5b2fAc3940F47dC8B7F4e"
+  //     chainId: 28516
+  //     explorerUrl: "https://explorer-sepolia.vizing.com"
+  //     key: "polygon-zkevm"
+  //     name: "Orbiter Vizing Testnet"
+  //   },
   const addNetwork = useCallback(
     (chain: Chain): Promise<void> => {
       setIsSwitchingNetwork(true);
+      // provider作用：连接钱包；区块链交互；监听交易
       const provider = getMetamaskProvider();
+      console.log("metamask provider:", provider);
       if (!provider) {
         return Promise.reject(new Error("No provider is available"));
       }
@@ -271,6 +306,7 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
 
   const changeNetwork = useCallback(
     (chain: Chain) => {
+      console.log("change network to:", chain);
       if (
         isAsyncTaskDataAvailable(connectedProvider) &&
         connectedProvider.data.provider.provider.isMetaMask

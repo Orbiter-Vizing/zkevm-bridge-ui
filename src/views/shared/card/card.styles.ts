@@ -4,8 +4,8 @@ import { Theme } from "src/styles/theme";
 
 export const useCardStyles = createUseStyles((theme: Theme) => ({
   card: {
-    background: theme.palette.white,
-    borderRadius: 16,
+    background: "#302D2E",
+    borderRadius: 12,
     overflow: "hidden",
   },
 }));

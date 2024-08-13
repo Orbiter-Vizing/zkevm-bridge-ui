@@ -17,7 +17,7 @@ export const useSnackbarStyles = createUseStyles((theme: Theme) => ({
   },
   closeIcon: {
     "& rect": {
-      fill: theme.palette.white,
+      fill: theme.palette.white.default,
     },
     alignItems: "center",
     display: "flex",
@@ -26,7 +26,7 @@ export const useSnackbarStyles = createUseStyles((theme: Theme) => ({
     width: 16,
   },
   message: {
-    color: theme.palette.white,
+    color: theme.palette.white.default,
     flex: 1,
     lineHeight: "24px",
     margin: [0, theme.spacing(1.5)],
@@ -43,7 +43,7 @@ export const useSnackbarStyles = createUseStyles((theme: Theme) => ({
     backgroundColor: theme.palette.grey.veryDark,
     border: 0,
     borderRadius: 12,
-    color: theme.palette.white,
+    color: theme.palette.white.default,
     cursor: "pointer",
     padding: `${theme.spacing(0.5)}px ${theme.spacing(2)}px`,
     transition: theme.hoverTransition,

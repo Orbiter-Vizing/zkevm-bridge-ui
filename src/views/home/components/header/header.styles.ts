@@ -19,6 +19,7 @@ export const useHeaderStyles = createUseStyles((theme: Theme) => ({
   },
   header: {
     alignItems: "center",
+    borderBottom: "1px solid red",
     display: "flex",
     margin: [theme.spacing(2), "auto", 0],
     width: "100%",

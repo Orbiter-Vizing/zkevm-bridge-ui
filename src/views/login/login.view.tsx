@@ -19,6 +19,7 @@ import { NetworkBox } from "src/views/shared/network-box/network-box.view";
 import { Typography } from "src/views/shared/typography/typography.view";
 
 export const Login: FC = () => {
+  console.log('login page')
   const classes = useLoginStyles();
   const [selectedWallet, setSelectedWallet] = useState<WalletName>();
   const [showPolicyModal, setShowPolicyModal] = useState(false);

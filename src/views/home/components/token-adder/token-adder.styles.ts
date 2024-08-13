@@ -10,7 +10,7 @@ export const useTokenAdderStyles = createUseStyles((theme: Theme) => ({
     backgroundColor: theme.palette.primary.main,
     border: "none",
     borderRadius: 80,
-    color: theme.palette.white,
+    color: theme.palette.white.default,
     cursor: "pointer",
     fontSize: "20px",
     lineHeight: "24px",

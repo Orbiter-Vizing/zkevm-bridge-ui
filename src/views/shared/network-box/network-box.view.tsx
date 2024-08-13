@@ -2,8 +2,8 @@ import { FC, useState } from "react";
 
 import { parseError } from "src/adapters/error";
 import { ReactComponent as MetaMaskIcon } from "src/assets/icons/metamask.svg";
-import { ReactComponent as NewWindowIcon } from "src/assets/icons/new-window.svg";
-import { POLYGON_SUPPORT_URL } from "src/constants";
+// import { ReactComponent as NewWindowIcon } from "src/assets/icons/new-window.svg";
+// import { POLYGON_SUPPORT_URL } from "src/constants";
 import { useEnvContext } from "src/contexts/env.context";
 import { useErrorContext } from "src/contexts/error.context";
 import { useProvidersContext } from "src/contexts/providers.context";
@@ -28,7 +28,26 @@ export const NetworkBox: FC = () => {
   if (!env) {
     return null;
   }
-
+  console.log("env.chains in network", env.chains);
+  // [
+  //   {
+  //     Icon: {},
+  //     bridgeContractAddress: "0x05C547a35348775720c5b2fAc3940F47dC8B7F4e",
+  //     chainId: 11155111,
+  //     explorerUrl: "https://etherscan.io",
+  //     key: "ethereum",
+  //     name: "Ethereum",
+  //     poeContractAddress: "0xD04Da4CE03B98293BA3Ee0b75aF040594f9440dE"
+  //   },
+  //   {
+  //     Icon: {},
+  //     bridgeContractAddress: "0x05C547a35348775720c5b2fAc3940F47dC8B7F4e"
+  //     chainId: 28516
+  //     explorerUrl: "https://explorer-sepolia.vizing.com"
+  //     key: "vizing"
+  //     name: "Orbiter Vizing Testnet"
+  //   },
+  // ]
   const ethereumChain = env.chains[0];
   const polygonZkEVMChain = env.chains[1];
 

@@ -1,5 +1,16 @@
-<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="1.2" height="10.8" transform="matrix(-4.37114e-08 -1 -1 4.37114e-08 14.8438 10.7002)" fill="#081132"/>
-<rect width="5.04662" height="1.2" transform="matrix(0.707107 -0.707107 -0.707107 -0.707107 11.6133 14.5)" fill="#081132"/>
-<rect width="6.81296" height="1.2" transform="matrix(0.707107 0.707107 0.707107 -0.707107 10.334 6.14258)" fill="#081132"/>
+<svg width="32.000000" height="32.000000" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<desc>
+			Created with Pixso.
+	</desc>
+	<defs>
+		<clipPath id="clip621_431">
+			<rect id="svg" width="32.000000" height="32.000000" fill="white" fill-opacity="0"/>
+		</clipPath>
+	</defs>
+	<g clip-path="url(#clip621_431)">
+		<path id="path" d="M18.73 8.43L18.7 8.43C18.41 8.13 18.41 7.67 18.7 7.37C19 7.07 19.47 7.07 19.77 7.37L19.77 7.4L18.73 8.43ZM19.77 24.59L19.77 24.62C19.47 24.92 19 24.92 18.7 24.62C18.41 24.32 18.41 23.85 18.7 23.56L18.73 23.56L19.77 24.59Z" fill="#000000" fill-opacity="0" fill-rule="nonzero"/>
+		<path id="path" d="M19.24 7.9L27.33 15.99L19.24 24.09" stroke="#FFFFFF" stroke-opacity="1.000000" stroke-width="1.500000" stroke-linejoin="round" stroke-linecap="round"/>
+		<path id="path" d="M4.68 16.73L4.66 16.75C4.24 16.75 3.91 16.42 3.91 16C3.91 15.58 4.24 15.25 4.66 15.25L4.68 15.27L4.68 16.73ZM27.08 15.27L27.1 15.25C27.52 15.25 27.85 15.58 27.85 16C27.85 16.42 27.52 16.75 27.1 16.75L27.08 16.73L27.08 15.27Z" fill="#000000" fill-opacity="0" fill-rule="nonzero"/>
+		<path id="path" d="M4.66 16L27.1 16" stroke="#FFFFFF" stroke-opacity="1.000000" stroke-width="1.500000" stroke-linejoin="round" stroke-linecap="round"/>
+	</g>
 </svg>

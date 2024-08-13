@@ -11,12 +11,14 @@
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "lint:fix": "npm run lint -- --fix",
     "dev": "vite",
+    "test": "vite --mode test",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@walletconnect/ethereum-provider": "^1.7.8",
     "axios": "^0.27.2",
+    "dayjs": "^1.11.12",
     "ethers": "^5.7.2",
     "events": "^3.3.0",
     "normalize.css": "^8.0.1",
@@ -25,6 +27,7 @@
     "react-dom": "^18.2.0",
     "react-jss": "^10.9.1",
     "react-router-dom": "^6.3.0",
+    "react-toastify": "^10.0.5",
     "stacktrace-js": "^2.0.2",
     "zod": "^3.20.2"
   },
@@ -48,7 +51,10 @@
     "extends": "@iden3/eslint-config-react-ts",
     "ignorePatterns": [
       "dist"
-    ]
+    ],
+    "rules": {
+      "no-console": 0
+    }
   },
   "browserslist": {
     "production": [

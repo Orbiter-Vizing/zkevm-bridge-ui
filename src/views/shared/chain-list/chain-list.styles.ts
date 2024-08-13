@@ -5,7 +5,7 @@ import { Theme } from "src/styles/theme";
 export const useListStyles = createUseStyles((theme: Theme) => ({
   background: {
     alignItems: "center",
-    background: theme.palette.transparency,
+    background: theme.palette.dark.transparency60,
     display: "flex",
     height: "100vh",
     justifyContent: "center",
@@ -13,26 +13,33 @@ export const useListStyles = createUseStyles((theme: Theme) => ({
     width: "100%",
   },
   button: {
-    "&:hover": {
-      background: theme.palette.grey.main,
-    },
+    // "&:hover": {
+    //   background: theme.palette.grey.main,
+    // },
     "&:not(:first-of-type)": {
-      marginTop: theme.spacing(1),
+      marginTop: theme.spacing(1.5),
     },
     alignItems: "center",
-    background: theme.palette.grey.light,
+    background: theme.palette.dark.light,
     border: "none",
     borderRadius: 8,
     cursor: "pointer",
     display: "flex",
     gap: theme.spacing(1),
-    padding: theme.spacing(2),
+    height: 56,
+    padding: [0, theme.spacing(2)],
     transition: theme.hoverTransition,
   },
   card: {
-    maxWidth: 426,
-    padding: theme.spacing(2),
-    width: "100%",
+    background: theme.palette.dark.main,
+    height: 440,
+    padding: [25, 24, 24],
+    width: 400,
+  },
+  chainNameText: {
+    color: theme.palette.white.default,
+    fontSize: 16,
+    fontWeight: 500,
   },
   closeButton: {
     "&:hover": {
@@ -58,11 +65,17 @@ export const useListStyles = createUseStyles((theme: Theme) => ({
   },
   header: {
     alignItems: "center",
+    color: theme.palette.white.default,
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     marginBottom: theme.spacing(2),
-    padding: [theme.spacing(0.5), 0],
     position: "relative",
+  },
+  headerText: {
+    color: theme.palette.white.default,
+    fontSize: 20,
+    fontWeight: 500,
+    margin: 0,
   },
   icon: {
     height: "24px",
@@ -80,7 +93,7 @@ export const useListStyles = createUseStyles((theme: Theme) => ({
     },
     display: "flex",
     flexDirection: "column",
-    maxHeight: 270,
+    maxHeight: 350,
     overflowY: "auto",
   },
 }));

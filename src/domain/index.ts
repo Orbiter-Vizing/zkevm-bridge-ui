@@ -2,7 +2,18 @@ import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { BigNumber } from "ethers";
 import { ComponentType } from "react";
 
-export type ChainKey = "ethereum" | "polygon-zkevm";
+export type ChainKey =
+  | "ethereum"
+  | "polygon-zkevm"
+  | "arbitrum"
+  | "base"
+  | "optimism"
+  | "taiko"
+  | "linea"
+  | "scroll"
+  | "blast"
+  | "bob"
+  | "vizing";
 
 export interface CommonChain {
   Icon: ComponentType<{ className?: string }>;
@@ -29,7 +40,54 @@ export type ZkEVMChain = CommonChain & {
   key: "polygon-zkevm";
 };
 
-export type Chain = EthereumChain | ZkEVMChain;
+export type ArbitrumChain = CommonChain & {
+  key: "arbitrum";
+};
+
+export type BaseChain = CommonChain & {
+  key: "base";
+};
+
+export type OptimismChain = CommonChain & {
+  key: "optimism";
+};
+
+export type TaikoChain = CommonChain & {
+  key: "taiko";
+};
+
+export type LineaChain = CommonChain & {
+  key: "linea";
+};
+
+export type ScrollChain = CommonChain & {
+  key: "scroll";
+};
+
+export type BlastChain = CommonChain & {
+  key: "blast";
+};
+
+export type BOBChain = CommonChain & {
+  key: "bob";
+};
+
+export type VizingChain = CommonChain & {
+  key: "vizing";
+};
+
+export type Chain =
+  | EthereumChain
+  | ZkEVMChain
+  | ArbitrumChain
+  | BaseChain
+  | OptimismChain
+  | TaikoChain
+  | LineaChain
+  | ScrollChain
+  | BlastChain
+  | BOBChain
+  | VizingChain;
 
 export interface ConnectedProvider {
   account: string;
@@ -67,7 +125,19 @@ export interface ReportFormEnvEnabled {
 
 export interface Env {
   bridgeApiUrl: string;
-  chains: [EthereumChain, ZkEVMChain];
+  chains: [
+    EthereumChain,
+    ZkEVMChain,
+    ArbitrumChain,
+    BaseChain,
+    OptimismChain,
+    TaikoChain,
+    LineaChain,
+    ScrollChain,
+    BlastChain,
+    BOBChain,
+    VizingChain
+  ];
   fiatExchangeRates:
     | {
         areEnabled: false;
@@ -150,6 +220,7 @@ interface BridgeCommonFields {
   fiatAmount: BigNumber | undefined;
   from: Chain;
   id: string;
+  // timeAt: string;
   to: Chain;
   token: Token;
   tokenOriginNetwork: number;
@@ -158,22 +229,27 @@ interface BridgeCommonFields {
 export type PendingBridge = Pick<
   BridgeCommonFields,
   "depositTxHash" | "destinationAddress" | "from" | "to" | "token" | "amount" | "fiatAmount"
+  // | "timeAt"
 > & {
   claimTxHash?: string;
   status: "pending";
+  timeAt?: string;
 };
 
 export type InitiatedBridge = BridgeCommonFields & {
   status: "initiated";
+  timeAt: string;
 };
 
 export type OnHoldBridge = BridgeCommonFields & {
   status: "on-hold";
+  timeAt: string;
 };
 
 export type CompletedBridge = BridgeCommonFields & {
   claimTxHash: NonNullable<PendingBridge["claimTxHash"]>;
   status: "completed";
+  timeAt: string;
 };
 
 export type Bridge = PendingBridge | InitiatedBridge | OnHoldBridge | CompletedBridge;
@@ -197,6 +273,7 @@ export interface Deposit {
   destinationAddress: string;
   fiatAmount: BigNumber | undefined;
   from: Chain;
+  timeAt: string;
   to: Chain;
   token: Token;
   tokenOriginNetwork: number;
@@ -261,8 +338,17 @@ export enum Permit {
 // Error
 
 export enum ProviderError {
+  Arbitrum = "arbitrum",
+  BOB = "bob",
+  Base = "base",
+  Blast = "blast",
   Ethereum = "ethereum",
-  PolygonZkEVM = "vizing",
+  Linea = "linea",
+  Optimism = "optimism",
+  PolygonZkEVM = "polygon-zkevm",
+  Scroll = "scroll",
+  Taiko = "taiko",
+  Vizing = "vizing",
 }
 
 export interface MetaMaskUserRejectedRequestError {

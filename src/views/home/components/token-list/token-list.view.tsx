@@ -76,6 +76,7 @@ export const TokenList: FC<TokenListProps> = ({
     token.symbol.toLowerCase().includes(term.toLowerCase());
 
   const updateTokenList = (tokensWithBalance: Token[], searchTerm: string) => {
+    console.log("updateTokenList - chains", chains);
     const newFilteredTokens = tokensWithBalance.filter(
       getTokenFilterByTerm(chains.from, searchTerm)
     );
@@ -172,7 +173,7 @@ export const TokenList: FC<TokenListProps> = ({
   return (
     <div className={classes.tokenList}>
       <TokenSelectorHeader onClose={onClose} title="Select token" />
-      <div className={classes.searchInputContainer}>
+      {/* <div className={classes.searchInputContainer}>
         <MagnifyingGlassIcon className={classes.searchIcon} />
         <input
           className={classes.searchInput}
@@ -189,7 +190,7 @@ export const TokenList: FC<TokenListProps> = ({
             <XMarkIcon className={classes.clearSearchButtonIcon} />
           </button>
         )}
-      </div>
+      </div> */}
       <div className={classes.list}>
         {customToken.status === "loading" ? (
           <div className={classes.centeredElement}>
@@ -244,22 +245,25 @@ export const TokenList: FC<TokenListProps> = ({
                   >
                     <div className={classes.tokenInfoWithBalance}>
                       <Icon className={classes.tokenIcon} isRounded size={24} url={token.logoURI} />
-                      <Typography type="body1">{token.name}</Typography>
+                      <span className={classes.tokenName}>{token.name}</span>
+                      {/* <Typography type="body1">{token.name}</Typography> */}
                       <div className={classes.tokenBalanceWrapper}>
                         <TokenBalance
                           spinnerSize={16}
                           token={token}
                           typographyProps={{ className: classes.tokenBalance, type: "body2" }}
                         />
+                        &nbsp;
+                        <span>ETH</span>
                       </div>
                     </div>
                   </button>
-                  <button
+                  {/* <button
                     className={classes.tokenInfoButton}
                     onClick={() => onNavigateToTokenInfo(token)}
                   >
                     <InfoIcon className={classes.tokenInfoButtonIcon} />
-                  </button>
+                  </button> */}
                 </div>
               );
             }

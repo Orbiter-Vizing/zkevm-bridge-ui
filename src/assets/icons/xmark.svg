@@ -1,4 +1,8 @@
-<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="13.416" y="1.60059" width="1.39246" height="16.7095" transform="rotate(45 13.416 1.60059)" fill="#081132"/>
-<rect width="1.39246" height="16.7095" transform="matrix(0.707107 -0.707107 -0.707107 -0.707107 13.416 14.4004)" fill="#081132"/>
+<svg width="8.000000" height="8.000000" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<desc>
+			Created with Pixso.
+	</desc>
+	<defs/>
+	<path id="path" d="M7.75 6.56C8.08 6.89 8.08 7.42 7.75 7.75C7.58 7.92 7.37 8 7.16 8C6.95 8 6.73 7.92 6.57 7.75L4 5.18L1.42 7.75C1.26 7.92 1.04 8 0.83 8C0.62 8 0.41 7.92 0.24 7.75C-0.09 7.42 -0.09 6.89 0.24 6.56L2.81 3.99L0.24 1.42C-0.09 1.1 -0.09 0.56 0.24 0.24C0.56 -0.09 1.1 -0.09 1.42 0.24L4 2.81L6.57 0.24C6.89 -0.09 7.43 -0.09 7.75 0.24C8.08 0.56 8.08 1.1 7.75 1.42L5.18 3.99L7.75 6.56Z" fill="#FFFFFF" fill-opacity="0.800000" fill-rule="evenodd"/>
+	<path id="path" d="" fill="#302D2E" fill-opacity="0" fill-rule="evenodd"/>
 </svg>

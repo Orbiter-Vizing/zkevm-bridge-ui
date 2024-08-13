@@ -6,6 +6,7 @@ import { Token } from "src/domain";
 
 export const formatTokenAmount = (value: BigNumber, token: Token): string => {
   const amount = ethers.utils.formatUnits(value, token.decimals);
+  // console.log("formatTokenAmount amount", amount);
   const [whole, decimals = ""] = amount.split(".");
   const trimmed =
     decimals.length > TOKEN_DISPLAY_PRECISION

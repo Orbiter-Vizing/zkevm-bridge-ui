@@ -43,8 +43,10 @@ export const NetworkSelector: FC = () => {
         onClick={() => setIsOpen(true)}
         title={selectedChain.name}
         type="button"
-      >
-        <selectedChain.Icon />
+      > 
+        <div className={classes.chainIconWrap}>
+          <selectedChain.Icon />
+        </div>
         <Typography className={classes.networkButtonText} type="body1">
           {selectedChain.name}
         </Typography>

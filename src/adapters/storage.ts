@@ -52,6 +52,7 @@ export function isChainNativeCustomToken(token: Token, chain: Chain): boolean {
 }
 
 export function getChainCustomTokens(chain: Chain): Token[] {
+  console.log("current select chain", chain);
   return getCustomTokens().filter(
     (token) =>
       token.chainId === chain.chainId ||

@@ -75,7 +75,7 @@ export const useBridgeDetailsStyles = createUseStyles((theme: Theme) => ({
   },
   finaliseSpinner: {
     "& path": {
-      fill: theme.palette.white,
+      fill: theme.palette.white.default,
     },
   },
   lastRow: {

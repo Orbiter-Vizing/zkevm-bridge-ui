@@ -23,23 +23,33 @@ export const ChainList: FC<ChainListProps> = ({ chains, onClick, onClose }) => {
     onClose();
   };
 
+  const chainListWithoutVizing = chains.map((chain) => {
+    if (chain.key !== "vizing") {
+      return chain;
+    }
+  });
+
   return (
     <Portal>
       <div className={classes.background} onMouseDown={onOutsideClick}>
         <Card className={classes.card}>
           <div className={classes.header}>
-            <Typography type="h2">Select chain</Typography>
-            <button className={classes.closeButton} onClick={onClose}>
+            <p className={classes.headerText}>Select chain</p>
+            {/* <button className={classes.closeButton} onClick={onClose}>
               <XMarkIcon className={classes.closeButtonIcon} />
-            </button>
+            </button> */}
           </div>
           <div className={classes.list}>
-            {chains.map((chain) => (
-              <button className={classes.button} key={chain.key} onClick={() => onClick(chain)}>
-                <chain.Icon className={classes.icon} />
-                <Typography type="body1">{chain.name}</Typography>
-              </button>
-            ))}
+            {chainListWithoutVizing.map((chain) => {
+              return chain ? (
+                <button className={classes.button} key={chain.key} onClick={() => onClick(chain)}>
+                  <chain.Icon className={classes.icon} />
+                  <p className={classes.chainNameText}>{chain.name}</p>
+                </button>
+              ) : (
+                ""
+              );
+            })}
           </div>
         </Card>
       </div>

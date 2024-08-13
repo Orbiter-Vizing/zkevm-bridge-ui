@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "react-jss";
 import { BrowserRouter } from "react-router-dom";
 import "normalize.css/normalize.css";
+import "../react-toastify.override.css";
 
 import { theme } from "src/styles/theme";
 import { App } from "src/views/app.view";

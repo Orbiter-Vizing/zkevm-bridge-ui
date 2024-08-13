@@ -13,11 +13,12 @@ export const useTokenSelectorStyles = createUseStyles((theme: Theme) => ({
     width: "100%",
   },
   card: {
+    background: theme.palette.dark.main,
     display: "flex",
     flexDirection: "column",
     height: 515,
-    maxWidth: 500,
-    padding: theme.spacing(2),
+    maxWidth: 400,
+    padding: theme.spacing(3),
     width: "100%",
   },
 }));

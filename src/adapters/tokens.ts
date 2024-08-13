@@ -1,11 +1,13 @@
 import { z } from "zod";
 
 import ethereumErc20Tokens from "src/assets/ethereum-erc20-tokens.json";
+// import { EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
 import { Token } from "src/domain";
 import { StrictSchema } from "src/utils/type-safety";
 
 export const getEthereumErc20Tokens = (): Promise<Token[]> => {
   const decodedEthereumErc20Tokens = z.array(tokenParser).safeParse(ethereumErc20Tokens);
+  console.log("decodedEthereumErc20Tokens", decodedEthereumErc20Tokens);
   return decodedEthereumErc20Tokens.success
     ? Promise.resolve(decodedEthereumErc20Tokens.data)
     : Promise.reject(decodedEthereumErc20Tokens.error);
