@@ -42,6 +42,7 @@ import {
   PendingBridge,
   Token,
   TokenSpendPermission,
+  VizingChain,
 } from "src/domain";
 import { Bridge__factory } from "src/types/contracts/bridge";
 import { formatTokenAmount, multiplyAmounts } from "src/utils/amounts";
@@ -1117,6 +1118,13 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
         //   from.bridgeContractAddress,
         //   provider.getSigner()
         // );
+        let contractAddress = from.bridgeContractAddress;
+        // eslint-disable-next-line no-cond-assign, no-constant-condition
+        if ((from.key = "vizing")) {
+          console.log("from", from);
+          // eslint-disable-next-line no-type-assertion/no-type-assertion
+          contractAddress = from as unknown as VizingChain["omniContractAddress"];
+        }
 
         const contract = Bridge__factory.connect(from.bridgeContractAddress, provider.getSigner());
         console.log("L2 contract", contract);
@@ -1275,6 +1283,7 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
         throw new Error("Env is not available");
       }
 
+      console.log("claim fn called");
       const { account, chainId, provider } = connectedProvider.data;
       const contract = Bridge__factory.connect(to.bridgeContractAddress, provider.getSigner());
       const isL2Claim = to.key === "vizing";

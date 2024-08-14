@@ -189,6 +189,7 @@ export const getChains = ({
     chainId: number;
     explorerUrl: string;
     networkId: number;
+    omniContractAddress: string;
     rpcUrl: string;
   };
 }): Promise<
@@ -414,6 +415,7 @@ export const getChains = ({
           symbol: "ETH",
         },
         networkId: vizing.networkId,
+        omniContractAddress: vizing.omniContractAddress,
         provider: vizingProvider,
       },
     ]

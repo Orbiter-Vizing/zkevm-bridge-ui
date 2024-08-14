@@ -75,6 +75,7 @@ interface Env {
   VITE_VIZING_CHAIN_ID: string;
   VITE_VIZING_EXPLORER_URL: string;
   VITE_VIZING_NETWORK_ID: string;
+  VITE_VIZING_OMNI_CONTRACT_ADDRESS: string;
   VITE_VIZING_RPC_URL: string;
 }
 
@@ -269,6 +270,7 @@ const envToDomain = ({
   VITE_VIZING_CHAIN_ID,
   VITE_VIZING_EXPLORER_URL,
   VITE_VIZING_NETWORK_ID,
+  VITE_VIZING_OMNI_CONTRACT_ADDRESS,
   VITE_VIZING_RPC_URL,
 }: Env): Promise<domain.Env> => {
   const polygonZkEVMChainId = z.coerce.number().positive().parse(VITE_POLYGON_ZK_EVM_CHAIN_ID);
@@ -386,6 +388,7 @@ const envToDomain = ({
       chainId: vizingChainId,
       explorerUrl: VITE_VIZING_EXPLORER_URL,
       networkId: vizingNetworkId,
+      omniContractAddress: VITE_VIZING_OMNI_CONTRACT_ADDRESS,
       rpcUrl: VITE_VIZING_RPC_URL,
     },
   }).then((chains) => {
@@ -492,6 +495,7 @@ const envParser = StrictSchema<Env, domain.Env>()(
       VITE_VIZING_CHAIN_ID: z.string(),
       VITE_VIZING_EXPLORER_URL: z.string().url(),
       VITE_VIZING_NETWORK_ID: z.string(),
+      VITE_VIZING_OMNI_CONTRACT_ADDRESS: z.string().length(42),
       VITE_VIZING_RPC_URL: z.string().url(),
     })
     .transform(envToDomain)

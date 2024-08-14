@@ -74,6 +74,7 @@ export type BOBChain = CommonChain & {
 
 export type VizingChain = CommonChain & {
   key: "vizing";
+  omniContractAddress: string;
 };
 
 export type Chain =
