@@ -199,5 +199,104 @@ export const EthereumErc20TokensConfig: EthereumErc20TokensConfigInterface = {
       name: "Dai Stablecoin",
       symbol: "DAI",
     },
+    // Ethereum ETH
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      chainId: 11155111,
+      decimals: 18,
+      logoURI: "https://assets.coingecko.com/coins/images/279/standard/ethereum.png",
+      name: "Ether",
+      symbol: "ETH",
+    },
+    // Vizing ETH
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      chainId: 28518,
+      decimals: 18,
+      logoURI: "https://assets.coingecko.com/coins/images/279/standard/ethereum.png",
+      name: "Ether",
+      symbol: "ETH",
+    },
+    // Arbitrum ETH
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      chainId: 421614,
+      decimals: 18,
+      logoURI: "https://assets.coingecko.com/coins/images/279/standard/ethereum.png",
+      name: "Ether",
+      symbol: "ETH",
+    },
+    // Optimism ETH
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      chainId: 11155420,
+      decimals: 18,
+      logoURI: "https://assets.coingecko.com/coins/images/279/standard/ethereum.png",
+      name: "Ether",
+      symbol: "ETH",
+    },
+    // Base ETH
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      chainId: 84532,
+      decimals: 18,
+      logoURI: "https://assets.coingecko.com/coins/images/279/standard/ethereum.png",
+      name: "Ether",
+      symbol: "ETH",
+    },
+    // Taiko ETH
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      chainId: 167009,
+      decimals: 18,
+      logoURI: "https://assets.coingecko.com/coins/images/279/standard/ethereum.png",
+      name: "Ether",
+      symbol: "ETH",
+    },
+    // Linea ETH
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      chainId: 59141,
+      decimals: 18,
+      logoURI: "https://assets.coingecko.com/coins/images/279/standard/ethereum.png",
+      name: "Ether",
+      symbol: "ETH",
+    },
+    // Scroll ETH
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      chainId: 534351,
+      decimals: 18,
+      logoURI: "https://assets.coingecko.com/coins/images/279/standard/ethereum.png",
+      name: "Ether",
+      symbol: "ETH",
+    },
+    // Blast ETH
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      chainId: 168587773,
+      decimals: 18,
+      logoURI: "https://assets.coingecko.com/coins/images/279/standard/ethereum.png",
+      name: "Ether",
+      symbol: "ETH",
+    },
+    // BOB ETH
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      chainId: 111,
+      decimals: 18,
+      logoURI: "https://assets.coingecko.com/coins/images/279/standard/ethereum.png",
+      name: "Ether",
+      symbol: "ETH",
+    },
+    // PolygonzkEVM ETH
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      chainId: 2442,
+      decimals: 18,
+      logoURI: "https://assets.coingecko.com/coins/images/279/standard/ethereum.png",
+      name: "Ether",
+      symbol: "ETH",
+    },
   ],
 };
