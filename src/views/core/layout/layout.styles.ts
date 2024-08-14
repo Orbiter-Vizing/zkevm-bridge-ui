@@ -8,7 +8,7 @@ export const useLayoutStyles = createUseStyles((theme: Theme) => ({
     position: "absolute",
     top: "-30%",
     transform: "translateX(-50%)",
-    zIndex: 0
+    zIndex: 0,
   },
   container: {
     display: "flex",
@@ -17,17 +17,17 @@ export const useLayoutStyles = createUseStyles((theme: Theme) => ({
     margin: [0, "auto"],
     paddingBottom: theme.spacing(2),
     width: "100%",
-    zIndex: 1
+    zIndex: 1,
   },
   headerContainer: {
-    zIndex: 1
+    zIndex: 1,
   },
   layout: {
-    background: theme.palette.bgBlack,
+    background: theme.palette.dark.darker,
     display: "flex",
     flexDirection: "column",
     minHeight: "100vh",
-    position: 'relative',
+    position: "relative",
     width: "100%",
   },
   linkContainer: {

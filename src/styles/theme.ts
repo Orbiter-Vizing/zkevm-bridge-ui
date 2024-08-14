@@ -5,13 +5,12 @@ export const theme = {
   hoverTransition: "all 150ms",
   maxWidth: 644,
   palette: {
-    bgBlack: "#040102",
     black: "rgba(255, 255, 255, 0.4)",
     dark: {
+      darker: "#040102",
       light: "#302D2E",
       lighter: "rgba(154, 154, 154, 0.12)",
       main: "#232021",
-      // #040102
       transparency60: "rgba(0, 0, 0, 0.6)",
     },
     error: {

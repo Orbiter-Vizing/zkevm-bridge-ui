@@ -23,6 +23,9 @@ export const usePendingListStyles = createUseStyles((theme: Theme) => ({
     fontWeight: 500,
     marginRight: theme.spacing(1),
   },
+  loadingWrap: {
+    display: "flex",
+  },
   pendingListWrap: {
     // padding: theme.spacing(3),
   },

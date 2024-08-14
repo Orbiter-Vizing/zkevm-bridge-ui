@@ -45,8 +45,8 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
     width: theme.spacing(6),
   },
   claimButton: {
-    border: 'none',
-    background: 'transparent',
+    background: "transparent",
+    border: "none",
     padding: 0,
   },
   disabledTxHash: {
@@ -100,11 +100,6 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
     fontSize: 14,
     fontWeight: 400,
     marginBottom: theme.spacing(0.5),
-    // borderBottom: "1px solid transparent",
-    // overflow: "hidden",
-    // textOverflow: "ellipsis",
-    // whiteSpace: "nowrap",
-    // width: 98,
   },
   networkIcon: {
     height: 16,
