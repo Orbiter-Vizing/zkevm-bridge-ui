@@ -6,14 +6,15 @@ import { ReactComponent as SuccessIcon } from "src/assets/icons/success.svg";
 import { useTxToastContentStyles } from "src/views/shared/tx-toast-content/tx-toast-content.styles";
 
 interface TxToastContentProps {
-  link?: string;
+  explorerUrl?: string;
   text: string;
   title: string;
   type: "pending" | "success" | "fail";
 }
 
-export const TxToastContent: FC<TxToastContentProps> = ({ link, text, title, type }) => {
+export const TxToastContent: FC<TxToastContentProps> = ({ explorerUrl, text, title, type }) => {
   const classes = useTxToastContentStyles();
+  const claimTxUrl = explorerUrl ? `${explorerUrl}/tx/${text}` : "";
 
   return (
     <div className={classes.txToastWrap}>
@@ -27,8 +28,12 @@ export const TxToastContent: FC<TxToastContentProps> = ({ link, text, title, typ
         </span>
         <p className={classes.txToastTitle}>{title}</p>
       </div>
-      <p className={classes.txToastText}>{text}</p>
-      {type === "success" && <p className={classes.txLink}>View on explorer</p>}
+      {type !== "success" && <p className={classes.txToastText}>{text}</p>}
+      {type === "success" && (
+        <a href={claimTxUrl} rel="noreferrer" target="_blank">
+          <p className={classes.txLink}>View on explorer</p>
+        </a>
+      )}
     </div>
   );
 };

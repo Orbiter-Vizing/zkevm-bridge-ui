@@ -15,6 +15,7 @@ interface TxToastProps {
 
 interface TargetTxInterface {
   claimHash: string;
+  explorerUrl: string;
   hash: string;
   toastId: Id;
 }
@@ -63,16 +64,15 @@ export const TxToast: FC<TxToastProps> = ({ example }) => {
                 console.log("compare bridge.depositTxHash", bridge.depositTxHash);
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                console.log("compare bridge.claimTxHash", bridge.claimTxHash);
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 if (bridge.depositTxHash === txInfo.hash && bridge.claimTxHash) {
                   targetTx = {
                     ...txInfo,
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    // eslint-disable-next-line no-type-assertion/no-type-assertion
-                    claimHash: bridge.claimTxHash as string,
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    claimHash: bridge.claimTxHash,
+
+                    explorerUrl: bridge.to.explorerUrl,
                   };
                 }
               });
@@ -84,6 +84,7 @@ export const TxToast: FC<TxToastProps> = ({ example }) => {
                   // render: `${targetTx.claimHash} success`,
                   render: (
                     <TxToastContent
+                      explorerUrl={targetTx.explorerUrl}
                       text={targetTx.claimHash}
                       title="Transaction Successful"
                       type="success"

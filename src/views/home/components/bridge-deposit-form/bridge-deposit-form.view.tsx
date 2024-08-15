@@ -29,7 +29,6 @@ import { ErrorMessage } from "src/views/shared/error-message/error-message.view"
 import { Icon } from "src/views/shared/icon/icon.view";
 import { Spinner } from "src/views/shared/spinner/spinner.view";
 import { TokenBalance } from "src/views/shared/token-balance/token-balance.view";
-import { TxToastContent } from "src/views/shared/tx-toast-content/tx-toast-content.view";
 import { Typography } from "src/views/shared/typography/typography.view";
 
 interface BridgeDepositFormProps {
