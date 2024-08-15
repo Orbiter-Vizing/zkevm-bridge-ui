@@ -151,7 +151,7 @@ interface BridgeContext {
     total: number;
   }>;
   getPendingBridges: (bridges?: Bridge[]) => Promise<PendingBridge[]>;
-  pushBridge: (params: PushBridgeParams) => Promise<number>;
+  pushBridge: (params: PushBridgeParams) => Promise<void>;
 }
 
 enum TransactionType {
@@ -341,7 +341,7 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
       originAddress,
       originNetwork,
       txHash,
-    }: PushBridgeParams): Promise<number> => {
+    }: PushBridgeParams) => {
       const apiUrl = env.bridgeApiUrl;
       const res = await pushBridgeInfo({
         abortSignal,
@@ -1119,14 +1119,12 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
         //   provider.getSigner()
         // );
         let contractAddress = from.bridgeContractAddress;
-        // eslint-disable-next-line no-cond-assign, no-constant-condition
-        if ((from.key = "vizing")) {
-          console.log("from", from);
+        if (from.key === "vizing") {
           // eslint-disable-next-line no-type-assertion/no-type-assertion
           contractAddress = from as unknown as VizingChain["omniContractAddress"];
         }
 
-        const contract = Bridge__factory.connect(from.bridgeContractAddress, provider.getSigner());
+        const contract = Bridge__factory.connect(contractAddress, provider.getSigner());
         console.log("L2 contract", contract);
         const fakePostMessage = ethersUtils.solidityPack(
           ["uint8", "uint256", "uint24"],
