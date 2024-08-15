@@ -164,9 +164,12 @@ export const useBridgeDepositFormStyles = createUseStyles((theme: Theme) => ({
   },
   toChainRowRightBox: {
     alignItems: "flex-end",
+    color: theme.palette.white.default,
     display: "flex",
     flex: 1,
     flexDirection: "column",
+    fontSize: 24,
+    fontWeight: 500,
     justifyContent: "flex-end",
   },
   tokenName: {

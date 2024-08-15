@@ -46,6 +46,7 @@ interface SelectedChains {
 type EnvMode = "development" | "test" | "production";
 
 const DEBOUNCE_TIME_IN_MS = 750;
+const DEPOSIT_FEE = 0.00005; // eth unit
 
 export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
   account,
@@ -272,6 +273,14 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     return currentEnvTokens.filter((token) => {
       return token.chainId === selectedChain.chainId;
     });
+  };
+
+  const getClaimBalance = () => {
+    const userInputNumber = Number(inputValue);
+    if (userInputNumber < DEPOSIT_FEE) {
+      return 0;
+    }
+    return userInputNumber - DEPOSIT_FEE;
   };
 
   // amount input logic out
@@ -566,14 +575,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
               </Typography>
             </div>
           </div>
-          <div className={classes.toChainRowRightBox}>
-            {/* <Typography type="body2">Balance</Typography> */}
-            <TokenBalance
-              spinnerSize={14}
-              token={{ ...token, balance: balanceTo }}
-              typographyProps={{ type: "body1" }}
-            />
-          </div>
+          <div className={classes.toChainRowRightBox}>{inputValue ? getClaimBalance() : 0}</div>
         </div>
       </Card>
       {debounceFormData && <BridgeGasFee formData={debounceFormData} />}
@@ -583,18 +585,6 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
         </Button>
         {amount && inputError && <ErrorMessage error={inputError} />}
       </div>
-      {/* <button onClick={() => handleToast("pending")} style={{ marginTop: "20px" }}>
-        pending
-      </button>
-      <button onClick={() => handleToast("success")} style={{ marginTop: "20px" }}>
-        success
-      </button>
-      <button onClick={() => handleToast("fail")} style={{ marginTop: "20px" }}>
-        fail
-      </button>
-      <button onClick={() => handleToast("fail")} style={{ marginTop: "20px" }}>
-        pending&update
-      </button> */}
       {chains && (
         <ChainList
           chains={chains}

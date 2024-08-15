@@ -42,6 +42,7 @@ interface SelectedChains {
 }
 
 const DEBOUNCE_TIME_IN_MS = 750;
+const WITHDRAW_FEE = 0.0005; // eth unit
 
 export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
   account,
@@ -175,6 +176,14 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
     },
     [account, getErc20TokenBalance]
   );
+
+  const getClaimBalance = () => {
+    const userInputNumber = Number(inputValue);
+    if (userInputNumber < WITHDRAW_FEE) {
+      return 0;
+    }
+    return userInputNumber - WITHDRAW_FEE;
+  };
 
   // amount input logic out
   const processOnChangeCallback = (amount?: BigNumber) => {
@@ -477,11 +486,12 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
             </div> */}
           </div>
           <div className={classes.toChainRowRightBox}>
-            <TokenBalance
+            {inputValue ? getClaimBalance() : 0}
+            {/* <TokenBalance
               spinnerSize={14}
               token={{ ...token, balance: balanceTo }}
               typographyProps={{ type: "body1" }}
-            />
+            /> */}
           </div>
         </div>
       </Card>
