@@ -156,7 +156,7 @@ echo "Generated .env file:"
 echo "$(cat /app/.env)"
 
 # Build app
-cd /app && npm run build
+cd /app && npm run build -- --mode $ENV
 
 # Copy nginx config
 cp /app/deployment/nginx.conf /etc/nginx/conf.d/default.conf
