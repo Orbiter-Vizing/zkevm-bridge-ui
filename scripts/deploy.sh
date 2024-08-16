@@ -155,8 +155,14 @@ fi
 echo "Generated .env file:"
 echo "$(cat /app/.env)"
 
-# Build app
-cd /app && npm run build -- --mode $ENV
+# Check if $ENV is set and not empty
+if [ -n "$ENV" ]; then
+  # Build app with the specified environment mode
+  cd /app && npm run build -- --mode $ENV
+else
+  # Build app without specifying the environment mode
+  cd /app && npm run build
+fi
 
 # Copy nginx config
 cp /app/deployment/nginx.conf /etc/nginx/conf.d/default.conf
