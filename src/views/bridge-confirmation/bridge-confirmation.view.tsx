@@ -362,6 +362,10 @@ export const BridgeConfirmation: FC = () => {
     }
   };
 
+  const onBackToHome = () => {
+    setFormData(undefined);
+  };
+
   console.log("bridge gas fee render3");
   console.log("env", env);
   console.log("formData", formData);
@@ -444,7 +448,7 @@ export const BridgeConfirmation: FC = () => {
   return (
     <div className={classes.contentWrapper}>
       <div className={classes.header}>
-        <Link to={homeRoute}>
+        <Link onClick={onBackToHome} to={homeRoute}>
           <span className={classes.iconWrap}>
             <IconBack />
           </span>

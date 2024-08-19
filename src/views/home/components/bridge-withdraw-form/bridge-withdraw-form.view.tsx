@@ -571,7 +571,7 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
         </Button>
         {amount && inputError && <ErrorMessage error={inputError} />}
       </div>
-      <button onClick={handleWrapClick}>wrappedToken</button>
+      {/* <button onClick={handleWrapClick}>wrappedToken</button> */}
       {chains && (
         <ChainList
           chains={chains}
