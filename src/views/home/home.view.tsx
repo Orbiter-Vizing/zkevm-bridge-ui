@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getIsDepositWarningDismissed, setIsDepositWarningDismissed } from "src/adapters/storage";
 
 import { ReactComponent as MetaMaskIcon } from "src/assets/icons/metamask.svg";
@@ -26,6 +26,7 @@ enum BridgeTab {
 export const Home = (): JSX.Element => {
   const classes = useHomeStyles();
   const navigate = useNavigate();
+  const location = useLocation();
   const env = useEnvContext();
   const { formData, setFormData } = useFormContext();
   const { connectedProvider } = useProvidersContext();
@@ -33,8 +34,10 @@ export const Home = (): JSX.Element => {
     status: "closed",
   });
 
-  const [selectedTab, setSelectedTab] = useState<BridgeTab>(BridgeTab.DEPOSIT);
-
+  const [selectedTab, setSelectedTab] = useState<BridgeTab>(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    (location.state && location.state.fromTab) || BridgeTab.DEPOSIT
+  );
   const handleSelectTab = (bridgeTab: BridgeTab) => {
     setSelectedTab(bridgeTab);
   };
@@ -45,7 +48,11 @@ export const Home = (): JSX.Element => {
     }
     console.log("set formData", formData);
     setFormData(formData);
-    navigate(routes.bridgeConfirmation.path);
+    navigate(routes.bridgeConfirmation.path, {
+      state: {
+        fromTab: selectedTab,
+      },
+    });
   };
 
   const onCheckShowDepositWarningAndSubmitForm = (formData: FormData) => {
@@ -69,6 +76,13 @@ export const Home = (): JSX.Element => {
   const onResetForm = () => {
     setFormData(undefined);
   };
+
+  useEffect(() => {
+    if (location.state) {
+      // Clear the state after loading the component
+      navigate(location.pathname, { replace: true, state: null });
+    }
+  }, [location, navigate]);
 
   return (
     <div className={classes.contentWrapper}>

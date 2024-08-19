@@ -1,6 +1,6 @@
 import { BigNumber } from "ethers";
 import { FC, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { parseError } from "src/adapters/error";
 import { getPermit, isContractAllowedToSpendToken } from "src/adapters/ethereum";
@@ -42,6 +42,7 @@ export const BridgeConfirmation: FC = () => {
   const callIfMounted = useCallIfMounted();
   const classes = useBridgeConfirmationStyles();
   const navigate = useNavigate();
+  const { state } = useLocation();
   const env = useEnvContext();
   const { notifyError } = useErrorContext();
   const { bridge, estimateBridgeGas } = useBridgeContext();
@@ -448,7 +449,7 @@ export const BridgeConfirmation: FC = () => {
   return (
     <div className={classes.contentWrapper}>
       <div className={classes.header}>
-        <Link onClick={onBackToHome} to={homeRoute}>
+        <Link onClick={onBackToHome} state={state} to={homeRoute}>
           <span className={classes.iconWrap}>
             <IconBack />
           </span>
