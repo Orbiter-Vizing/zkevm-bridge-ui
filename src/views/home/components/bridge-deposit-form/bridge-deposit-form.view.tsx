@@ -338,7 +338,8 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     if (selectedChains && defaultTokens) {
       const { from } = selectedChains;
       const chainTokens = [...getChainCustomTokens(from), ...defaultTokens];
-      console.log("chainTokens when select chain", chainTokens);
+      // console.log("chainTokens when select chain", chainTokens);
+      console.log("load all tokens", chainTokens);
       const selectedChainTokens = getSelectedChainTokens(from);
       console.log("selectedChainTokens", selectedChainTokens);
 
@@ -463,10 +464,6 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
       onResetForm();
     }
   }, [formData, onResetForm]);
-
-  // useEffect(() => {
-  //   console.log("spying debounceAmountValue...", debounceAmountValue);
-  // }, [debounceAmountValue]);
 
   useEffect(() => {
     console.log("debounceAmountValue change", debounceAmountValue);

@@ -71,6 +71,7 @@ interface ApproveParams {
 interface TokensContext {
   addWrappedToken: (params: AddWrappedTokenParams) => Promise<Token>;
   approve: (params: ApproveParams) => Promise<void>;
+  computeWrappedTokenAddress: (params: ComputeWrappedTokenAddressParams) => Promise<string>;
   getErc20TokenBalance: (params: GetErc20TokenBalanceParams) => Promise<BigNumber>;
   getToken: (params: GetTokenParams) => Promise<Token>;
   getTokenFromAddress: (params: GetTokenFromAddressParams) => Promise<Token>;
@@ -82,6 +83,7 @@ const tokensContextNotReadyMsg = "The tokens context is not yet ready";
 const tokensContext = createContext<TokensContext>({
   addWrappedToken: () => Promise.reject(tokensContextNotReadyMsg),
   approve: () => Promise.reject(tokensContextNotReadyMsg),
+  computeWrappedTokenAddress: () => Promise.reject(tokensContextNotReadyMsg),
   getErc20TokenBalance: () => Promise.reject(tokensContextNotReadyMsg),
   getToken: () => Promise.reject(tokensContextNotReadyMsg),
   getTokenFromAddress: () => Promise.reject(tokensContextNotReadyMsg),
@@ -300,8 +302,13 @@ const TokensProvider: FC<PropsWithChildren> = (props) => {
       if (isTokenEther) {
         return Promise.reject(new Error("Ether is not supported as ERC20 token"));
       }
+      console.log("getErc20TokenBalance chain", chain.key);
+      console.log("getErc20TokenBalance tokenAddress", tokenAddress);
       const erc20Contract = Erc20__factory.connect(tokenAddress, chain.provider);
-      return await erc20Contract.balanceOf(accountAddress);
+      const balance = await erc20Contract.balanceOf(accountAddress);
+      console.log("getErc20TokenBalance", balance);
+      return balance;
+      // return await erc20Contract.balanceOf(accountAddress);
     },
     []
   );
@@ -341,9 +348,9 @@ const TokensProvider: FC<PropsWithChildren> = (props) => {
               .map((token) => addWrappedToken({ token }))
           )
             .then((chainTokens) => {
-              console.log("chainTokens", chainTokens);
+              console.log("initialize chainTokens", chainTokens);
               const tokens = [getEtherToken(ethereumChain), ...chainTokens];
-              console.log("all tokens", tokens);
+              console.log("initialize all tokens", tokens);
               cleanupCustomTokens(tokens);
               setTokens(tokens);
             })
@@ -357,12 +364,21 @@ const TokensProvider: FC<PropsWithChildren> = (props) => {
     return {
       addWrappedToken,
       approve,
+      computeWrappedTokenAddress,
       getErc20TokenBalance,
       getToken,
       getTokenFromAddress,
       tokens,
     };
-  }, [tokens, getTokenFromAddress, getToken, getErc20TokenBalance, addWrappedToken, approve]);
+  }, [
+    tokens,
+    getTokenFromAddress,
+    getToken,
+    getErc20TokenBalance,
+    addWrappedToken,
+    approve,
+    computeWrappedTokenAddress,
+  ]);
 
   return <tokensContext.Provider value={value} {...props} />;
 };

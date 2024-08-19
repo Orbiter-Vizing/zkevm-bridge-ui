@@ -3,6 +3,7 @@ import { parseUnits, zeroPad } from "ethers/lib/utils";
 import { ChangeEvent, FC, useCallback, useEffect, useState } from "react";
 
 import { addCustomToken, getChainCustomTokens, removeCustomToken } from "src/adapters/storage";
+import { EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
 import { ReactComponent as CaretDown } from "src/assets/icons/caret-down.svg";
 import { getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
@@ -41,6 +42,8 @@ interface SelectedChains {
   to: Chain;
 }
 
+type EnvMode = "development" | "test" | "production";
+
 const DEBOUNCE_TIME_IN_MS = 750;
 const WITHDRAW_FEE = 0.0005; // eth unit
 
@@ -53,7 +56,11 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
   const classes = useBridgeWithdrawFormStyles();
   const callIfMounted = useCallIfMounted();
   const env = useEnvContext();
-  const { getErc20TokenBalance, tokens: defaultTokens } = useTokensContext();
+  const {
+    computeWrappedTokenAddress,
+    getErc20TokenBalance,
+    tokens: defaultTokens,
+  } = useTokensContext();
   const { connectedProvider } = useProvidersContext();
   const { getPendingBridges } = useBridgeContext();
   const [balanceFrom, setBalanceFrom] = useState<AsyncTask<BigNumber, string>>({
@@ -185,6 +192,62 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
     return userInputNumber - WITHDRAW_FEE;
   };
 
+  const getSelectedChainTokens = (selectedChain: Chain, fromChain: Chain) => {
+    // eslint-disable-next-line no-type-assertion/no-type-assertion
+    const envString = import.meta.env.MODE as EnvMode;
+    console.log("envString", envString);
+    const currentEnvTokens = EthereumErc20TokensConfig[envString];
+    console.log("currentEnvTokens", currentEnvTokens);
+    const selectedChainTokensNameList: string[] = [];
+    currentEnvTokens.forEach((token) => {
+      if (token.chainId === selectedChain.chainId) {
+        selectedChainTokensNameList.push(token.name);
+      }
+    });
+    console.log("selectedChainTokensNameList", selectedChainTokensNameList);
+    const result = currentEnvTokens.filter((token) => {
+      return (
+        selectedChainTokensNameList.indexOf(token.name) >= 0 && token.chainId === fromChain.chainId
+      );
+    });
+    console.log("getSelectedChainTokens result", result);
+    return result;
+  };
+
+  const handleWrapClick = () => {
+    // computeWrappedTokenAddress params
+    // { nativeChain, otherChain, token }
+    if (!selectedChains) {
+      return;
+    }
+    const nativeChain = selectedChains.from;
+    const otherChain = selectedChains.to;
+    const targetToken = {
+      address: "0x35dA2cFD750F3D0ddD79BD8f6E4cA818C584a083",
+      chainId: 11155111,
+      decimals: 18,
+      logoURI:
+        "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+      name: "Dai Stablecoin",
+      symbol: "DAI",
+    };
+    console.log("nativeChain", nativeChain);
+    console.log("otherChain", otherChain);
+    console.log("targetToken", targetToken);
+    computeWrappedTokenAddress({
+      nativeChain,
+      otherChain,
+      token: targetToken,
+    })
+      .then((res) => {
+        console.log("wrappedTokenAddress res", res);
+      })
+      .catch((error) => {
+        console.log("wrappedTokenAddress error", error);
+      });
+    // console.log("wrappedTokenAddress", wrappedTokenAddress);
+  };
+
   // amount input logic out
   const processOnChangeCallback = (amount?: BigNumber) => {
     const balance =
@@ -238,11 +301,13 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
   useEffect(() => {
     // Load all the tokens for the selected chain without their balance
     if (selectedChains && defaultTokens) {
-      const { from } = selectedChains;
+      const { from, to } = selectedChains;
       const chainTokens = [...getChainCustomTokens(from), ...defaultTokens];
-
+      console.log("load all tokens", chainTokens);
+      const selectedChainTokens = getSelectedChainTokens(to, selectedChains.from);
+      console.log("selectedChainTokens withdraw", selectedChainTokens);
       setTokens(
-        chainTokens.map((token) => ({
+        selectedChainTokens.map((token) => ({
           ...token,
           balance: {
             status: "pending",
@@ -268,8 +333,10 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
 
       setTokens(() =>
         tokens.map((token: Token) => {
+          console.log("getTokenBalance token, from-chain", token, selectedChains.from.key);
           getTokenBalance(token, selectedChains.from)
             .then((balance): void => {
+              console.log("getTokenBalance balance", balance);
               callIfMounted(() => {
                 const updatedToken: Token = {
                   ...token,
@@ -352,6 +419,8 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
 
   useEffect(() => {
     console.log("debounceAmountValue change", debounceAmountValue);
+    console.log("selectedChains change", selectedChains);
+    console.log("selectedChains change tokens", tokens);
     console.log("set new debounceFormData");
     if (!debounceAmountValue || !selectedChains || !token || debounceAmountValue.isZero()) {
       setDebounceFormData(undefined);
@@ -363,7 +432,7 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
       to: selectedChains?.to,
       token: token,
     });
-  }, [debounceAmountValue, selectedChains, token]);
+  }, [debounceAmountValue, selectedChains, token, tokens]);
 
   useEffect(() => {
     // Load default form values
@@ -495,7 +564,6 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
           </div>
         </div>
       </Card>
-      {/* <BridgeGasFee /> */}
       {debounceFormData && <BridgeGasFee formData={debounceFormData} />}
       <div className={classes.button}>
         <Button disabled={!amount || amount.isZero() || inputError !== undefined} type="submit">
@@ -503,6 +571,7 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
         </Button>
         {amount && inputError && <ErrorMessage error={inputError} />}
       </div>
+      <button onClick={handleWrapClick}>wrappedToken</button>
       {chains && (
         <ChainList
           chains={chains}

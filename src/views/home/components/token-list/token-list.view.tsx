@@ -2,9 +2,6 @@ import { BigNumber, utils as ethersUtils } from "ethers";
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 
 import { isChainNativeCustomToken } from "src/adapters/storage";
-import { ReactComponent as InfoIcon } from "src/assets/icons/info.svg";
-import { ReactComponent as MagnifyingGlassIcon } from "src/assets/icons/magnifying-glass.svg";
-import { ReactComponent as XMarkIcon } from "src/assets/icons/xmark.svg";
 import { TOKEN_BLACKLIST } from "src/constants";
 import { useTokensContext } from "src/contexts/tokens.context";
 import { AsyncTask, Chain, Token } from "src/domain";
@@ -254,7 +251,7 @@ export const TokenList: FC<TokenListProps> = ({
                           typographyProps={{ className: classes.tokenBalance, type: "body2" }}
                         />
                         &nbsp;
-                        <span>ETH</span>
+                        <span>{token.symbol}</span>
                       </div>
                     </div>
                   </button>
