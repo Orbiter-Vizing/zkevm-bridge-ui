@@ -2,7 +2,6 @@ import { FC, PropsWithChildren, useEffect, useState } from "react";
 
 import { ToastContainer, toast } from "react-toastify";
 import { reportError } from "src/adapters/error";
-// import ImageBackgroundPattern from "src/assets/background-pattern.png"
 import { ReactComponent as BackgroundPattern } from "src/assets/background-pattern.svg";
 import { useEnvContext } from "src/contexts/env.context";
 import { useUIContext } from "src/contexts/ui.context";
@@ -36,8 +35,9 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
           <Header />
         </div>
         <div className={classes.container}>{children}</div>
-        <BackgroundPattern className={classes.backgroundPattern} />
-        {/* <img className={classes.backgroundPattern} src={ImageBackgroundPattern} /> */}
+        <div className={classes.backgroundPatternWrap}>
+          <BackgroundPattern className={classes.backgroundPattern} />
+        </div>
       </div>
       {env && snackbar.status === "open" && (
         <Snackbar

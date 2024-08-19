@@ -4,10 +4,26 @@ import { Theme } from "src/styles/theme";
 
 export const useLayoutStyles = createUseStyles((theme: Theme) => ({
   backgroundPattern: {
-    left: "50%",
+    // height: 552,
+    // left: "50%",
+    // position: "absolute",
+    // top: "-30%",
+    // transform: "translateX(-50%)",
+    // width: 533,
+    // zIndex: 0,
+  },
+  backgroundPatternWrap: {
+    alignItems: "center",
+    display: "flex",
+    height: "100%",
+    justifyContent: "center",
+    // left: "50%",
+    overflow: "hidden",
+
     position: "absolute",
-    top: "-30%",
-    transform: "translateX(-50%)",
+    // top: "-30%",
+    width: "100%",
+
     zIndex: 0,
   },
   container: {
