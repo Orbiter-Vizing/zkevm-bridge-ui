@@ -39,6 +39,7 @@ import { Typography } from "src/views/shared/typography/typography.view";
 
 interface BridgeGasFeeProps {
   formData: FormData;
+  l2Gas: BigNumber | undefined;
   // amount: BigNumber;
   // fromChain: Chain;
   // toChain: Chain;
@@ -51,6 +52,7 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
   // toChain,
   // transactionToken,
   formData,
+  l2Gas,
 }) => {
   // export const BridgeGasFee: FC = () => {
   console.log("bridgeGasFee render", formData.amount);
@@ -113,6 +115,8 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
       })
         .then((gas: Gas) => {
           const newFee = calculateMaxTxFee(gas);
+          console.log("bridge-gas-fee gas", formatTokenAmount(gas.data.gasLimit, token));
+          console.log("bridge-gas-fee newFee", formatTokenAmount(newFee, token));
 
           if (!newFee) {
             setEstimatedGas({ error: "Gas data is not available", status: "failed" });
@@ -160,12 +164,13 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
     notifyError,
     tokenBalance,
     tokenSpendPermission,
+    l2Gas,
   ]);
 
-  useEffect(() => {
-    console.log("spy in bridgeGasFee, set pending");
-    setEstimatedGas({ status: "pending" });
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log("spy in bridgeGasFee, set pending");
+  //   setEstimatedGas({ status: "pending" });
+  // }, [formData]);
 
   useEffect(() => {
     // Load the balance of the token when it's not available
