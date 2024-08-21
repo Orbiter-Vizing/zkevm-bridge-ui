@@ -7,6 +7,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY scripts ./scripts
 COPY abis ./abis
+COPY .env.dev ./
+COPY .env.test ./
+COPY .env.production ./
 
 RUN npm install
 

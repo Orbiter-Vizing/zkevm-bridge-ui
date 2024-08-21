@@ -6,13 +6,13 @@ touch $ENV_FILENAME
 
 case "$ENV" in
   dev)
-    BASE_ENV_FILE="./.env.development"
+    BASE_ENV_FILE="/app/.env.dev"
     ;;
   test)
-    BASE_ENV_FILE="./.env.test"
+    BASE_ENV_FILE="/app/.env.test"
     ;;
   production)
-    BASE_ENV_FILE="./.env.production"
+    BASE_ENV_FILE="/app/.env.production"
     ;;
   *)
     echo "Environment variable ENV is not set or is unknown. Using default .env.production."
