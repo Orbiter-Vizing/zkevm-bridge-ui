@@ -20,7 +20,7 @@ interface SelectedChains {
 }
 
 interface TokenListProps {
-  account: string;
+  account: string | undefined;
   chains: SelectedChains;
   onClose: () => void;
   onNavigateToTokenAdder: (token: Token) => void;
@@ -50,6 +50,9 @@ export const TokenList: FC<TokenListProps> = ({
 
   const getTokenBalance = useCallback(
     (token: Token, chain: Chain): Promise<BigNumber> => {
+      if (!account) {
+        return Promise.resolve(BigNumber.from("0"));
+      }
       if (isTokenEther(token)) {
         return chain.provider.getBalance(account);
       } else {
@@ -245,11 +248,15 @@ export const TokenList: FC<TokenListProps> = ({
                       <span className={classes.tokenName}>{token.name}</span>
                       {/* <Typography type="body1">{token.name}</Typography> */}
                       <div className={classes.tokenBalanceWrapper}>
-                        <TokenBalance
-                          spinnerSize={16}
-                          token={token}
-                          typographyProps={{ className: classes.tokenBalance, type: "body2" }}
-                        />
+                        {account ? (
+                          <TokenBalance
+                            spinnerSize={16}
+                            token={token}
+                            typographyProps={{ className: classes.tokenBalance, type: "body2" }}
+                          />
+                        ) : (
+                          "-"
+                        )}
                         &nbsp;
                         <span>{token.symbol}</span>
                       </div>

@@ -18,6 +18,22 @@ export const useHeaderStyles = createUseStyles((theme: Theme) => ({
     flex: 1,
     justifyContent: "start",
   },
+  connectButton: {
+    "&:hover": {
+      cursor: "pointer",
+    },
+    background: theme.palette.themeRed,
+    borderRadius: 12,
+    color: theme.palette.white.default,
+    fontSize: 16,
+    fontWeight: 500,
+    height: 48,
+    padding: 16,
+  },
+  connectButtonWrap: {
+    height: 48,
+    width: 147,
+  },
   header: {
     alignItems: "center",
     borderBottom: "1px solid rgba(255, 255, 255, 0.2)",

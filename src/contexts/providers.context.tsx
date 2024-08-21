@@ -12,12 +12,15 @@ import {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
+import { z } from "zod";
 
 import {
   ethereumAccountsParser,
   getConnectedAccounts,
   silentlyGetConnectedAccounts,
 } from "src/adapters/ethereum";
+import { getStorageByKey, setStorageByKey } from "src/adapters/storage";
+import * as constants from "src/constants";
 import { useEnvContext } from "src/contexts/env.context";
 import { useErrorContext } from "src/contexts/error.context";
 import { AsyncTask, Chain, ConnectedProvider, Env, EthereumEvent, WalletName } from "src/domain";
@@ -34,6 +37,7 @@ interface ProvidersContext {
   changeNetwork: (chain: Chain) => Promise<void>;
   connectProvider: (walletName: WalletName) => Promise<void>;
   connectedProvider: AsyncTask<ConnectedProvider, string>;
+  setConnectedProvider: (connectedProvider: AsyncTask<ConnectedProvider, string>) => void;
 }
 
 const providersContextNotReadyErrorMsg = "The providers context is not yet ready";
@@ -43,6 +47,9 @@ const providersContext = createContext<ProvidersContext>({
   changeNetwork: () => Promise.reject(new Error(providersContextNotReadyErrorMsg)),
   connectedProvider: { status: "pending" },
   connectProvider: () => Promise.reject(new Error(providersContextNotReadyErrorMsg)),
+  setConnectedProvider: () => {
+    console.error("The providers context is not yet ready");
+  },
 });
 
 const ProvidersProvider: FC<PropsWithChildren> = (props) => {
@@ -57,10 +64,10 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
   const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false);
   const IS_SWITCHING_NETWORK_DELAY = 1000;
 
-  // 返回的 Web3Provider 有以下功能：
-  // 1. 连接 Metamask
-  // 2. 读取写入区块链
-  // 3. 事件监听，监听交易
+  // Web3Provider providing the following features：
+  // 1. connect Metamask
+  // 2. read and write block chain
+  // 3. event listener, listening transaction
   const getMetamaskProvider = () => {
     if (window.ethereum && window.ethereum.isMetaMask) {
       return new Web3Provider(window.ethereum, "any");
@@ -114,6 +121,7 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
             status: "failed",
           });
         } else {
+          console.log("provider connect 222");
           setConnectedProvider({
             data: {
               account: getChecksumAddress(account),
@@ -121,6 +129,10 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
               provider: web3Provider,
             },
             status: "successful",
+          });
+          setStorageByKey({
+            key: constants.DISCONNECT_KEY,
+            value: false,
           });
         }
       } catch (error) {
@@ -144,13 +156,16 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
           status: "failed",
         });
       }
+      console.log("connectProvider walletName", walletName);
       switch (walletName) {
         case WalletName.METAMASK: {
           try {
             const web3Provider = getMetamaskProvider();
             if (web3Provider) {
+              console.log("before getConnectedAccounts");
               const accounts = await getConnectedAccounts(web3Provider);
               const account: string | undefined = accounts[0];
+              console.log("accounts before connectMetamaskProvider", accounts);
               if (account) {
                 return connectMetamaskProvider({ account, env, web3Provider });
               } else {
@@ -192,6 +207,7 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
           return walletConnectProvider
             .enable()
             .then((accounts) => {
+              console.log("provider connect 333");
               setConnectedProvider({
                 data: {
                   account: getChecksumAddress(accounts[0]),
@@ -199,6 +215,10 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
                   provider: web3Provider,
                 },
                 status: "successful",
+              });
+              setStorageByKey({
+                key: constants.DISCONNECT_KEY,
+                value: false,
               });
             })
             .catch((error) => {
@@ -327,25 +347,33 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
 
   useEffect(() => {
     if (connectedProvider.status === "pending") {
+      console.log("pending connect");
       const web3Provider = getMetamaskProvider();
+
+      // shim_disconnect is to show whether disconnect button is clicked
+      const shim_disconnect = getStorageByKey({
+        defaultValue: false,
+        key: constants.DISCONNECT_KEY,
+        parser: z.boolean(),
+      });
 
       if (!web3Provider) {
         setConnectedProvider({
           error: "",
           status: "failed",
         });
-      } else if (env) {
-        void silentlyGetConnectedAccounts(web3Provider).then((accounts) => {
-          const account: string | undefined = accounts[0];
-          if (account) {
-            void connectMetamaskProvider({ account, env, web3Provider });
-          } else {
-            setConnectedProvider({
-              error: "",
-              status: "failed",
-            });
-          }
-        });
+      } else if (env && !shim_disconnect) {
+        // void silentlyGetConnectedAccounts(web3Provider).then((accounts) => {
+        //   const account: string | undefined = accounts[0];
+        //   if (account) {
+        //     void connectMetamaskProvider({ account, env, web3Provider });
+        //   } else {
+        //     setConnectedProvider({
+        //       error: "",
+        //       status: "failed",
+        //     });
+        //   }
+        // });
       }
     }
   }, [connectMetamaskProvider, connectedProvider.status, env]);
@@ -363,12 +391,17 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
         const account: string | undefined = parsedAccounts.data[0];
         if (account) {
           try {
+            console.log("provider connect 111");
             setConnectedProvider({
               data: {
                 ...connectedProvider.data,
                 account: getChecksumAddress(account),
               },
               status: "successful",
+            });
+            setStorageByKey({
+              key: constants.DISCONNECT_KEY,
+              value: false,
             });
           } catch (error) {
             setConnectedProvider({
@@ -423,8 +456,9 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
       changeNetwork,
       connectedProvider,
       connectProvider,
+      setConnectedProvider,
     }),
-    [connectedProvider, addNetwork, changeNetwork, connectProvider]
+    [connectedProvider, addNetwork, changeNetwork, connectProvider, setConnectedProvider]
   );
 
   return <providersContext.Provider value={value} {...props} />;

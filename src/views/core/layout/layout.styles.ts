@@ -36,7 +36,7 @@ export const useLayoutStyles = createUseStyles((theme: Theme) => ({
     zIndex: 1,
   },
   headerContainer: {
-    zIndex: 1,
+    zIndex: 2,
   },
   layout: {
     background: theme.palette.dark.darker,

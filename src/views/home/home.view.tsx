@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { DefaultBridgeWithdrawForm } from "./components/default-bridge-withdraw-form/default-bridge-withdraw-form.view";
 import { getIsDepositWarningDismissed, setIsDepositWarningDismissed } from "src/adapters/storage";
 
 import { ReactComponent as MetaMaskIcon } from "src/assets/icons/metamask.svg";
@@ -11,6 +12,7 @@ import { routes } from "src/routes";
 import { BridgeDepositForm } from "src/views/home/components/bridge-deposit-form/bridge-deposit-form.view";
 import { BridgeForm } from "src/views/home/components/bridge-form/bridge-form.view";
 import { BridgeWithdrawForm } from "src/views/home/components/bridge-withdraw-form/bridge-withdraw-form.view";
+import { DefaultBridgeDepositForm } from "src/views/home/components/default-bridge-deposit-form/default-bridge-deposit-form.view";
 import { DepositWarningModal } from "src/views/home/components/deposit-warning-modal/deposit-warning-modal.view";
 import { Header } from "src/views/home/components/header/header.view";
 import { PendingList } from "src/views/home/components/pending-list/pending-list.view";
@@ -153,6 +155,46 @@ export const Home = (): JSX.Element => {
               onCancel={() => setDepositWarningModal({ status: "closed" })}
             />
           )} */}
+        </>
+      )}
+      {connectedProvider.status !== "successful" && (
+        <>
+          <div className={classes.formWrap}>
+            <div className={classes.bridgeTabsWrap}>
+              <span
+                className={`${classes.bridgeTab} ${
+                  selectedTab === BridgeTab.DEPOSIT ? classes.selectedTab : ""
+                }`}
+                onClick={() => handleSelectTab(BridgeTab.DEPOSIT)}
+              >
+                Deposit
+              </span>
+              <span
+                className={`${classes.bridgeTab} ${
+                  selectedTab === BridgeTab.WITHDRAW ? classes.selectedTab : ""
+                }`}
+                onClick={() => handleSelectTab(BridgeTab.WITHDRAW)}
+              >
+                Withdraw
+              </span>
+            </div>
+            {selectedTab === BridgeTab.DEPOSIT && (
+              <DefaultBridgeDepositForm
+                // account={connectedProvider.data.account}
+                formData={formData}
+                onResetForm={onResetForm}
+                // onSubmit={onCheckShowDepositWarningAndSubmitForm}
+              />
+            )}
+            {selectedTab === BridgeTab.WITHDRAW && (
+              <DefaultBridgeWithdrawForm
+                // account={connectedProvider.data.account}
+                formData={formData}
+                onResetForm={onResetForm}
+                // onSubmit={onCheckShowDepositWarningAndSubmitForm}
+              />
+            )}
+          </div>
         </>
       )}
     </div>

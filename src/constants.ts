@@ -95,6 +95,8 @@ export const POLYGON_PRIVACY_POLICY_URL = "https://polygon.technology/privacy-po
 export const POLYGON_ZKEVM_RISK_DISCLOSURES_URL =
   "https://wiki.polygon.technology/docs/zkEVM/#polygon-zkevm-risk-disclosures";
 
+export const DISCONNECT_KEY = "SHIM_DISCONNECT";
+
 export const TOKEN_BLACKLIST = [
   // WETH
   "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",

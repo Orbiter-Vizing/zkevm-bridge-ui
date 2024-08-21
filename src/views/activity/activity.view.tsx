@@ -26,6 +26,7 @@ import { useActivityStyles } from "src/views/activity/activity.styles";
 import { BridgeCard } from "src/views/activity/components/bridge-card/bridge-card.view";
 import { InfiniteScroll } from "src/views/activity/components/infinite-scroll/infinite-scroll.view";
 import { Card } from "src/views/shared/card/card.view";
+import { ConnectWalletButton } from "src/views/shared/connect-wallet-button/connect-wallet-button.view";
 import { Header } from "src/views/shared/header/header.view";
 import { PageLoader } from "src/views/shared/page-loader/page-loader.view";
 import { Typography } from "src/views/shared/typography/typography.view";
@@ -397,6 +398,25 @@ export const Activity: FC = () => {
       <PageLoader />
     </div>
   );
+
+  const defaultActivityPage = (
+    <div className={classes.activityPageWrap}>
+      <div className={classes.activityPageMask}>
+        <div className={classes.connectWalletButtonWrap}>
+          <ConnectWalletButton fontSize={16} fontWeight={500} />
+        </div>
+      </div>
+      <div className={classes.stickyContent} ref={headerBorderTarget}>
+        <div className={classes.contentWrapper}>
+          <Tabs all={0} pending={0} />
+        </div>
+      </div>
+    </div>
+  );
+
+  if (connectedProvider.status !== "successful") {
+    return defaultActivityPage;
+  }
 
   if (!env || !tokens || !isAsyncTaskDataAvailable(pendingBridges)) {
     return loader;

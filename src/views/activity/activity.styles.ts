@@ -3,6 +3,16 @@ import { createUseStyles } from "react-jss";
 import { Theme } from "src/styles/theme";
 
 export const useActivityStyles = createUseStyles((theme: Theme) => ({
+  activityPageMask: {
+    backdropFilter: "blur(0.125rem)",
+    background: "rgba(0, 0, 0, 0.3)",
+    borderRadius: 26,
+    height: "100%",
+    left: 0,
+    position: "absolute",
+    top: 0,
+    width: "100%",
+  },
   activityPageWrap: {
     background: theme.palette.dark.main,
     borderRadius: 24,
@@ -10,6 +20,8 @@ export const useActivityStyles = createUseStyles((theme: Theme) => ({
     margin: [theme.spacing(7), "auto"],
     // overflow: "scroll",
     padding: theme.spacing(3),
+
+    position: "relative",
     width: 928,
   },
   amountHeader: {
@@ -19,6 +31,14 @@ export const useActivityStyles = createUseStyles((theme: Theme) => ({
     // "&:not(:last-child)": {
     //   marginBottom: theme.spacing(2),
     // },
+  },
+  connectWalletButtonWrap: {
+    height: 48,
+    left: "50%",
+    position: "absolute",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 200,
   },
   contentWrapper: {
     display: "flex",
