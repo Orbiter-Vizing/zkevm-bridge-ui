@@ -27,13 +27,14 @@ for var in $(compgen -e); do
   prefixed_var="VITE_$var"
   
   # check variable with the VITE_ prefix is existed in .env
-  if grep -q "^$prefixed_var=" $ENV_FILENAME; then
-    # if exist，update
-    sed -i "/^$prefixed_var=/c\\$prefixed_var=${!var}" $ENV_FILENAME
-  else
-    # if not exist, append
-    echo "$prefixed_var=${!var}" >> $ENV_FILENAME
-  fi
+  echo "$prefixed_var=${!var}" >> $ENV_FILENAME
+  # if grep -q "^$prefixed_var=" $ENV_FILENAME; then
+  #   # if exist，update
+  #   sed -i "/^$prefixed_var=/c\\$prefixed_var=${!var}" $ENV_FILENAME
+  # else
+  #   # if not exist, append
+  #   echo "$prefixed_var=${!var}" >> $ENV_FILENAME
+  # fi
 done
 
 # ETHEREUM env vars
