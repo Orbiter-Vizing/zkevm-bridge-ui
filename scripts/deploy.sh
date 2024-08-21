@@ -25,7 +25,7 @@ cp $BASE_ENV_FILE $ENV_FILENAME
 for var in $(compgen -e); do
   # create variable with the prefix VITE_
   prefixed_var="VITE_$var"
-  
+  echo ""
   # check variable with the VITE_ prefix is existed in .env
   echo "$prefixed_var=${!var}" >> $ENV_FILENAME
   # if grep -q "^$prefixed_var=" $ENV_FILENAME; then
@@ -196,6 +196,7 @@ echo "$(cat /app/.env)"
 #   # Build app without specifying the environment mode
 #   cd /app && npm run build
 # fi
+cd /app && npm run build
 
 # Copy nginx config
 cp /app/deployment/nginx.conf /etc/nginx/conf.d/default.conf
