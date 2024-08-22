@@ -19,7 +19,7 @@ import { NetworkBox } from "src/views/shared/network-box/network-box.view";
 import { Typography } from "src/views/shared/typography/typography.view";
 
 export const Login: FC = () => {
-  console.log('login page')
+  console.log("login page");
   const classes = useLoginStyles();
   const [selectedWallet, setSelectedWallet] = useState<WalletName>();
   const [showPolicyModal, setShowPolicyModal] = useState(false);
@@ -95,8 +95,8 @@ export const Login: FC = () => {
         <ConfirmationModal
           message={
             <Typography type="body1">
-              DISCLAIMER: This version of the Vizing will require frequent maintenance and
-              may be restarted if upgrades are needed.
+              DISCLAIMER: This version of the Vizing will require frequent maintenance and may be
+              restarted if upgrades are needed.
             </Typography>
           }
           onClose={() => setShowPolicyModal(false)}

@@ -4,7 +4,7 @@ import { ChangeEvent, FC, useCallback, useEffect, useState } from "react";
 
 import { toast } from "react-toastify";
 import { addCustomToken, getChainCustomTokens, removeCustomToken } from "src/adapters/storage";
-import { EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
+import { EnvString, EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
 import { ReactComponent as ArrowDown } from "src/assets/icons/arrow-down.svg";
 import { ReactComponent as CaretDown } from "src/assets/icons/caret-down.svg";
 import { getEtherToken } from "src/constants";
@@ -269,8 +269,9 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
   };
 
   const getSelectedChainTokens = (selectedChain: Chain) => {
+    // const envString = import.meta.env.MODE as EnvMode;
     // eslint-disable-next-line no-type-assertion/no-type-assertion
-    const envString = import.meta.env.MODE as EnvMode;
+    const envString = import.meta.env.MODE as EnvString;
     console.log("envString", envString);
     const currentEnvTokens = EthereumErc20TokensConfig[envString];
     console.log("currentEnvTokens", currentEnvTokens);
@@ -317,14 +318,12 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     const vizingChain = env?.chains.find((chain) => {
       return chain.key === "vizing";
     });
-    // console.log("getL2EstimatedGas 111");
     console.log("env", env?.chains.length);
     console.log("bridgeChain", bridgeChain);
     console.log("vizingChain", vizingChain);
     if (!bridgeChain || !vizingChain) {
       return;
     }
-    // console.log("getL2EstimatedGas 222");
     const contract = Bridge__factory.connect(
       bridgeChain.bridgeContractAddress,
       bridgeChain.provider
@@ -344,13 +343,18 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
         fakePostMessage
       )
       .then((res) => {
+        console.log("getL2EstimatedGas gas", res[0]);
+        console.log(
+          "getL2EstimatedGas gas format",
+          formatTokenAmount(res[0], getEtherToken(vizingChain))
+        );
         setL2EstimatedGas(res[0]);
       })
       .catch((error) => {
         console.error("Get L2 estimated gas failed:", error);
       });
     // console.log("before Launch gasLimit");
-    // const gasLimit = await contract.estimateGas // contract is bridge contract
+    // contract.estimateGas // contract is bridge contract
     //   .Launch(
     //     0, // earliestArrivalTimestamp
     //     0, // latestArrivalTimestamp
@@ -363,6 +367,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     //     overrides
     //   );
     // console.log("Launch gasLimit", gasLimit);
+    // L2 estimated gas through ethers.js
   }, [account, env]);
 
   // amount input logic out

@@ -1,5 +1,5 @@
 export interface EthereumErc20TokensConfigInterface {
-  development: TokenConfig[];
+  dev: TokenConfig[];
   production: TokenConfig[];
   test: TokenConfig[];
 }
@@ -13,8 +13,10 @@ interface TokenConfig {
   symbol: string;
 }
 
+export type EnvString = "dev" | "test" | "production";
+
 export const EthereumErc20TokensConfig: EthereumErc20TokensConfigInterface = {
-  development: [
+  dev: [
     {
       address: "0xdAC17F958D2ee523a2206206994597C13D831ec4",
       chainId: 11155111,

@@ -3,7 +3,7 @@ import { parseUnits, zeroPad } from "ethers/lib/utils";
 import { ChangeEvent, FC, useCallback, useEffect, useState } from "react";
 
 import { addCustomToken, getChainCustomTokens, removeCustomToken } from "src/adapters/storage";
-import { EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
+import { EnvString, EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
 import { ReactComponent as CaretDown } from "src/assets/icons/caret-down.svg";
 import { getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
@@ -201,7 +201,7 @@ export const DefaultBridgeWithdrawForm: FC<DefaultBridgeWithdrawFormProps> = ({
 
   const getSelectedChainTokens = (selectedChain: Chain, fromChain: Chain) => {
     // eslint-disable-next-line no-type-assertion/no-type-assertion
-    const envString = import.meta.env.MODE as EnvMode;
+    const envString = import.meta.env.MODE as EnvString;
     console.log("envString", envString);
     const currentEnvTokens = EthereumErc20TokensConfig[envString];
     console.log("currentEnvTokens", currentEnvTokens);
