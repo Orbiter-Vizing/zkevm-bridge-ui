@@ -86,10 +86,12 @@ export const Home = (): JSX.Element => {
     }
   }, [location, navigate]);
 
-  return (
-    <div className={classes.contentWrapper}>
-      {/* <Header /> */}
-      {connectedProvider.status === "successful" && (
+  switch (connectedProvider.status) {
+    case "pending": {
+      return <div></div>;
+    }
+    case "successful": {
+      return (
         <>
           {/* <div className={classes.ethereumAddress}>
             <MetaMaskIcon className={classes.metaMaskIcon} />
@@ -156,8 +158,11 @@ export const Home = (): JSX.Element => {
             />
           )} */}
         </>
-      )}
-      {connectedProvider.status !== "successful" && (
+      );
+    }
+
+    default: {
+      return (
         <>
           <div className={classes.formWrap}>
             <div className={classes.bridgeTabsWrap}>
@@ -196,7 +201,122 @@ export const Home = (): JSX.Element => {
             )}
           </div>
         </>
-      )}
-    </div>
-  );
+      );
+      break;
+    }
+  }
+
+  // return (
+  //   <div className={classes.contentWrapper}>
+  //     {/* <Header /> */}
+  //     {connectedProvider.status === "successful" && (
+  //       <>
+  //         {/* <div className={classes.ethereumAddress}>
+  //           <MetaMaskIcon className={classes.metaMaskIcon} />
+  //           <Typography type="body1">
+  //             {getPartiallyHiddenEthereumAddress(connectedProvider.data.account)}
+  //           </Typography>
+  //         </div> */}
+  //         {/* <div className={classes.networkBoxWrapper}>
+  //           <NetworkBox />
+  //         </div> */}
+  //         <div className={classes.formWrap}>
+  //           <div className={classes.bridgeTabsWrap}>
+  //             <span
+  //               className={`${classes.bridgeTab} ${
+  //                 selectedTab === BridgeTab.DEPOSIT ? classes.selectedTab : ""
+  //               }`}
+  //               onClick={() => handleSelectTab(BridgeTab.DEPOSIT)}
+  //             >
+  //               Deposit
+  //             </span>
+  //             <span
+  //               className={`${classes.bridgeTab} ${
+  //                 selectedTab === BridgeTab.WITHDRAW ? classes.selectedTab : ""
+  //               }`}
+  //               onClick={() => handleSelectTab(BridgeTab.WITHDRAW)}
+  //             >
+  //               Withdraw
+  //             </span>
+  //           </div>
+  //           {/* <BridgeForm
+  //             account={connectedProvider.data.account}
+  //             formData={formData}
+  //             onResetForm={onResetForm}
+  //             onSubmit={onCheckShowDepositWarningAndSubmitForm}
+  //           /> */}
+  //           {selectedTab === BridgeTab.DEPOSIT && (
+  //             <BridgeDepositForm
+  //               account={connectedProvider.data.account}
+  //               formData={formData}
+  //               onResetForm={onResetForm}
+  //               onSubmit={onCheckShowDepositWarningAndSubmitForm}
+  //             />
+  //           )}
+  //           {selectedTab === BridgeTab.WITHDRAW && (
+  //             <BridgeWithdrawForm
+  //               account={connectedProvider.data.account}
+  //               formData={formData}
+  //               onResetForm={onResetForm}
+  //               onSubmit={onCheckShowDepositWarningAndSubmitForm}
+  //             />
+  //           )}
+  //           {/* {selectedTab === BridgeTab.WITHDRAW && "withdraw form"} */}
+  //         </div>
+  //         {selectedTab === BridgeTab.WITHDRAW && (
+  //           <div className={classes.pendingListWrap}>
+  //             <PendingList />
+  //           </div>
+  //         )}
+  //         {/* {depositWarningModal.status === "open" && (
+  //           <DepositWarningModal
+  //             formData={depositWarningModal.data}
+  //             onAccept={onSubmitForm}
+  //             onCancel={() => setDepositWarningModal({ status: "closed" })}
+  //           />
+  //         )} */}
+  //       </>
+  //     )}
+  //     {connectedProvider.status !== "successful" && (
+  //       <>
+  //         <div className={classes.formWrap}>
+  //           <div className={classes.bridgeTabsWrap}>
+  //             <span
+  //               className={`${classes.bridgeTab} ${
+  //                 selectedTab === BridgeTab.DEPOSIT ? classes.selectedTab : ""
+  //               }`}
+  //               onClick={() => handleSelectTab(BridgeTab.DEPOSIT)}
+  //             >
+  //               Deposit
+  //             </span>
+  //             <span
+  //               className={`${classes.bridgeTab} ${
+  //                 selectedTab === BridgeTab.WITHDRAW ? classes.selectedTab : ""
+  //               }`}
+  //               onClick={() => handleSelectTab(BridgeTab.WITHDRAW)}
+  //             >
+  //               Withdraw
+  //             </span>
+  //           </div>
+  //           {selectedTab === BridgeTab.DEPOSIT && (
+  //             <DefaultBridgeDepositForm
+  //               // account={connectedProvider.data.account}
+  //               formData={formData}
+  //               onResetForm={onResetForm}
+  //               // onSubmit={onCheckShowDepositWarningAndSubmitForm}
+  //             />
+  //           )}
+  //           {selectedTab === BridgeTab.WITHDRAW && (
+  //             <DefaultBridgeWithdrawForm
+  //               // account={connectedProvider.data.account}
+  //               formData={formData}
+  //               onResetForm={onResetForm}
+  //               // onSubmit={onCheckShowDepositWarningAndSubmitForm}
+  //             />
+  //           )}
+  //         </div>
+  //       </>
+  //     )}
+  //   </div>
+  // );
 };
