@@ -115,26 +115,14 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
         console.log("web3Provider", web3Provider);
         // supportedChainIds [11155111, 28516]
 
-        if (!supportedChainIds.includes(currentNetworkChainId)) {
-          setConnectedProvider({
-            error: `Switch your network to ${env.chains[0].name} or ${env.chains[1].name} to continue`,
-            status: "failed",
-          });
-        } else {
-          console.log("provider connect 222");
-          setConnectedProvider({
-            data: {
-              account: getChecksumAddress(account),
-              chainId: currentNetworkChainId,
-              provider: web3Provider,
-            },
-            status: "successful",
-          });
-          setStorageByKey({
-            key: constants.DISCONNECT_KEY,
-            value: false,
-          });
-        }
+        setConnectedProvider({
+          data: {
+            account: getChecksumAddress(account),
+            chainId: currentNetworkChainId,
+            provider: web3Provider,
+          },
+          status: "successful",
+        });
       } catch (error) {
         if (!isMetaMaskUserRejectedRequestError(error)) {
           notifyError(error);
