@@ -14,7 +14,8 @@
     "test": "vite --mode test",
     "build": "vite build",
     "build:test": "vite build --mode test",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-env": "sh ./scripts/test-deploy.sh"
   },
   "dependencies": {
     "@walletconnect/ethereum-provider": "^1.7.8",
