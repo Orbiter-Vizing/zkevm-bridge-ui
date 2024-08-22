@@ -362,18 +362,19 @@ const ProvidersProvider: FC<PropsWithChildren> = (props) => {
           error: "",
           status: "failed",
         });
-      } else if (env && !shim_disconnect) {
-        // void silentlyGetConnectedAccounts(web3Provider).then((accounts) => {
-        //   const account: string | undefined = accounts[0];
-        //   if (account) {
-        //     void connectMetamaskProvider({ account, env, web3Provider });
-        //   } else {
-        //     setConnectedProvider({
-        //       error: "",
-        //       status: "failed",
-        //     });
-        //   }
-        // });
+      } else if (env) {
+        //&& !shim_disconnect
+        void silentlyGetConnectedAccounts(web3Provider).then((accounts) => {
+          const account: string | undefined = accounts[0];
+          if (account) {
+            void connectMetamaskProvider({ account, env, web3Provider });
+          } else {
+            setConnectedProvider({
+              error: "",
+              status: "failed",
+            });
+          }
+        });
       }
     }
   }, [connectMetamaskProvider, connectedProvider.status, env]);
