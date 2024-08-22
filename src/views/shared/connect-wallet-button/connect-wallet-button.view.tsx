@@ -1,12 +1,8 @@
-import { FC, PropsWithChildren, useEffect } from "react";
+import { FC, PropsWithChildren } from "react";
 
-import { getPolicyCheck, setStorageByKey } from "src/adapters/storage";
-import * as constants from "src/constants";
 import { useProvidersContext } from "src/contexts/providers.context";
-import { PolicyCheck, WalletName } from "src/domain";
-
+import { WalletName } from "src/domain";
 import { useConnectWalletButtonStyles } from "src/views/shared/connect-wallet-button/connect-wallet-button.styles";
-// import { Spinner } from "src/views/shared/spinner/spinner.view";
 
 type ConnectWalletButtonProps = PropsWithChildren<{
   fontSize?: number;
@@ -14,48 +10,27 @@ type ConnectWalletButtonProps = PropsWithChildren<{
   type?: "";
 }>;
 
-export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
-  fontSize,
-  fontWeight,
-  type,
-}) => {
+export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({ fontSize, fontWeight }) => {
   const classes = useConnectWalletButtonStyles();
-  const { connectedProvider, connectProvider } = useProvidersContext();
+  const { connectProvider } = useProvidersContext();
 
   const onCheckAndConnectProvider = () => {
     const walletName = WalletName.METAMASK;
-    // setSelectedWallet(walletName);
-    const checked = getPolicyCheck();
-    if (checked === PolicyCheck.Checked) {
-      // setStorageByKey({
-      //   key: constants.DISCONNECT_KEY,
-      //   value: false,
-      // });
-      void connectProvider(walletName);
-    } else {
-      // setShowPolicyModal(true);
-    }
+    void connectProvider(walletName);
   };
 
   return (
-    <div
-      className={classes.button}
-      onClick={onCheckAndConnectProvider}
-      // disabled={disabled || isLoading}
-      // onClick={onClick}
-      // type={type}
-      style={{
-        fontSize,
-        fontWeight,
-      }}
-    >
-      Connect Wallet
-      {/* {children} */}
-      {/* {isLoading && (
-        <span className={addSpinnerSpacing ? classes.paddedSpinner : ""}>
-          <Spinner color="#fff" size={24} />
-        </span>
-      )} */}
-    </div>
+    <>
+      <div
+        className={classes.button}
+        onClick={onCheckAndConnectProvider}
+        style={{
+          fontSize,
+          fontWeight,
+        }}
+      >
+        Connect Wallet
+      </div>
+    </>
   );
 };
