@@ -39,14 +39,14 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
           <BackgroundPattern className={classes.backgroundPattern} />
         </div>
       </div>
-      {env && snackbar.status === "open" && (
+      {/* {env && snackbar.status === "open" && (
         <Snackbar
           message={snackbar.message}
           onClose={onCloseSnackbar}
           onReport={onReportFromSnackbar}
           reportForm={env.reportForm}
         />
-      )}
+      )} */}
       <TxToast />
       {env && showNetworkOutdatedModal && env.outdatedNetworkModal.isEnabled && (
         <ConfirmationModal
