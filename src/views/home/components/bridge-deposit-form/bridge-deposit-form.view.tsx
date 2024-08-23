@@ -634,7 +634,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
             </button>
           </div>
           <div className={classes.rightBox}>
-            <Typography type="body3">Available:&nbsp;</Typography>
+            <Typography type="body3">Balance:&nbsp;</Typography>
             <TokenBalance
               spinnerSize={14}
               token={{ ...token, balance: balanceFrom }}

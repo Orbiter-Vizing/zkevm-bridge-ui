@@ -606,7 +606,7 @@ export const DefaultBridgeWithdrawForm: FC<DefaultBridgeWithdrawFormProps> = ({
             </button> */}
           </div>
           <div className={classes.rightBox}>
-            <Typography type="body3">Available:&nbsp;</Typography>
+            <Typography type="body3">Balance:&nbsp;</Typography>
             <span>- ETH</span>
             <span className={classes.maxButton}>Max</span>
           </div>
