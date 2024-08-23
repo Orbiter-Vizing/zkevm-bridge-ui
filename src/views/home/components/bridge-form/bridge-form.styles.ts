@@ -5,7 +5,7 @@ import { Theme } from "src/styles/theme";
 export const useBridgeFormStyles = createUseStyles((theme: Theme) => ({
   bridgeTab: {
     "&:hover": {
-      cursor: "pointer"
+      cursor: "pointer",
     },
     alignItems: "center",
     borderRadius: 8,
@@ -20,7 +20,7 @@ export const useBridgeFormStyles = createUseStyles((theme: Theme) => ({
     borderRadius: 12,
     height: 48,
     margin: [0, 0, theme.spacing(3)],
-    padding: [theme.spacing(.5), theme.spacing(.5)],
+    padding: [theme.spacing(0.5), theme.spacing(0.5)],
     width: 560,
   },
   formWrap: {
@@ -28,11 +28,11 @@ export const useBridgeFormStyles = createUseStyles((theme: Theme) => ({
     borderRadius: 24,
     height: 472,
     margin: "auto",
+    marginTop: 56,
     padding: [theme.spacing(3), theme.spacing(3)],
-    width: 608,
   },
   selectedTab: {
-    background: theme.palette.themeRed
+    background: theme.palette.themeRed,
   },
   // arrowDownIcon: {
   //   backgroundColor: theme.palette.grey.main,

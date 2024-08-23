@@ -42,8 +42,8 @@ export const useHomeStyles = createUseStyles((theme: Theme) => ({
   formWrap: {
     background: "#232021",
     borderRadius: 24,
-    // height: 472,
     margin: "auto",
+    marginTop: 56,
     padding: [theme.spacing(3), theme.spacing(3)],
     width: 608,
   },
