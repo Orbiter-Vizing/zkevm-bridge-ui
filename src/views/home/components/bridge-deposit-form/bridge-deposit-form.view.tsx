@@ -453,6 +453,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
       console.log("load all tokens", chainTokens);
       const selectedChainTokens = getSelectedChainTokens(from);
       console.log("selectedChainTokens", selectedChainTokens);
+      setToken(getEtherToken(from));
 
       setTokens(
         selectedChainTokens.map((token) => ({

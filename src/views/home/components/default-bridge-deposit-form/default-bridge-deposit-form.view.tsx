@@ -257,6 +257,7 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
       console.log("chainTokens when select chain", chainTokens);
       const selectedChainTokens = getSelectedChainTokens(from);
       console.log("selectedChainTokens", selectedChainTokens);
+      setToken(getEtherToken(from));
 
       setTokens(
         selectedChainTokens.map((token) => ({

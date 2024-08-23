@@ -416,6 +416,7 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
       console.log("load all tokens", chainTokens);
       const selectedChainTokens = getSelectedChainTokens(to, selectedChains.from);
       console.log("selectedChainTokens withdraw", selectedChainTokens);
+      setToken(getEtherToken(from));
       setTokens(
         selectedChainTokens.map((token) => ({
           ...token,
