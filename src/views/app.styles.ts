@@ -65,6 +65,7 @@ export const useAppStyles = createUseStyles((theme: Theme) => ({
       textDecoration: "none",
     },
     body: {
+      background: "#040102",
       color: theme.palette.black,
       display: "flex",
       flexDirection: "column",
