@@ -38,8 +38,13 @@ import { PageLoader } from "src/views/shared/page-loader/page-loader.view";
 import { Typography } from "src/views/shared/typography/typography.view";
 
 interface BridgeGasFeeProps {
+  defaultForm?: boolean;
+  defaultGas?: BigNumber | undefined;
   formData: FormData;
-  l2Gas: BigNumber | undefined;
+  l1Gas?: BigNumber | undefined;
+  l2Gas?: BigNumber | undefined;
+  showL1Gas?: boolean;
+  showL2Gas?: boolean;
   // amount: BigNumber;
   // fromChain: Chain;
   // toChain: Chain;
@@ -51,8 +56,13 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
   // fromChain,
   // toChain,
   // transactionToken,
+  defaultForm,
+  defaultGas,
   formData,
+  l1Gas,
   l2Gas,
+  showL1Gas,
+  showL2Gas,
 }) => {
   // export const BridgeGasFee: FC = () => {
   console.log("bridgeGasFee render", formData.amount);
@@ -412,6 +422,27 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
   //   console.log("formData in ges fee", formData);
   // }, 3000);
 
+  if (defaultForm) {
+    const { from, to } = formData;
+    const etherToken = getEtherToken(from);
+    const calculateGas = from.key === "ethereum" || to.key === "ethereum" ? l1Gas : l2Gas;
+    const gasString = formatTokenAmount(calculateGas || BigNumber.from("0"), etherToken);
+    return (
+      <div className={classes.wrapper}>
+        <div className={classes.row}>
+          <div className={classes.dataName}>Estimated gas fee</div>
+          <div className={classes.data}>
+            <span className={classes.dataEth}>~{gasString}</span>
+          </div>
+        </div>
+        <div className={classes.row}>
+          <div className={classes.dataName}>Time to transfer</div>
+          <div className={`${classes.data} ${classes.dataTime}`}>~1 minute</div>
+        </div>
+      </div>
+    );
+  }
+
   if (
     !env ||
     !formData ||
@@ -420,7 +451,11 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
     !maxAmountConsideringFee ||
     !tokenSpendPermission
   ) {
-    return <PageLoader />;
+    return (
+      <div className={classes.loaderWrap}>
+        <PageLoader />
+      </div>
+    );
   }
 
   console.log("bridge gas fee render4");
@@ -485,6 +520,7 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
   const fiatFeeString = `${currencySymbol}${123}`;
   // const fiatFeeString = fiatFee ? `${currencySymbol}${formatFiatAmount(fiatFee)}` : undefined;
   const feeString = etherFeeString;
+  const gasString = showL2Gas && l2Gas ? formatTokenAmount(l2Gas, etherToken) : feeString;
 
   console.log("feeString at last", feeString);
 
@@ -493,7 +529,7 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
       <div className={classes.row}>
         <div className={classes.dataName}>Estimated gas fee</div>
         <div className={classes.data}>
-          <span className={classes.dataEth}>~{feeString}</span>
+          <span className={classes.dataEth}>~{gasString}</span>
         </div>
       </div>
       <div className={classes.row}>

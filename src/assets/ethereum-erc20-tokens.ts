@@ -35,15 +35,6 @@ export const EthereumErc20TokensConfig: EthereumErc20TokensConfigInterface = {
       name: "USD Coin",
       symbol: "USDC",
     },
-    {
-      address: "0xdAC17F958D2ee523a2206206994597C13D831ec2",
-      chainId: 11155111,
-      decimals: 18,
-      logoURI:
-        "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
-      name: "Dai Stablecoin",
-      symbol: "DAI",
-    },
     // Ethereum ETH
     {
       address: "0x0000000000000000000000000000000000000000",
@@ -163,15 +154,6 @@ export const EthereumErc20TokensConfig: EthereumErc20TokensConfigInterface = {
       name: "USD Coin",
       symbol: "USDC",
     },
-    {
-      address: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-      chainId: 1,
-      decimals: 18,
-      logoURI:
-        "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
-      name: "Dai Stablecoin",
-      symbol: "DAI",
-    },
   ],
   test: [
     // Ethereum USDT
@@ -193,16 +175,6 @@ export const EthereumErc20TokensConfig: EthereumErc20TokensConfigInterface = {
         "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
       name: "USD Coin",
       symbol: "USDC",
-    },
-    // Ethereum DAI
-    {
-      address: "0x35dA2cFD750F3D0ddD79BD8f6E4cA818C584a083",
-      chainId: 11155111,
-      decimals: 18,
-      logoURI:
-        "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
-      name: "Dai Stablecoin",
-      symbol: "DAI",
     },
     // Ethereum Orbit
     {
@@ -259,16 +231,6 @@ export const EthereumErc20TokensConfig: EthereumErc20TokensConfigInterface = {
         "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
       name: "USD Coin",
       symbol: "USDC",
-    },
-    // Vizing DAI
-    {
-      address: "0xF71Adf5ddC45A88FD8afBeEd03aCa0a4d24b2241",
-      chainId: 28516,
-      decimals: 18,
-      logoURI:
-        "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
-      name: "Dai Stablecoin",
-      symbol: "DAI",
     },
     // Arbitrum ETH
     {
