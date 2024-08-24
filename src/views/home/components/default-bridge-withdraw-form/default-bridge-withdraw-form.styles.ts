@@ -16,7 +16,7 @@ export const useDefaultBridgeWithdrawFormStyles = createUseStyles((theme: Theme)
     width: "100%",
   },
   card: {
-    marginBottom: 20,
+    // marginBottom: 20,
     // padding: [theme.spacing(2), theme.spacing(3)],
   },
   chainIconWrap: {
@@ -73,6 +73,11 @@ export const useDefaultBridgeWithdrawFormStyles = createUseStyles((theme: Theme)
       width: 24,
     },
   },
+  invalidInputMsg: {
+    color: theme.palette.error.main,
+    fontSize: 14,
+    marginTop: 8,
+  },
   leftBox: {
     alignItems: "center",
     display: "flex",
@@ -128,6 +133,9 @@ export const useDefaultBridgeWithdrawFormStyles = createUseStyles((theme: Theme)
     marginTop: theme.spacing(1.5),
     padding: 0,
     transition: theme.hoverTransition,
+  },
+  toChainCard: {
+    marginTop: 20,
   },
   toChainIcon: {
     height: 32,

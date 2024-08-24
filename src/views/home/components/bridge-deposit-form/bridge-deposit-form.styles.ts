@@ -30,7 +30,7 @@ export const useBridgeDepositFormStyles = createUseStyles((theme: Theme) => ({
     margin: [theme.spacing(4), "auto", 0],
   },
   card: {
-    marginBottom: 20,
+    // marginBottom: 20,
     // padding: [theme.spacing(2), theme.spacing(3)],
   },
   chainIconWrap: {
@@ -84,6 +84,7 @@ export const useBridgeDepositFormStyles = createUseStyles((theme: Theme) => ({
     display: "flex",
     height: 80,
     padding: theme.spacing(2),
+    position: "relative",
     width: "100%",
   },
   icons: {
@@ -93,6 +94,11 @@ export const useBridgeDepositFormStyles = createUseStyles((theme: Theme) => ({
       height: 24,
       width: 24,
     },
+  },
+  invalidInputMsg: {
+    color: theme.palette.error.main,
+    fontSize: 14,
+    marginTop: 8,
   },
   leftBox: {
     alignItems: "center",
@@ -143,6 +149,9 @@ export const useBridgeDepositFormStyles = createUseStyles((theme: Theme) => ({
     [theme.breakpoints.upSm]: {
       gap: theme.spacing(1.25),
     },
+  },
+  toChainCard: {
+    marginTop: 20,
   },
   toChainIcon: {
     height: 32,

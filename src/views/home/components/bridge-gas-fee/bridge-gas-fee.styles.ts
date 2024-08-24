@@ -21,6 +21,9 @@ export const useBridgeGasFeeStyles = createUseStyles((theme: Theme) => ({
   dataTime: {
     color: theme.palette.white.default,
   },
+  loaderWrap: {
+    marginTop: 20,
+  },
   row: {
     "&:last-child": {
       marginBottom: 0,
@@ -33,6 +36,7 @@ export const useBridgeGasFeeStyles = createUseStyles((theme: Theme) => ({
   wrapper: {
     border: "1px solid #302D2E",
     borderRadius: 12,
+    marginTop: 20,
     padding: theme.spacing(2),
     width: "100%",
   },

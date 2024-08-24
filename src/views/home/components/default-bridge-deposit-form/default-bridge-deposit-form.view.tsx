@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber, ethers, utils as ethersUtils } from "ethers";
 import { parseUnits, zeroPad } from "ethers/lib/utils";
 import { ChangeEvent, FC, useCallback, useEffect, useState } from "react";
 
@@ -12,16 +12,18 @@ import {
 } from "src/adapters/storage";
 import { EnvString, EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
 import { ReactComponent as CaretDown } from "src/assets/icons/caret-down.svg";
-import * as constants from "src/constants";
-import { getEtherToken } from "src/constants";
+import { BRIDGE_LIMIT, DEPOSIT_FEE, getEtherToken } from "src/constants";
+import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
 import { useFormContext } from "src/contexts/form.context";
 import { useProvidersContext } from "src/contexts/providers.context";
 import { useTokensContext } from "src/contexts/tokens.context";
-import { AsyncTask, Chain, FormData, PolicyCheck, Token, WalletName } from "src/domain";
+import { AsyncTask, Chain, FormData, Gas, PolicyCheck, Token, WalletName } from "src/domain";
 import { useCallIfMounted } from "src/hooks/use-call-if-mounted";
 import { useDebounce } from "src/hooks/use-debounce";
+import { Bridge__factory } from "src/types/contracts/bridge";
 import { formatTokenAmount } from "src/utils/amounts";
+import { calculateMaxTxFee } from "src/utils/fees";
 import { isTokenEther, selectTokenAddress } from "src/utils/tokens";
 import { isAsyncTaskDataAvailable } from "src/utils/types";
 import { BridgeGasFee } from "src/views/home/components/bridge-gas-fee/bridge-gas-fee.view";
@@ -52,7 +54,6 @@ interface SelectedChains {
 type EnvMode = "development" | "test" | "production";
 
 const DEBOUNCE_TIME_IN_MS = 750;
-const DEPOSIT_FEE = 0.00005; // eth unit
 
 export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
   // account,
@@ -62,6 +63,7 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
 }) => {
   const classes = useDefaultBridgeDepositFormStyles();
   const callIfMounted = useCallIfMounted();
+  const { bridge, estimateBridgeGas, estimateVizingBridgeGas } = useBridgeContext();
   const env = useEnvContext();
   const { getErc20TokenBalance, tokens: defaultTokens } = useTokensContext();
   const { connectedProvider, connectProvider } = useProvidersContext();
@@ -78,6 +80,12 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
   const [tokens, setTokens] = useState<Token[]>();
   const [isTokenListOpen, setIsTokenListOpen] = useState(false);
   const { setFormData } = useFormContext();
+  const [l1EstimatedGas, setL1EstimatedGas] = useState<BigNumber>();
+  const [l2EstimatedGas, setL2EstimatedGas] = useState<BigNumber>();
+  const [defaultFormGas, setDefaultFormGas] = useState<BigNumber>();
+  const [valueUserWillGet, setValueUserWillGet] = useState("");
+  const [invalidInputMsg, setInvalidInputMsg] = useState("");
+  const [showL2Gas, setShowL2Gas] = useState(false);
   // amount input state
   const defaultInputValue = amount && token ? formatTokenAmount(amount, token) : "";
   const [inputValue, setInputValue] = useState(defaultInputValue);
@@ -199,12 +207,126 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
     });
   };
 
+  const getL1EstimatedGas = useCallback(() => {
+    const ethereumChain = env?.chains.find((chain) => {
+      return chain.key === "ethereum";
+    });
+    const vizingChain = env?.chains.find((chain) => {
+      return chain.key === "vizing";
+    });
+    const estimateAccount = ethereumChain?.bridgeContractAddress;
+    if (ethereumChain && vizingChain && token && estimateAccount) {
+      estimateBridgeGas({
+        destinationAddress: estimateAccount,
+        from: ethereumChain,
+        to: vizingChain,
+        token,
+        tokenSpendPermission: { type: "none" },
+      })
+        .then((gas: Gas) => {
+          const newFee = calculateMaxTxFee(gas);
+          console.log("default getL1EstimatedGas gas", gas);
+          console.log(
+            "default getL1EstimatedGas gas format",
+            formatTokenAmount(gas.data.gasLimit, token)
+          );
+          console.log("default getL1EstimatedGas newFee format", formatTokenAmount(newFee, token));
+          setL1EstimatedGas(newFee);
+        })
+        .catch((error) => {
+          console.error("Get L1 estimated gas failed:", error);
+        });
+    }
+  }, [estimateBridgeGas, env, token]);
+
+  const getL2EstimatedGas = useCallback(async () => {
+    const bridgeChain = env?.chains.find((chain) => {
+      return chain.key === "base";
+    });
+    const vizingChain = env?.chains.find((chain) => {
+      return chain.key === "vizing";
+    });
+
+    // console.log("env", env?.chains.length);
+    console.log("bridgeChain", bridgeChain);
+    console.log("vizingChain", vizingChain);
+    if (!bridgeChain || !vizingChain) {
+      return;
+    }
+    // Estimate L2 gas like L1
+    const estimateAmount = BigNumber.from(1);
+    const estimateAccount = bridgeChain.bridgeContractAddress;
+    console.log("Estimate L2 gas bridgeChain", bridgeChain);
+    console.log("Estimate L2 gas vizingChain", vizingChain);
+    console.log("Estimate L2 gas token", token);
+    console.log("Estimate L2 gas amount", estimateAmount);
+    if (
+      bridgeChain &&
+      vizingChain &&
+      token
+      // && amount
+    ) {
+      const contractAddress = bridgeChain.bridgeContractAddress;
+      const provider = bridgeChain.provider;
+      console.log("let contractAddress", contractAddress);
+      console.log("L2 Bridge__factory contractAddress", contractAddress);
+      const contract = Bridge__factory.connect(contractAddress, provider);
+
+      const fakePostMessage = ethersUtils.solidityPack(
+        ["uint8", "uint256", "uint24"],
+        [4, estimateAccount, 50000]
+      );
+      try {
+        const vizingValue = await contract.functions.estimateGas(
+          estimateAmount,
+          vizingChain.chainId,
+          ethers.constants.AddressZero,
+          fakePostMessage
+        );
+      } catch (error) {
+        console.error("try vizingValue error", error);
+      }
+
+      const vizingValue = await contract.functions.estimateGas(
+        estimateAmount,
+        vizingChain.chainId,
+        ethers.constants.AddressZero,
+        fakePostMessage
+      );
+      console.log("deposit vizingValue", vizingValue[0]);
+      console.log("deposit user amount", estimateAmount);
+      const totalValue = vizingValue[0].add(estimateAmount);
+      estimateVizingBridgeGas({
+        account: estimateAccount,
+        destinationAddress: estimateAccount,
+        from: bridgeChain,
+        to: vizingChain,
+        token,
+        totalValue,
+        userInputValue: estimateAmount,
+      })
+        .then((gas: Gas) => {
+          const newFee = calculateMaxTxFee(gas);
+          console.log("default getL2EstimatedGas gas", gas);
+          console.log(
+            "default getL2EstimatedGas gas format",
+            formatTokenAmount(gas.data.gasLimit, token)
+          );
+          console.log("default getL2EstimatedGas newFee format", formatTokenAmount(newFee, token));
+          setL2EstimatedGas(newFee);
+        })
+        .catch((error) => {
+          console.error("Get L2 estimated gas failed:", error);
+        });
+    }
+  }, [env, estimateVizingBridgeGas, token]);
+
   // amount input logic out
   const processOnChangeCallback = (amount?: BigNumber) => {
     const balance =
       balanceFrom && isAsyncTaskDataAvailable(balanceFrom) ? balanceFrom.data : BigNumber.from(0);
     if (amount) {
-      const error = amount.gt(balance) ? "Insufficient balance" : undefined;
+      const error = undefined;
 
       return onAmountInputChange({ amount, error });
     } else {
@@ -225,16 +347,9 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
 
     if (isInputValid) {
       setInputValue(value);
+      // setValueUserWillGet("");
       processOnChangeCallback(amount);
     }
-  };
-
-  const getClaimBalance = () => {
-    const userInputNumber = Number(inputValue);
-    if (userInputNumber < DEPOSIT_FEE) {
-      return 0;
-    }
-    return userInputNumber - DEPOSIT_FEE;
   };
 
   const handleConnectWallet = () => {
@@ -246,6 +361,7 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
     // Reset the input when the chain or the token are changed
     if (amount === undefined) {
       setInputValue("");
+      setValueUserWillGet("");
     }
   }, [amount]);
 
@@ -258,6 +374,14 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
       const selectedChainTokens = getSelectedChainTokens(from);
       console.log("selectedChainTokens", selectedChainTokens);
       setToken(getEtherToken(from));
+      if (from.key === "ethereum") {
+        setShowL2Gas(false);
+        // setDefaultFormGas(l1EstimatedGas);
+      } else {
+        setShowL2Gas(true);
+        // setDefaultFormGas(l2EstimatedGas);
+      }
+      setValueUserWillGet("");
 
       setTokens(
         selectedChainTokens.map((token) => ({
@@ -268,7 +392,7 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
         }))
       );
     }
-  }, [defaultTokens, selectedChains]);
+  }, [defaultTokens, selectedChains]); // add dependencies l1EstimatedGas, l2EstimatedGas will cause multi-render
 
   // useEffect(() => {
   //   // Load the balances of all the tokens of the primary chain (from)
@@ -396,6 +520,46 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
     });
   }, [debounceAmountValue, selectedChains, token]);
 
+  useEffect(() => {
+    const inputValueInWei = ethers.utils.parseUnits(inputValue || "0", "ether");
+    const feeInWei = ethers.utils.parseUnits(DEPOSIT_FEE, "ether"); // 0.00005
+    const bridgeLimitInWei = ethers.utils.parseUnits(BRIDGE_LIMIT, "ether"); // 0.0001
+    let valueShowed = inputValue;
+    let errorContent = undefined;
+
+    if (selectedChains?.from.key !== "ethereum" && inputValue) {
+      if (inputValueInWei.gte(bridgeLimitInWei)) {
+        // normal case
+        const valueMinusFee = inputValueInWei.sub(feeInWei);
+        const resultInEther = ethers.utils.formatUnits(valueMinusFee, "ether");
+        valueShowed = resultInEther;
+        errorContent = undefined;
+        setValueUserWillGet(valueShowed);
+        setInputError(errorContent);
+      } else if (inputValueInWei.lt(bridgeLimitInWei) && inputValue && !inputValueInWei.isZero()) {
+        // less case
+        valueShowed = inputValue;
+        errorContent = `Minimum bridge amount: ${BRIDGE_LIMIT}ETH`;
+        setValueUserWillGet(valueShowed);
+        setInputError(errorContent);
+      }
+      // setValueUserWillGet(valueShowed);
+      // setInputError(errorContent);
+    } else {
+      setValueUserWillGet(inputValue);
+    }
+    // if (selectedChains?.from.key === "ethereum") {
+    //   // ethereum case
+    //   valueShowed = inputValue;
+    //   errorContent = undefined;
+    // }
+  }, [inputValue, selectedChains, balanceFrom]);
+
+  useEffect(() => {
+    void getL2EstimatedGas();
+    getL1EstimatedGas();
+  }, [getL1EstimatedGas, getL2EstimatedGas]);
+
   console.log("before spinner if tokens", tokens);
   if (!env || !selectedChains || !tokens || !token) {
     console.log("spinner env", env);
@@ -455,7 +619,8 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
           />
         </div>
       </Card>
-      <Card className={classes.card}>
+      {inputError && <div className={classes.invalidInputMsg}>{inputError}</div>}
+      <Card className={`${classes.card} ${classes.toChainCard}`}>
         <div className={classes.toChainRow}>
           <div className={classes.toChainRowLeftBox}>
             <Typography type="body2">To</Typography>
@@ -466,10 +631,17 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
               </Typography>
             </div>
           </div>
-          <div className={classes.toChainRowRightBox}>{inputValue ? getClaimBalance() : 0}</div>
+          <div className={classes.toChainRowRightBox}>{valueUserWillGet}</div>
         </div>
       </Card>
-      {debounceFormData && <BridgeGasFee formData={debounceFormData} />}
+      {debounceFormData && (
+        <BridgeGasFee
+          defaultForm={true}
+          formData={debounceFormData}
+          l1Gas={l1EstimatedGas}
+          l2Gas={l2EstimatedGas}
+        />
+      )}
       <div className={classes.connectWalletButtonWrap}>
         <ConnectWalletButton />
       </div>

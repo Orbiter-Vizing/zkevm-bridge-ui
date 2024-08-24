@@ -145,6 +145,7 @@ interface BridgeContext {
   bridge: (params: BridgeParams) => Promise<ContractTransaction>;
   claim: (params: ClaimParams) => Promise<ContractTransaction>;
   estimateBridgeGas: (params: EstimateBridgeGasParams) => Promise<Gas>;
+  estimateVizingBridgeGas: (params: EstimateVizingBridgeGasParams) => Promise<Gas>;
   fetchBridge: (params: FetchBridgeParams) => Promise<Bridge>;
   fetchBridges: (params: FetchBridgesParams) => Promise<{
     bridges: Bridge[];
@@ -169,6 +170,9 @@ const bridgeContext = createContext<BridgeContext>({
     return Promise.reject(bridgeContextNotReadyErrorMsg);
   },
   estimateBridgeGas: () => {
+    return Promise.reject(bridgeContextNotReadyErrorMsg);
+  },
+  estimateVizingBridgeGas: () => {
     return Promise.reject(bridgeContextNotReadyErrorMsg);
   },
   fetchBridge: () => {
@@ -961,6 +965,7 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
         console.error("estimateGas.Launch error", error);
       }
       console.log("Launch gasLimit", gasLimit);
+      console.log("Launch gasLimit format", ethers.utils.formatUnits(gasLimit, "gwei"));
       // from.key === "ethereum"
       //   ? await contract.estimateGas // contract is bridge contract
       //       .bridgeAsset(
@@ -985,7 +990,16 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
       //       })
       //   : BigNumber.from(300000);
 
+      console.log("estimatedVizingGas from chain", from);
       const { gasPrice, maxFeePerGas } = await from.provider.getFeeData();
+      console.log("estimatedVizingGas getFeeData() gasPrice", gasPrice);
+      console.log("estimatedVizingGas getFeeData() maxFeePerGas", maxFeePerGas);
+      // ethers.utils.formatUnits(gasPrice, 'gwei');
+      // console.log("estimatedVizingGas gasPrice", ethers.utils.formatUnits(gasPrice, "gwei"));
+      // console.log(
+      //   "estimatedVizingGas maxFeePerGas",
+      //   ethers.utils.formatUnits(maxFeePerGas, "gwei")
+      // );
 
       if (maxFeePerGas) {
         return { data: { gasLimit, maxFeePerGas }, type: "eip-1559" };
@@ -1370,12 +1384,22 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
       bridge,
       claim,
       estimateBridgeGas,
+      estimateVizingBridgeGas,
       fetchBridge,
       fetchBridges,
       getPendingBridges,
       pushBridge,
     }),
-    [estimateBridgeGas, fetchBridge, pushBridge, fetchBridges, getPendingBridges, bridge, claim]
+    [
+      estimateBridgeGas,
+      estimateVizingBridgeGas,
+      fetchBridge,
+      pushBridge,
+      fetchBridges,
+      getPendingBridges,
+      bridge,
+      claim,
+    ]
   );
 
   return <bridgeContext.Provider value={value} {...props} />;

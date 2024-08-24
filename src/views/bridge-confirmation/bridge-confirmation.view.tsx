@@ -1,5 +1,5 @@
-import { BigNumber } from "ethers";
-import { FC, useEffect, useState } from "react";
+import { BigNumber, ethers, utils as ethersUtils } from "ethers";
+import { FC, useCallback, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { parseError } from "src/adapters/error";
@@ -19,6 +19,7 @@ import { useUIContext } from "src/contexts/ui.context";
 import { AsyncTask, Gas, TokenSpendPermission } from "src/domain";
 import { useCallIfMounted } from "src/hooks/use-call-if-mounted";
 import { routes } from "src/routes";
+import { Bridge__factory } from "src/types/contracts/bridge";
 import { formatFiatAmount, formatTokenAmount, multiplyAmounts } from "src/utils/amounts";
 import { calculateMaxTxFee } from "src/utils/fees";
 import { getCurrencySymbol } from "src/utils/labels";
@@ -45,7 +46,7 @@ export const BridgeConfirmation: FC = () => {
   const { state } = useLocation();
   const env = useEnvContext();
   const { notifyError } = useErrorContext();
-  const { bridge, estimateBridgeGas } = useBridgeContext();
+  const { bridge, estimateBridgeGas, estimateVizingBridgeGas } = useBridgeContext();
   const { formData, setFormData } = useFormContext();
   const { openSnackbar } = useUIContext();
   const { connectedProvider } = useProvidersContext();
@@ -67,32 +68,74 @@ export const BridgeConfirmation: FC = () => {
   const currencySymbol = getCurrencySymbol(getCurrency());
   const homeRoute = routes["home"].path;
 
-  useEffect(() => {
+  const getL2EstimatedGas = useCallback(async () => {
+    const bridgeChain = env?.chains.find((chain) => {
+      return chain.key === "base";
+    });
+    const vizingChain = env?.chains.find((chain) => {
+      return chain.key === "vizing";
+    });
+    console.log("env", env?.chains.length);
+    console.log("bridgeChain", bridgeChain);
+    console.log("vizingChain", vizingChain);
+    if (!bridgeChain || !vizingChain) {
+      return;
+    }
+    // Estimate L2 gas like L1
+    const estimateAmount = BigNumber.from(1);
+    console.log("Estimate L2 gas connectedProvider", connectedProvider);
+    console.log("Estimate L2 gas bridgeChain", bridgeChain);
+    console.log("Estimate L2 gas vizingChain", vizingChain);
+    // console.log("Estimate L2 gas token", token);
+    console.log("Estimate L2 gas amount", estimateAmount);
     if (
       connectedProvider.status === "successful" &&
-      estimatedGas.status === "pending" &&
-      formData &&
+      bridgeChain &&
+      vizingChain &&
       tokenBalance &&
-      tokenSpendPermission
+      formData
+      // && amount
     ) {
       const { amount, from, to, token } = formData;
-      const destinationAddress = connectedProvider.data.account;
+      const account = connectedProvider.data.account;
+      const contractAddress = bridgeChain.bridgeContractAddress;
+      const provider = connectedProvider.data.provider;
+      console.log("let contractAddress", contractAddress);
+      console.log("L2 Bridge__factory contractAddress", contractAddress);
+      const contract = Bridge__factory.connect(contractAddress, provider.getSigner());
 
-      setEstimatedGas({ status: "loading" });
+      const fakePostMessage = ethersUtils.solidityPack(
+        ["uint8", "uint256", "uint24"],
+        [4, account, 50000]
+      );
 
-      void estimateBridgeGas({
-        destinationAddress,
-        from,
-        to,
+      const vizingValue = await contract.functions.estimateGas(
+        estimateAmount,
+        vizingChain.chainId,
+        ethers.constants.AddressZero,
+        fakePostMessage
+      );
+      console.log("deposit vizingValue", vizingValue[0]);
+      console.log("seposit user amount", estimateAmount);
+      const totalValue = vizingValue[0].add(estimateAmount);
+      estimateVizingBridgeGas({
+        account,
+        destinationAddress: connectedProvider.data.account,
+        from: bridgeChain,
+        to: vizingChain,
         token,
-        tokenSpendPermission,
+        totalValue,
+        userInputValue: estimateAmount,
       })
         .then((gas: Gas) => {
           const newFee = calculateMaxTxFee(gas);
-
-          if (!newFee) {
-            setEstimatedGas({ error: "Gas data is not available", status: "failed" });
-          }
+          console.log("getL2EstimatedGas gas", gas);
+          console.log("getL2EstimatedGas gas format", formatTokenAmount(gas.data.gasLimit, token));
+          console.log("getL2EstimatedGas newFee format", formatTokenAmount(newFee, token));
+          // setL2EstimatedGas(newFee);
+          // if (!newFee) {
+          //   setEstimatedGas({ error: "Gas data is not available", status: "failed" });
+          // }
 
           const newMaxAmountConsideringFee = (() => {
             if (isTokenEther(token)) {
@@ -113,19 +156,75 @@ export const BridgeConfirmation: FC = () => {
           setEstimatedGas({ data: gas, status: "successful" });
         })
         .catch((error) => {
-          if (isEthersInsufficientFundsError(error)) {
-            callIfMounted(() => {
-              setEstimatedGas({
-                error: "You don't have enough ETH to pay for the fees",
-                status: "failed",
-              });
-            });
-          } else {
-            callIfMounted(() => {
-              notifyError(error);
-            });
-          }
+          console.error("Get L2 estimated gas failed:", error);
         });
+    }
+  }, [env, estimateVizingBridgeGas, formData, connectedProvider, tokenBalance]);
+
+  useEffect(() => {
+    if (
+      connectedProvider.status === "successful" &&
+      estimatedGas.status === "pending" &&
+      formData &&
+      tokenBalance &&
+      tokenSpendPermission
+    ) {
+      const { amount, from, to, token } = formData;
+      const destinationAddress = connectedProvider.data.account;
+
+      setEstimatedGas({ status: "loading" });
+
+      // add estimate l2 gas
+      if (from.key === "ethereum" || to.key === "ethereum") {
+        void estimateBridgeGas({
+          destinationAddress,
+          from,
+          to,
+          token,
+          tokenSpendPermission,
+        })
+          .then((gas: Gas) => {
+            const newFee = calculateMaxTxFee(gas);
+
+            if (!newFee) {
+              setEstimatedGas({ error: "Gas data is not available", status: "failed" });
+            }
+
+            const newMaxAmountConsideringFee = (() => {
+              if (isTokenEther(token)) {
+                const amountConsideringFee = amount.add(newFee);
+                const tokenBalanceRemainder = amountConsideringFee.sub(tokenBalance);
+                const doesAmountExceedsTokenBalance = tokenBalanceRemainder.isNegative();
+                const newMaxAmountConsideringFee = !doesAmountExceedsTokenBalance
+                  ? amount.sub(tokenBalanceRemainder)
+                  : amount;
+
+                return newMaxAmountConsideringFee;
+              } else {
+                return amount;
+              }
+            })();
+
+            setMaxAmountConsideringFee(newMaxAmountConsideringFee);
+            setEstimatedGas({ data: gas, status: "successful" });
+          })
+          .catch((error) => {
+            if (isEthersInsufficientFundsError(error)) {
+              callIfMounted(() => {
+                setEstimatedGas({
+                  error: "You don't have enough ETH to pay for the fees",
+                  status: "failed",
+                });
+              });
+            } else {
+              callIfMounted(() => {
+                notifyError(error);
+              });
+            }
+          });
+      } else {
+        void getL2EstimatedGas();
+      }
     }
   }, [
     callIfMounted,
@@ -136,6 +235,7 @@ export const BridgeConfirmation: FC = () => {
     notifyError,
     tokenBalance,
     tokenSpendPermission,
+    getL2EstimatedGas,
   ]);
 
   useEffect(() => {
