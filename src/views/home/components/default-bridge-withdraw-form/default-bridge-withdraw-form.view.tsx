@@ -227,40 +227,6 @@ export const DefaultBridgeWithdrawForm: FC<DefaultBridgeWithdrawFormProps> = ({
     return result;
   };
 
-  const handleWrapClick = () => {
-    // computeWrappedTokenAddress params
-    // { nativeChain, otherChain, token }
-    if (!selectedChains) {
-      return;
-    }
-    const nativeChain = selectedChains.from;
-    const otherChain = selectedChains.to;
-    const targetToken = {
-      address: "0x35dA2cFD750F3D0ddD79BD8f6E4cA818C584a083",
-      chainId: 11155111,
-      decimals: 18,
-      logoURI:
-        "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
-      name: "Dai Stablecoin",
-      symbol: "DAI",
-    };
-    console.log("nativeChain", nativeChain);
-    console.log("otherChain", otherChain);
-    console.log("targetToken", targetToken);
-    computeWrappedTokenAddress({
-      nativeChain,
-      otherChain,
-      token: targetToken,
-    })
-      .then((res) => {
-        console.log("wrappedTokenAddress res", res);
-      })
-      .catch((error) => {
-        console.log("wrappedTokenAddress error", error);
-      });
-    // console.log("wrappedTokenAddress", wrappedTokenAddress);
-  };
-
   const getL1EstimatedGas = useCallback(() => {
     const ethereumChain = env?.chains.find((chain) => {
       return chain.key === "ethereum";
