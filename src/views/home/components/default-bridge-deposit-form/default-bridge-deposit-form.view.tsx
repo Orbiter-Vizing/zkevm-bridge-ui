@@ -12,7 +12,7 @@ import {
 } from "src/adapters/storage";
 import { EnvString, EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
 import { ReactComponent as CaretDown } from "src/assets/icons/caret-down.svg";
-import { BRIDGE_LIMIT, DEPOSIT_FEE, getEtherToken } from "src/constants";
+import { DEPOSIT_FEE, DEPOSIT_LIMIT, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
 import { useFormContext } from "src/contexts/form.context";
@@ -523,7 +523,7 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
   useEffect(() => {
     const inputValueInWei = ethers.utils.parseUnits(inputValue || "0", "ether");
     const feeInWei = ethers.utils.parseUnits(DEPOSIT_FEE, "ether"); // 0.00005
-    const bridgeLimitInWei = ethers.utils.parseUnits(BRIDGE_LIMIT, "ether"); // 0.0001
+    const bridgeLimitInWei = ethers.utils.parseUnits(DEPOSIT_LIMIT, "ether"); // 0.0001
     let valueShowed = inputValue;
     let errorContent = undefined;
 
@@ -539,7 +539,7 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
       } else if (inputValueInWei.lt(bridgeLimitInWei) && inputValue && !inputValueInWei.isZero()) {
         // less case
         valueShowed = inputValue;
-        errorContent = `Minimum bridge amount: ${BRIDGE_LIMIT}ETH`;
+        errorContent = `Minimum bridge amount: ${DEPOSIT_LIMIT}ETH`;
         setValueUserWillGet(valueShowed);
         setInputError(errorContent);
       }

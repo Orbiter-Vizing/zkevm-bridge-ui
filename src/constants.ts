@@ -104,7 +104,8 @@ export const TOKEN_BLACKLIST = [
   "0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9",
 ];
 
-export const BRIDGE_LIMIT = "0.0001"; // unit: ETH
+export const DEPOSIT_LIMIT = "0.0001"; // unit: ETH
+export const WITHDRAW_LIMIT = "0.0006"; // unit: ETH
 export const DEPOSIT_FEE = "0.00005"; // unit: ETH
 export const WITHDRAW_FEE = "0.0005"; // unit: ETH
 

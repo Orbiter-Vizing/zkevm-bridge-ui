@@ -1,11 +1,11 @@
-import { BigNumber, CallOverrides, ethers, utils as ethersUtils } from "ethers";
-import { parseUnits, zeroPad } from "ethers/lib/utils";
+import { BigNumber, ethers, utils as ethersUtils } from "ethers";
+import { parseUnits } from "ethers/lib/utils";
 import { ChangeEvent, FC, useCallback, useEffect, useState } from "react";
 
 import { addCustomToken, getChainCustomTokens, removeCustomToken } from "src/adapters/storage";
 import { EnvString, EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
 import { ReactComponent as CaretDown } from "src/assets/icons/caret-down.svg";
-import { BRIDGE_LIMIT, WITHDRAW_FEE, getEtherToken } from "src/constants";
+import { WITHDRAW_FEE, WITHDRAW_LIMIT, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
 import { useFormContext } from "src/contexts/form.context";
@@ -19,14 +19,12 @@ import { formatTokenAmount } from "src/utils/amounts";
 import { calculateMaxTxFee } from "src/utils/fees";
 import { isTokenEther, selectTokenAddress } from "src/utils/tokens";
 import { isAsyncTaskDataAvailable } from "src/utils/types";
-import { AmountInput } from "src/views/home/components/amount-input/amount-input.view";
 import { BridgeGasFee } from "src/views/home/components/bridge-gas-fee/bridge-gas-fee.view";
 import { useBridgeWithdrawFormStyles } from "src/views/home/components/bridge-withdraw-form/bridge-withdraw-form.styles";
 import { TokenSelector } from "src/views/home/components/token-selector/token-selector.view";
 import { Button } from "src/views/shared/button/button.view";
 import { Card } from "src/views/shared/card/card.view";
 import { ChainList } from "src/views/shared/chain-list/chain-list.view";
-import { ErrorMessage } from "src/views/shared/error-message/error-message.view";
 import { Icon } from "src/views/shared/icon/icon.view";
 import { Spinner } from "src/views/shared/spinner/spinner.view";
 import { TokenBalance } from "src/views/shared/token-balance/token-balance.view";
@@ -44,11 +42,7 @@ interface SelectedChains {
   to: Chain;
 }
 
-type EnvMode = "development" | "test" | "production";
-
 const DEBOUNCE_TIME_IN_MS = 750;
-// const WITHDRAW_FEE = 0.0005; // eth unit
-// const WITHDRAW_FEE = "0.0005"; // unit: eth
 
 export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
   account,
@@ -65,10 +59,9 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
     tokens: defaultTokens,
   } = useTokensContext();
   const { connectedProvider } = useProvidersContext();
-  const { bridge, estimateBridgeGas, estimateVizingBridgeGas } = useBridgeContext();
+  const { estimateBridgeGas, estimateVizingBridgeGas } = useBridgeContext();
   const [l1EstimatedGas, setL1EstimatedGas] = useState<BigNumber>();
   const [l2EstimatedGas, setL2EstimatedGas] = useState<BigNumber>();
-  const [isMaxClicked, setIsMaxClicked] = useState(false);
   const [balanceFrom, setBalanceFrom] = useState<AsyncTask<BigNumber, string>>({
     status: "pending",
   });
@@ -82,9 +75,7 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
   const [chains, setChains] = useState<Chain[]>();
   const [tokens, setTokens] = useState<Token[]>();
   const [isTokenListOpen, setIsTokenListOpen] = useState(false);
-  const { setFormData } = useFormContext();
   const [valueUserWillGet, setValueUserWillGet] = useState("");
-  const [invalidInputMsg, setInvalidInputMsg] = useState("");
   const [showL2Gas, setShowL2Gas] = useState(false);
   // amount input state
   const defaultInputValue = amount && token ? formatTokenAmount(amount, token) : "";
@@ -192,14 +183,6 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
     },
     [account, getErc20TokenBalance]
   );
-
-  // const getClaimBalance = () => {
-  //   const userInputNumber = Number(inputValue);
-  //   if (userInputNumber < WITHDRAW_FEE) {
-  //     return 0;
-  //   }
-  //   return userInputNumber - WITHDRAW_FEE;
-  // };
 
   const getSelectedChainTokens = (selectedChain: Chain, fromChain: Chain) => {
     // eslint-disable-next-line no-type-assertion/no-type-assertion
@@ -612,12 +595,12 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
       balanceFrom && isAsyncTaskDataAvailable(balanceFrom) ? balanceFrom.data : BigNumber.from(0);
     const inputValueInWei = ethers.utils.parseUnits(inputValue || "0", "ether");
     const feeInWei = ethers.utils.parseUnits(WITHDRAW_FEE, "ether"); // 0.0005
-    const bridgeLimitInWei = ethers.utils.parseUnits(BRIDGE_LIMIT, "ether"); // 0.0001
+    const bridgeLimitInWei = ethers.utils.parseUnits(WITHDRAW_LIMIT, "ether"); // 0.0006
     let valueShowed = inputValue;
     let errorContent = undefined;
 
     if (selectedChains?.to.key !== "ethereum" && inputValue) {
-      if (inputValueInWei.gte(feeInWei) && inputValueInWei.lt(balance)) {
+      if (inputValueInWei.gte(bridgeLimitInWei) && inputValueInWei.lt(balance)) {
         // normal case
         const valueMinusFee = inputValueInWei.sub(feeInWei);
         const resultInEther = ethers.utils.formatUnits(valueMinusFee, "ether");
@@ -625,10 +608,10 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
         errorContent = undefined;
         setValueUserWillGet(valueShowed);
         setInputError(errorContent);
-      } else if (inputValueInWei.lt(feeInWei) && inputValue && !inputValueInWei.isZero()) {
+      } else if (inputValueInWei.lt(bridgeLimitInWei) && inputValue && !inputValueInWei.isZero()) {
         // less case
         valueShowed = inputValue;
-        errorContent = `Minimum bridge amount: ${WITHDRAW_FEE}ETH`;
+        errorContent = `Minimum bridge amount: ${WITHDRAW_LIMIT}ETH`;
         setValueUserWillGet(valueShowed);
         setInputError(errorContent);
       }

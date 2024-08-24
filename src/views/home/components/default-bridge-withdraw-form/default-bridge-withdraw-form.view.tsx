@@ -6,7 +6,7 @@ import { ChangeEvent, FC, useCallback, useEffect, useState } from "react";
 import { addCustomToken, getChainCustomTokens, removeCustomToken } from "src/adapters/storage";
 import { EnvString, EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
 import { ReactComponent as CaretDown } from "src/assets/icons/caret-down.svg";
-import { BRIDGE_LIMIT, DEPOSIT_FEE, getEtherToken } from "src/constants";
+import { WITHDRAW_FEE, WITHDRAW_LIMIT, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
 import { useFormContext } from "src/contexts/form.context";
@@ -49,8 +49,6 @@ interface SelectedChains {
 type EnvMode = "development" | "test" | "production";
 
 const DEBOUNCE_TIME_IN_MS = 750;
-// const WITHDRAW_FEE = 0.0005; // eth unit
-const WITHDRAW_FEE = "0.0005"; // unit: eth
 
 export const DefaultBridgeWithdrawForm: FC<DefaultBridgeWithdrawFormProps> = ({
   // account,
@@ -196,14 +194,6 @@ export const DefaultBridgeWithdrawForm: FC<DefaultBridgeWithdrawFormProps> = ({
   //   },
   //   [account, getErc20TokenBalance]
   // );
-
-  // const getClaimBalance = () => {
-  //   const userInputNumber = Number(inputValue);
-  //   if (userInputNumber < WITHDRAW_FEE) {
-  //     return 0;
-  //   }
-  //   return userInputNumber - WITHDRAW_FEE;
-  // };
 
   const getSelectedChainTokens = (selectedChain: Chain, fromChain: Chain) => {
     // eslint-disable-next-line no-type-assertion/no-type-assertion
@@ -538,13 +528,13 @@ export const DefaultBridgeWithdrawForm: FC<DefaultBridgeWithdrawFormProps> = ({
 
   useEffect(() => {
     const inputValueInWei = ethers.utils.parseUnits(inputValue || "0", "ether");
-    const feeInWei = ethers.utils.parseUnits(WITHDRAW_FEE, "ether"); // 0.0005
-    const bridgeLimitInWei = ethers.utils.parseUnits(BRIDGE_LIMIT, "ether"); // 0.0001
+    const feeInWei = ethers.utils.parseUnits(WITHDRAW_FEE, "ether"); // 0.0006
+    const bridgeLimitInWei = ethers.utils.parseUnits(WITHDRAW_LIMIT, "ether"); // 0.0001
     let valueShowed = inputValue;
     let errorContent = undefined;
 
     if (selectedChains?.from.key !== "ethereum" && inputValue) {
-      if (inputValueInWei.gte(feeInWei)) {
+      if (inputValueInWei.gte(bridgeLimitInWei)) {
         // normal case
         const valueMinusFee = inputValueInWei.sub(feeInWei);
         const resultInEther = ethers.utils.formatUnits(valueMinusFee, "ether");
@@ -552,10 +542,10 @@ export const DefaultBridgeWithdrawForm: FC<DefaultBridgeWithdrawFormProps> = ({
         errorContent = undefined;
         setValueUserWillGet(valueShowed);
         setInputError(errorContent);
-      } else if (inputValueInWei.lt(feeInWei) && inputValue && !inputValueInWei.isZero()) {
+      } else if (inputValueInWei.lt(bridgeLimitInWei) && inputValue && !inputValueInWei.isZero()) {
         // less case
         valueShowed = inputValue;
-        errorContent = `Minimum bridge amount: ${WITHDRAW_FEE}ETH`;
+        errorContent = `Minimum bridge amount: ${WITHDRAW_LIMIT}ETH`;
         setValueUserWillGet(valueShowed);
         setInputError(errorContent);
       }
