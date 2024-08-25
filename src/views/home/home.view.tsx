@@ -145,11 +145,11 @@ export const Home = (): JSX.Element => {
             )}
             {/* {selectedTab === BridgeTab.WITHDRAW && "withdraw form"} */}
           </div>
-          {selectedTab === BridgeTab.WITHDRAW && (
+          {/* {selectedTab === BridgeTab.WITHDRAW && (
             <div className={classes.pendingListWrap}>
               <PendingList />
             </div>
-          )}
+          )} */}
           {/* {depositWarningModal.status === "open" && (
             <DepositWarningModal
               formData={depositWarningModal.data}

@@ -342,15 +342,29 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
       // && amount
     ) {
       const contractAddress = bridgeChain.bridgeContractAddress;
-      const provider = connectedProvider.data.provider;
+      const provider = bridgeChain.provider;
+      // const provider = connectedProvider.data.provider;
+      console.log("getL2EstimatedGas connectedProvider.provider", provider);
+      console.log("from chain provider", bridgeChain.provider);
       console.log("let contractAddress", contractAddress);
       console.log("L2 Bridge__factory contractAddress", contractAddress);
-      const contract = Bridge__factory.connect(contractAddress, provider.getSigner());
+      const contract = Bridge__factory.connect(contractAddress, provider);
 
       const fakePostMessage = ethersUtils.solidityPack(
         ["uint8", "uint256", "uint24"],
         [4, account, 50000]
       );
+
+      try {
+        const vizingValue = await contract.functions.estimateGas(
+          estimateAmount,
+          vizingChain.chainId,
+          ethers.constants.AddressZero,
+          fakePostMessage
+        );
+      } catch (error) {
+        console.error("deposit form contract.functions.estimateGas error", error);
+      }
 
       const vizingValue = await contract.functions.estimateGas(
         estimateAmount,
@@ -358,6 +372,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
         ethers.constants.AddressZero,
         fakePostMessage
       );
+
       console.log("deposit vizingValue", vizingValue[0]);
       console.log("seposit user amount", estimateAmount);
       const totalValue = vizingValue[0].add(estimateAmount);

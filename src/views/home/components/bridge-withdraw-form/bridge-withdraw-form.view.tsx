@@ -313,15 +313,26 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
     console.log("Estimate L2 gas amount", estimateAmount);
     if (connectedProvider.status === "successful" && bridgeChain && vizingChain && token) {
       const contractAddress = vizingChain.omniContractAddress;
-      const provider = connectedProvider.data.provider;
+      const provider = vizingChain.provider;
       console.log("let contractAddress", contractAddress);
       console.log("L2 Bridge__factory contractAddress", contractAddress);
-      const contract = Bridge__factory.connect(contractAddress, provider.getSigner());
+      const contract = Bridge__factory.connect(contractAddress, provider);
 
       const fakePostMessage = ethersUtils.solidityPack(
         ["uint8", "uint256", "uint24"],
         [4, account, 50000]
       );
+
+      try {
+        const vizingValue = await contract.functions.estimateGas(
+          estimateAmount,
+          bridgeChain.chainId,
+          ethers.constants.AddressZero,
+          fakePostMessage
+        );
+      } catch (error) {
+        console.error("withdraw form contract.functions.estimateGas error", error);
+      }
 
       const vizingValue = await contract.functions.estimateGas(
         estimateAmount,
@@ -329,6 +340,7 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
         ethers.constants.AddressZero,
         fakePostMessage
       );
+
       console.log("withdraw vizingValue", vizingValue[0]);
       console.log("withdraw user amount", estimateAmount);
       const totalValue = vizingValue[0].add(estimateAmount);

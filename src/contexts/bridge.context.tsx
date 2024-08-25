@@ -1135,69 +1135,63 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
             .then(executeBridge);
         }
       } else {
-        console.log("from chain info");
-        console.dir(from);
-        console.log("L2 bridge contract address", from.bridgeContractAddress);
-        console.log("my account address", account);
-        // const contract = Vizing_Bridge__factory.connect(
-        //   from.bridgeContractAddress,
-        //   provider.getSigner()
-        // );
-        let contractAddress = from.bridgeContractAddress;
-        console.log("let contractAddress", contractAddress);
-        if (from.key === "vizing") {
-          contractAddress = from.omniContractAddress;
-        }
-        console.log("L2 Bridge__factory contractAddress", contractAddress);
-        const contract = Bridge__factory.connect(contractAddress, provider.getSigner());
-        console.log("L2 contract", contract);
-        const fakePostMessage = ethersUtils.solidityPack(
-          ["uint8", "uint256", "uint24"],
-          [4, account, 50000]
-        );
-        console.log("before contract.functions.estimateGas amount", amount);
-        console.log("before contract.functions.estimateGas toChain", to);
-        console.log("before contract.functions.estimateGas fakePostMessage", fakePostMessage);
-        try {
+        const executeBridge = async () => {
+          console.log("excute launch");
+          console.log("from chain info");
+          console.dir(from);
+          console.log("L2 bridge contract address", from.bridgeContractAddress);
+          console.log("my account address", account);
+          let contractAddress = from.bridgeContractAddress;
+          console.log("let contractAddress", contractAddress);
+          if (from.key === "vizing") {
+            contractAddress = from.omniContractAddress;
+          }
+          console.log("L2 Bridge__factory contractAddress", contractAddress);
+          const contract = Bridge__factory.connect(contractAddress, provider.getSigner());
+          console.log("L2 contract", contract);
+          const fakePostMessage = ethersUtils.solidityPack(
+            ["uint8", "uint256", "uint24"],
+            [4, account, 50000]
+          );
+          console.log("before contract.functions.estimateGas amount", amount);
+          console.log("before contract.functions.estimateGas toChain", to);
+          console.log("before contract.functions.estimateGas fakePostMessage", fakePostMessage);
+          try {
+            const vizingValue = await contract.functions.estimateGas(
+              amount,
+              to.chainId,
+              ethers.constants.AddressZero,
+              fakePostMessage
+            );
+          } catch (error) {
+            console.error("try estimate error", error);
+          }
           const vizingValue = await contract.functions.estimateGas(
             amount,
             to.chainId,
             ethers.constants.AddressZero,
             fakePostMessage
           );
-        } catch (error) {
-          console.error("try estimate error", error);
-        }
-        const vizingValue = await contract.functions.estimateGas(
-          amount,
-          to.chainId,
-          ethers.constants.AddressZero,
-          fakePostMessage
-        );
-        console.log("vizingValue", vizingValue[0]);
-        console.log("user amount", amount);
-        // const vizingFeeBigNumber = ethers.BigNumber.from(vizingValue);
-        const totalValue = vizingValue[0].add(amount);
-        console.log("totalValue", totalValue);
-        const overrides: CallOverrides = {
-          // value: isTokenEther(token) ? vizingValue[0]._hex + userinput : undefined,
-          value: isTokenEther(token) ? totalValue : undefined,
-          ...(
-            await estimateVizingBridgeGas({
-              account,
-              destinationAddress,
-              from,
-              to,
-              token,
-              totalValue,
-              userInputValue: amount,
-            })
-          ).data,
-        };
-
-        const executeBridge = async () => {
-          console.log("excute launch");
-          // bridge assets logic
+          console.log("vizingValue", vizingValue[0]);
+          console.log("user amount", amount);
+          // const vizingFeeBigNumber = ethers.BigNumber.from(vizingValue);
+          const totalValue = vizingValue[0].add(amount);
+          console.log("totalValue", totalValue);
+          const overrides: CallOverrides = {
+            // value: isTokenEther(token) ? vizingValue[0]._hex + userinput : undefined,
+            value: isTokenEther(token) ? totalValue : undefined,
+            ...(
+              await estimateVizingBridgeGas({
+                account,
+                destinationAddress,
+                from,
+                to,
+                token,
+                totalValue,
+                userInputValue: amount,
+              })
+            ).data,
+          };
           console.log("overrides", overrides);
           // const
           return contract
@@ -1270,6 +1264,8 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
               return txData;
             });
         };
+        console.log("check network from.chainId", from.chainId);
+        console.log("check network connectedProvider.data.chainId", chainId);
         if (from.chainId === chainId) {
           // return executeBridge();
           console.log("network is right");

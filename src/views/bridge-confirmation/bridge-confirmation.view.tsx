@@ -94,20 +94,38 @@ export const BridgeConfirmation: FC = () => {
       vizingChain &&
       tokenBalance &&
       formData
-      // && amount
     ) {
       const { amount, from, to, token } = formData;
       const account = connectedProvider.data.account;
+      // temp implementation, for test consideration
       const contractAddress = bridgeChain.bridgeContractAddress;
-      const provider = connectedProvider.data.provider;
+      // if (from.key === "vizing") {
+      //   contractAddress = from.omniContractAddress;
+      // }
+      const provider = bridgeChain.provider;
+      // contractAddress and provider need to be pair
+      // const provider = connectedProvider.data.provider;
       console.log("let contractAddress", contractAddress);
       console.log("L2 Bridge__factory contractAddress", contractAddress);
-      const contract = Bridge__factory.connect(contractAddress, provider.getSigner());
+      console.log("getL2EstimatedGas from chain", from);
+      console.log("getL2EstimatedGas to chain", to);
+      const contract = Bridge__factory.connect(contractAddress, provider);
 
       const fakePostMessage = ethersUtils.solidityPack(
         ["uint8", "uint256", "uint24"],
         [4, account, 50000]
       );
+
+      try {
+        const vizingValue = await contract.functions.estimateGas(
+          estimateAmount,
+          vizingChain.chainId,
+          ethers.constants.AddressZero,
+          fakePostMessage
+        );
+      } catch (error) {
+        console.error("confirmation estimate l2 gas error", error);
+      }
 
       const vizingValue = await contract.functions.estimateGas(
         estimateAmount,
