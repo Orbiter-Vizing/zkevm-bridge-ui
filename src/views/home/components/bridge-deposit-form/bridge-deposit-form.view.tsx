@@ -434,19 +434,25 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     }
     const balance =
       balanceFrom && isAsyncTaskDataAvailable(balanceFrom) ? balanceFrom.data : BigNumber.from(0);
-    console.log("onMax balance", balance);
+    // console.log("onMax balance base10", balance.toString());
+    console.log("onMax token", token);
+    console.log("onMax balance in readable", ethers.utils.formatUnits(balance, token.decimals));
     const bigNumberDepositFee = ethers.utils.parseEther(DEPOSIT_FEE);
     // Max data should show: balance - contractFee -  gas
     // contractFee: DEPOSIT_FEE
     // gas: L1 or L2
-    // L1 gas: old logic
+    // L1 gas: estimateBridgeGas
     // L2 gas: Launch.getEstimatedGas
     let maxTransactionValueConsideringFee;
     console.log("selectedChains", selectedChains);
     if (selectedChains?.from.key === "ethereum") {
-      // L1 gas: old logic
-      maxTransactionValueConsideringFee = balance.sub(l1EstimatedGas);
-      console.log("l1 gas", formatTokenAmount(l1EstimatedGas, token));
+      // L1 gas: estimateBridgeGas
+      if (isTokenEther(token)) {
+        maxTransactionValueConsideringFee = balance.sub(l1EstimatedGas);
+        console.log("l1 gas", formatTokenAmount(l1EstimatedGas, token));
+      } else {
+        maxTransactionValueConsideringFee = balance;
+      }
     } else {
       // L2 gas: Launch.getEstimatedGas
       maxTransactionValueConsideringFee = balance.sub(bigNumberDepositFee).sub(l2EstimatedGas);
