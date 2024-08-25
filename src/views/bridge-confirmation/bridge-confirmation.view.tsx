@@ -7,7 +7,7 @@ import { getPermit, isContractAllowedToSpendToken } from "src/adapters/ethereum"
 import { getCurrency } from "src/adapters/storage";
 import { ReactComponent as ArrowRightIcon } from "src/assets/icons/arrow-right.svg";
 import { ReactComponent as IconBack } from "src/assets/icons/icon-back.svg";
-import { ETH_TOKEN_LOGO_URI, FIAT_DISPLAY_PRECISION, getEtherToken } from "src/constants";
+import { FIAT_DISPLAY_PRECISION, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
 import { useErrorContext } from "src/contexts/error.context";
@@ -32,12 +32,8 @@ import {
 import { useBridgeConfirmationStyles } from "src/views/bridge-confirmation/bridge-confirmation.styles";
 import { ApprovalInfo } from "src/views/bridge-confirmation/components/approval-info/approval-info.view";
 import { BridgeButton } from "src/views/bridge-confirmation/components/bridge-button/bridge-button.view";
-import { Card } from "src/views/shared/card/card.view";
 import { ErrorMessage } from "src/views/shared/error-message/error-message.view";
-import { Header } from "src/views/shared/header/header.view";
-import { Icon } from "src/views/shared/icon/icon.view";
 import { PageLoader } from "src/views/shared/page-loader/page-loader.view";
-import { Typography } from "src/views/shared/typography/typography.view";
 
 export const BridgeConfirmation: FC = () => {
   const callIfMounted = useCallIfMounted();
@@ -48,7 +44,7 @@ export const BridgeConfirmation: FC = () => {
   const { notifyError } = useErrorContext();
   const { bridge, estimateBridgeGas, estimateVizingBridgeGas } = useBridgeContext();
   const { formData, setFormData } = useFormContext();
-  const { openSnackbar } = useUIContext();
+  // const { openSnackbar } = useUIContext();
   const { connectedProvider } = useProvidersContext();
   const { getTokenPrice } = usePriceOracleContext();
   const { approve, getErc20TokenBalance, tokens } = useTokensContext();
@@ -96,7 +92,7 @@ export const BridgeConfirmation: FC = () => {
       formData
       // && amount
     ) {
-      const { amount, from, to, token } = formData;
+      const { amount, token } = formData;
       const account = connectedProvider.data.account;
       const contractAddress = bridgeChain.bridgeContractAddress;
       const provider = connectedProvider.data.provider;
@@ -490,19 +486,19 @@ export const BridgeConfirmation: FC = () => {
   const { from, to, token } = formData;
   const etherToken = getEtherToken(from);
 
-  const fiatAmount =
-    bridgedTokenFiatPrice &&
-    multiplyAmounts(
-      {
-        precision: FIAT_DISPLAY_PRECISION,
-        value: bridgedTokenFiatPrice,
-      },
-      {
-        precision: token.decimals,
-        value: maxAmountConsideringFee,
-      },
-      FIAT_DISPLAY_PRECISION
-    );
+  // const fiatAmount =
+  //   bridgedTokenFiatPrice &&
+  //   multiplyAmounts(
+  //     {
+  //       precision: FIAT_DISPLAY_PRECISION,
+  //       value: bridgedTokenFiatPrice,
+  //     },
+  //     {
+  //       precision: token.decimals,
+  //       value: maxAmountConsideringFee,
+  //     },
+  //     FIAT_DISPLAY_PRECISION
+  //   );
 
   const fee = calculateMaxTxFee(estimatedGas.data);
   const fiatFee =
@@ -520,13 +516,13 @@ export const BridgeConfirmation: FC = () => {
       FIAT_DISPLAY_PRECISION
     );
   console.log("fiat:", fiatFee);
-  const tokenAmountString = `${
-    maxAmountConsideringFee.gt(0) ? formatTokenAmount(maxAmountConsideringFee, token) : "0"
-  } ${token.symbol}`;
+  // const tokenAmountString = `${
+  //   maxAmountConsideringFee.gt(0) ? formatTokenAmount(maxAmountConsideringFee, token) : "0"
+  // } ${token.symbol}`;
 
-  const fiatAmountString = env.fiatExchangeRates.areEnabled
-    ? `${currencySymbol}${fiatAmount ? formatFiatAmount(fiatAmount) : "--"}`
-    : undefined;
+  // const fiatAmountString = env.fiatExchangeRates.areEnabled
+  //   ? `${currencySymbol}${fiatAmount ? formatFiatAmount(fiatAmount) : "--"}`
+  //   : undefined;
 
   const absMaxPossibleAmountConsideringFee = formatTokenAmount(
     maxAmountConsideringFee.abs(),
@@ -544,7 +540,12 @@ export const BridgeConfirmation: FC = () => {
   const etherFeeString = `${formatTokenAmount(fee, etherToken)} ${etherToken.symbol}`;
   const fiatFeeString = fiatFee ? `${currencySymbol}${formatFiatAmount(fiatFee)}` : undefined;
   const feeString = fiatFeeString ? `${etherFeeString} ~ ${fiatFeeString}` : etherFeeString;
-  const amountString = `${formatTokenAmount(formData.amount, etherToken)} ${etherToken.symbol}`;
+  console.log("before calculate amountString", formData.amount, token);
+  console.log(
+    "before calculate amountString in read",
+    ethers.utils.formatUnits(formData.amount, token.decimals)
+  );
+  const amountString = `${formatTokenAmount(formData.amount, token)} ${token.symbol}`;
 
   return (
     <div className={classes.contentWrapper}>
@@ -572,7 +573,6 @@ export const BridgeConfirmation: FC = () => {
           <div className={classes.detailName}>Amount to deposit</div>
           <div className={classes.detailData}>
             <div className={classes.tokenData}>{amountString}</div>
-            {/* <div className={classes.dollarData}>$64.62</div> */}
           </div>
         </div>
         <div className={classes.detailRow}>

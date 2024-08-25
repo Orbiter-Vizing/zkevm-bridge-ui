@@ -421,10 +421,14 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
     // L2 gas: Launch.getEstimatedGas
     let maxTransactionValueConsideringFee;
     console.log("selectedChains", selectedChains);
-    if (selectedChains?.from.key === "ethereum") {
+    if (selectedChains?.to.key === "ethereum") {
       // L1 gas: old logic
-      maxTransactionValueConsideringFee = balance.sub(l1EstimatedGas);
-      console.log("l1 gas", formatTokenAmount(l1EstimatedGas, token));
+      if (isTokenEther(token)) {
+        maxTransactionValueConsideringFee = balance.sub(l1EstimatedGas);
+        console.log("l1 gas", formatTokenAmount(l1EstimatedGas, token));
+      } else {
+        maxTransactionValueConsideringFee = balance;
+      }
     } else {
       // L2 gas: Launch.getEstimatedGas
       maxTransactionValueConsideringFee = balance.sub(bigNumberWithdrawFee).sub(l2EstimatedGas);
