@@ -134,6 +134,9 @@ export const useActivityStyles = createUseStyles((theme: Theme) => ({
     padding: [theme.spacing(1), theme.spacing(2)],
   },
   txContentWrapForScroll: {
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
     height: 608,
     overflow: "scroll",
   },
