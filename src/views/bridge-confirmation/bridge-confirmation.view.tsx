@@ -94,6 +94,7 @@ export const BridgeConfirmation: FC = () => {
       const { amount, token } = formData;
       const account = connectedProvider.data.account;
       // temp implementation, for test consideration
+      // cuz linea test env is not config yet
       const contractAddress = bridgeChain.bridgeContractAddress;
       // if (from.key === "vizing") {
       //   contractAddress = from.omniContractAddress;
@@ -103,8 +104,8 @@ export const BridgeConfirmation: FC = () => {
       // const provider = connectedProvider.data.provider;
       console.log("let contractAddress", contractAddress);
       console.log("L2 Bridge__factory contractAddress", contractAddress);
-      console.log("getL2EstimatedGas from chain", from);
-      console.log("getL2EstimatedGas to chain", to);
+      // console.log("getL2EstimatedGas from chain", from);
+      // console.log("getL2EstimatedGas to chain", to);
       const contract = Bridge__factory.connect(contractAddress, provider);
 
       const fakePostMessage = ethersUtils.solidityPack(
