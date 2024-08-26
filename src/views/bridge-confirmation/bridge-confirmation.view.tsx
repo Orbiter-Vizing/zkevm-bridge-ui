@@ -566,6 +566,9 @@ export const BridgeConfirmation: FC = () => {
   );
   const amountString = `${formatTokenAmount(formData.amount, token)} ${token.symbol}`;
 
+  const bridgeTimeText =
+    formData.from.key === "vizing" && formData.to.key === "ethereum" ? "~3 days" : "~1 minute";
+
   return (
     <div className={classes.contentWrapper}>
       <div className={classes.header}>
@@ -602,9 +605,9 @@ export const BridgeConfirmation: FC = () => {
           </div>
         </div>
         <div className={classes.detailRow}>
-          <div className={classes.detailName}>Time to transfer</div>
+          <div className={classes.detailName}>Time to bridge</div>
           <div className={classes.detailData}>
-            <div className={classes.tokenData}>~1 minute</div>
+            <div className={classes.tokenData}>{bridgeTimeText}</div>
           </div>
         </div>
       </div>

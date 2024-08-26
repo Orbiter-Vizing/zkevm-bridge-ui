@@ -34,7 +34,7 @@ export const ChainList: FC<ChainListProps> = ({ chains, onClick, onClose }) => {
       <div className={classes.background} onMouseDown={onOutsideClick}>
         <Card className={classes.card}>
           <div className={classes.header}>
-            <p className={classes.headerText}>Select chain</p>
+            <p className={classes.headerText}>Select Network</p>
             {/* <button className={classes.closeButton} onClick={onClose}>
               <XMarkIcon className={classes.closeButtonIcon} />
             </button> */}

@@ -12,6 +12,7 @@ import { ReactComponent as PolygonZkEVMChainIcon } from "src/assets/icons/chains
 import { ReactComponent as ScrollChainIcon } from "src/assets/icons/chains/scroll.svg";
 import { ReactComponent as TaikoChainIcon } from "src/assets/icons/chains/taiko.svg";
 import { ReactComponent as VizingChainIcon } from "src/assets/icons/chains/vizing.svg";
+import IconETH from "src/assets/icons/tokens/eth-icon.svg";
 import {
   ArbitrumChain,
   BOBChain,
@@ -434,7 +435,7 @@ export const getEtherToken = (chain: Chain): Token => {
     address: ethers.constants.AddressZero,
     chainId: chain.chainId,
     decimals: 18,
-    logoURI: ETH_TOKEN_LOGO_URI,
+    logoURI: IconETH,
     name: "Ether",
     symbol: "ETH",
   };

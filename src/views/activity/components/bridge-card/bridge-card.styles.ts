@@ -8,6 +8,9 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
     display: "flex",
     justifyContent: "center",
   },
+  amountInfo: {
+    width: 202,
+  },
   amountTokenIcon: {
     height: 20,
     width: 20,
@@ -127,6 +130,9 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
     marginRight: "auto",
     padding: [theme.spacing(0.5), theme.spacing(1)],
   },
+  statusInfo: {
+    width: 80,
+  },
   steps: {
     color: theme.palette.grey.dark,
     fontSize: 14,
@@ -134,6 +140,8 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
     marginTop: 0,
   },
   timeInfo: {
+    display: "flex",
+    justifyContent: "flex-start",
     width: 218,
   },
   toInfo: {

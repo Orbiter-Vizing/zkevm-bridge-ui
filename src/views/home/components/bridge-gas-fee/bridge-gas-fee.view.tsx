@@ -6,7 +6,7 @@ import { parseError } from "src/adapters/error";
 import { getPermit, isContractAllowedToSpendToken } from "src/adapters/ethereum";
 import { getCurrency } from "src/adapters/storage";
 import { ReactComponent as ArrowRightIcon } from "src/assets/icons/arrow-right.svg";
-import { ETH_TOKEN_LOGO_URI, FIAT_DISPLAY_PRECISION, getEtherToken } from "src/constants";
+import { FIAT_DISPLAY_PRECISION, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
 import { useErrorContext } from "src/contexts/error.context";
@@ -427,6 +427,8 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
     const etherToken = getEtherToken(from);
     const calculateGas = from.key === "ethereum" || to.key === "ethereum" ? l1Gas : l2Gas;
     const gasString = formatTokenAmount(calculateGas || BigNumber.from("0"), etherToken);
+    const bridgeTimeText =
+      formData.from.key === "vizing" && formData.to.key === "ethereum" ? "~3 days" : "~1 minute";
     return (
       <div className={classes.wrapper}>
         <div className={classes.row}>
@@ -436,8 +438,8 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
           </div>
         </div>
         <div className={classes.row}>
-          <div className={classes.dataName}>Time to transfer</div>
-          <div className={`${classes.data} ${classes.dataTime}`}>~1 minute</div>
+          <div className={classes.dataName}>Time to bridge</div>
+          <div className={`${classes.data} ${classes.dataTime}`}>{bridgeTimeText}</div>
         </div>
       </div>
     );
@@ -523,6 +525,8 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
   const gasString = showL2Gas && l2Gas ? formatTokenAmount(l2Gas, etherToken) : feeString;
 
   console.log("feeString at last", feeString);
+  const bridgeTimeText =
+    formData.from.key === "vizing" && formData.to.key === "ethereum" ? "~3 days" : "~1 minute";
 
   return (
     <div className={classes.wrapper}>
@@ -533,8 +537,8 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
         </div>
       </div>
       <div className={classes.row}>
-        <div className={classes.dataName}>Time to transfer</div>
-        <div className={`${classes.data} ${classes.dataTime}`}>~1 minute</div>
+        <div className={classes.dataName}>Time to bridge</div>
+        <div className={`${classes.data} ${classes.dataTime}`}>{bridgeTimeText}</div>
       </div>
     </div>
   );

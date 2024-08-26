@@ -157,7 +157,9 @@ export const BridgeCard: FC<BridgeCardProps> = ({
       //   bridge.status !== "initiated" && bridge.status !== "on-hold" ? bridge.claimTxHash : "-";
       return (
         <Card className={classes.card}>
-          <div>{!fiatAmountString && <div className={classes.amount}>{BridgeAmount}</div>}</div>
+          <div className={classes.amountInfo}>
+            {!fiatAmountString && <div className={classes.amount}>{BridgeAmount}</div>}
+          </div>
           <div className={classes.fromInfo}>
             <div className={classes.netName}>
               <span className={classes.networkIconWrap}>
@@ -183,14 +185,16 @@ export const BridgeCard: FC<BridgeCardProps> = ({
           <div className={classes.timeInfo}>
             {dayjs(millisecondCreatedTimeStamp).format("MM/DD YYYY HH:mm:ss")}
           </div>
-          <PendingStatusIcon status="claim" />
-          <div className={classes.top}>
+          <div className={classes.statusInfo}>
+            <PendingStatusIcon status="claim" />
+          </div>
+          {/* <div className={classes.top}>
             <div className={classes.infoContainer}>
               <div className={classes.info}>
                 <div className={classes.row}>{fiatAmountString && FiatAmount}</div>
               </div>
             </div>
-          </div>
+          </div> */}
         </Card>
       );
     }
@@ -203,7 +207,9 @@ export const BridgeCard: FC<BridgeCardProps> = ({
       //   bridge.status !== "initiated" && bridge.status !== "on-hold" ? bridge.claimTxHash : "-";
       return (
         <Card className={classes.card}>
-          <div>{!fiatAmountString && <div className={classes.amount}>{BridgeAmount}</div>}</div>
+          <div className={classes.amountInfo}>
+            {!fiatAmountString && <div className={classes.amount}>{BridgeAmount}</div>}
+          </div>
           <div className={classes.fromInfo}>
             <div className={classes.netName}>
               <span className={classes.networkIconWrap}>
@@ -227,14 +233,16 @@ export const BridgeCard: FC<BridgeCardProps> = ({
           <div className={classes.timeInfo}>
             {dayjs(millisecondCreatedTimeStamp).format("MM/DD YYYY HH:mm:ss")}
           </div>
-          <PendingStatusIcon status="pending" />
-          <div className={classes.top}>
+          <div className={classes.statusInfo}>
+            <PendingStatusIcon status="pending" />
+          </div>
+          {/* <div className={classes.top}>
             <div className={classes.infoContainer}>
               <div className={classes.info}>
                 <div className={classes.row}>{fiatAmountString && FiatAmount}</div>
               </div>
             </div>
-          </div>
+          </div> */}
         </Card>
       );
       // if (bridge.from.key === "ethereum") {
@@ -299,7 +307,9 @@ export const BridgeCard: FC<BridgeCardProps> = ({
       //   bridge.status !== "initiated" && bridge.status !== "on-hold" ? bridge.claimTxHash : "-";
       return (
         <Card className={classes.card}>
-          <div>{!fiatAmountString && <div className={classes.amount}>{BridgeAmount}</div>}</div>
+          <div className={classes.amountInfo}>
+            {!fiatAmountString && <div className={classes.amount}>{BridgeAmount}</div>}
+          </div>
           <div className={classes.fromInfo}>
             <div className={classes.netName}>
               <span className={classes.networkIconWrap}>
@@ -323,16 +333,18 @@ export const BridgeCard: FC<BridgeCardProps> = ({
           <div className={classes.timeInfo}>
             {dayjs(millisecondCreatedTimeStamp).format("MM/DD YYYY HH:mm:ss")}
           </div>
-          <button className={classes.claimButton} onClick={onClaimButtonClick}>
-            <PendingStatusIcon status="claim" />
-          </button>
-          <div className={classes.top}>
+          <div className={classes.statusInfo}>
+            <button className={classes.claimButton} onClick={onClaimButtonClick}>
+              <PendingStatusIcon status="claim" />
+            </button>
+          </div>
+          {/* <div className={classes.top}>
             <div className={classes.infoContainer}>
               <div className={classes.info}>
                 <div className={classes.row}>{fiatAmountString && FiatAmount}</div>
               </div>
             </div>
-          </div>
+          </div> */}
         </Card>
       );
       // if (bridge.from.key === "ethereum") {
@@ -407,7 +419,9 @@ export const BridgeCard: FC<BridgeCardProps> = ({
           className={classes.card}
           // onClick={() => onCardClick(bridge)}
         >
-          <div>{!fiatAmountString && <div className={classes.amount}>{BridgeAmount}</div>}</div>
+          <div className={classes.amountInfo}>
+            {!fiatAmountString && <div className={classes.amount}>{BridgeAmount}</div>}
+          </div>
           <div className={classes.fromInfo}>
             <div className={classes.netName}>
               <span className={classes.networkIconWrap}>
@@ -433,15 +447,17 @@ export const BridgeCard: FC<BridgeCardProps> = ({
           <div className={classes.timeInfo}>
             {dayjs(millisecondCreatedTimeStamp).format("MM/DD YYYY HH:mm:ss")}
           </div>
-          <PendingStatusIcon status="success" />
+          <div className={classes.statusInfo}>
+            <PendingStatusIcon status="success" />
+          </div>
           {/* <div>{BridgeStatus}</div> */}
-          <div className={classes.top}>
+          {/* <div className={classes.top}>
             <div className={classes.infoContainer}>
               <div className={classes.info}>
                 <div className={classes.row}>{fiatAmountString && FiatAmount}</div>
               </div>
             </div>
-          </div>
+          </div> */}
         </Card>
         // <Card className={classes.card} onClick={() => onCardClick(bridge)}>
         //   <div className={classes.top}>

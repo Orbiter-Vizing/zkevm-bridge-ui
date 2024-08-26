@@ -617,7 +617,7 @@ export const DefaultBridgeWithdrawForm: FC<DefaultBridgeWithdrawFormProps> = ({
         </div>
         <div className={`${classes.row} ${classes.fromChainTokenRow}`}>
           <button className={classes.tokenSelector} onClick={onTokenDropdownClick} type="button">
-            <Icon isRounded size={24} url={token.logoURI} />
+            <Icon isRounded size={32} url={token.logoURI} />
             <Typography className={classes.tokenName} type="h2">
               {token.symbol}
             </Typography>
