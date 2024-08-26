@@ -135,7 +135,17 @@ export const useActivityStyles = createUseStyles((theme: Theme) => ({
   },
   txContentWrapForScroll: {
     "&::-webkit-scrollbar": {
+      width: "4px",
+    },
+    "&::-webkit-scrollbar-corner": {
       display: "none",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: theme.palette.grey.main,
+      borderRadius: 2,
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      backgroundColor: theme.palette.grey.dark,
     },
     height: 608,
     overflow: "scroll",
