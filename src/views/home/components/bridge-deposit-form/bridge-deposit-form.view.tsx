@@ -32,6 +32,7 @@ import { ErrorMessage } from "src/views/shared/error-message/error-message.view"
 import { Icon } from "src/views/shared/icon/icon.view";
 import { Spinner } from "src/views/shared/spinner/spinner.view";
 import { TokenBalance } from "src/views/shared/token-balance/token-balance.view";
+import { TxToastContent } from "src/views/shared/tx-toast-content/tx-toast-content.view";
 import { Typography } from "src/views/shared/typography/typography.view";
 
 interface BridgeDepositFormProps {
@@ -217,9 +218,16 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     //   title: "Transaction Submitted",
     // };
     // pending and update
-    const id = toast.loading(<Msg text="initial text" title="initial title" />, {
-      isLoading: false,
-    });
+    const id = toast.loading(
+      <TxToastContent
+        text="The transaction has been submitted for processing."
+        title="Transaction Submitted"
+        type="pending"
+      />,
+      {
+        isLoading: false,
+      }
+    );
     //do something else
     // setTimeout(() => {
     //   toast.update(id, {
@@ -777,6 +785,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
         </Button>
         {/* {amount && inputError && <ErrorMessage error={inputError} />} */}
       </div>
+      {/* <button onClick={() => handleToast("pending")}>toast</button> */}
       {chains && (
         <ChainList
           chains={chains}

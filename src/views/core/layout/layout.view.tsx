@@ -1,26 +1,25 @@
 import { FC, PropsWithChildren, useEffect, useState } from "react";
 
-import { ToastContainer, toast } from "react-toastify";
-import { reportError } from "src/adapters/error";
+// import { reportError } from "src/adapters/error";
 import { ReactComponent as BackgroundPattern } from "src/assets/background-pattern.svg";
 import { useEnvContext } from "src/contexts/env.context";
-import { useUIContext } from "src/contexts/ui.context";
+// import { useUIContext } from "src/contexts/ui.context";
 import { Header } from "src/views/core/components/header/header.view";
 import { useLayoutStyles } from "src/views/core/layout/layout.styles";
 import { ConfirmationModal } from "src/views/shared/confirmation-modal/confirmation-modal.view";
 import { ExternalLink } from "src/views/shared/external-link/external-link.view";
-import { Snackbar } from "src/views/shared/snackbar/snackbar.view";
+// import { Snackbar } from "src/views/shared/snackbar/snackbar.view";
 import { TxToast } from "src/views/shared/tx-toast/tx-toast.view";
 import { Typography } from "src/views/shared/typography/typography.view";
 
 export const Layout: FC<PropsWithChildren> = ({ children }) => {
   const classes = useLayoutStyles();
-  const { closeSnackbar, snackbar } = useUIContext();
+  // const { closeSnackbar, snackbar } = useUIContext();
   const [showNetworkOutdatedModal, setShowNetworkOutdatedModal] = useState(false);
   const env = useEnvContext();
 
-  const onCloseSnackbar = closeSnackbar;
-  const onReportFromSnackbar = reportError;
+  // const onCloseSnackbar = closeSnackbar;
+  // const onReportFromSnackbar = reportError;
 
   useEffect(() => {
     if (env) {
