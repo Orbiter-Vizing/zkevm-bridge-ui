@@ -555,10 +555,10 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
     // }
   }, [inputValue, selectedChains, balanceFrom]);
 
-  useEffect(() => {
-    void getL2EstimatedGas();
-    getL1EstimatedGas();
-  }, [getL1EstimatedGas, getL2EstimatedGas]);
+  // useEffect(() => {
+  //   void getL2EstimatedGas();
+  //   getL1EstimatedGas();
+  // }, [getL1EstimatedGas, getL2EstimatedGas]);
 
   console.log("before spinner if tokens", tokens);
   if (!env || !selectedChains || !tokens || !token) {
@@ -634,14 +634,7 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
           <div className={classes.toChainRowRightBox}>{valueUserWillGet}</div>
         </div>
       </Card>
-      {debounceFormData && (
-        <BridgeGasFee
-          defaultForm={true}
-          formData={debounceFormData}
-          l1Gas={l1EstimatedGas}
-          l2Gas={l2EstimatedGas}
-        />
-      )}
+      {debounceFormData && <BridgeGasFee defaultForm={true} formData={debounceFormData} />}
       <div className={classes.connectWalletButtonWrap}>
         <ConnectWalletButton />
       </div>

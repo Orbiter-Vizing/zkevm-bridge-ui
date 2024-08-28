@@ -65,47 +65,26 @@ export const BridgeConfirmation: FC = () => {
   const homeRoute = routes["home"].path;
 
   const getL2EstimatedGas = useCallback(async () => {
-    const bridgeChain = env?.chains.find((chain) => {
-      return chain.key === "base";
-    });
-    const vizingChain = env?.chains.find((chain) => {
-      return chain.key === "vizing";
-    });
-    console.log("env", env?.chains.length);
-    console.log("bridgeChain", bridgeChain);
-    console.log("vizingChain", vizingChain);
-    if (!bridgeChain || !vizingChain) {
+    if (!formData) {
       return;
     }
-    // Estimate L2 gas like L1
-    const estimateAmount = BigNumber.from(1);
-    console.log("Estimate L2 gas connectedProvider", connectedProvider);
-    console.log("Estimate L2 gas bridgeChain", bridgeChain);
-    console.log("Estimate L2 gas vizingChain", vizingChain);
-    // console.log("Estimate L2 gas token", token);
-    console.log("Estimate L2 gas amount", estimateAmount);
-    if (
-      connectedProvider.status === "successful" &&
-      bridgeChain &&
-      vizingChain &&
-      tokenBalance &&
-      formData
-    ) {
+    const { from, to } = formData;
+    // if (from.key === "ethereum") {
+    //   return;
+    // }
+    const estimateAmount = BigNumber.from(0);
+    if (connectedProvider.status === "successful" && tokenBalance) {
       const { amount, token } = formData;
       const account = connectedProvider.data.account;
       // temp implementation, for test consideration
       // cuz linea test env is not config yet
-      const contractAddress = bridgeChain.bridgeContractAddress;
-      // if (from.key === "vizing") {
-      //   contractAddress = from.omniContractAddress;
-      // }
-      const provider = bridgeChain.provider;
-      // contractAddress and provider need to be pair
-      // const provider = connectedProvider.data.provider;
-      console.log("let contractAddress", contractAddress);
+      let contractAddress = from.bridgeContractAddress;
+      if (from.key === "vizing") {
+        contractAddress = from.omniContractAddress;
+      }
+      const provider = from.provider;
       console.log("L2 Bridge__factory contractAddress", contractAddress);
-      // console.log("getL2EstimatedGas from chain", from);
-      // console.log("getL2EstimatedGas to chain", to);
+
       const contract = Bridge__factory.connect(contractAddress, provider);
 
       const fakePostMessage = ethersUtils.solidityPack(
@@ -113,10 +92,11 @@ export const BridgeConfirmation: FC = () => {
         [4, account, 50000]
       );
 
+      let vizingValue = [BigNumber.from(0)];
       try {
-        const vizingValue = await contract.functions.estimateGas(
+        vizingValue = await contract.functions.estimateGas(
           estimateAmount,
-          vizingChain.chainId,
+          to.chainId,
           ethers.constants.AddressZero,
           fakePostMessage
         );
@@ -124,20 +104,14 @@ export const BridgeConfirmation: FC = () => {
         console.error("confirmation estimate l2 gas error", error);
       }
 
-      const vizingValue = await contract.functions.estimateGas(
-        estimateAmount,
-        vizingChain.chainId,
-        ethers.constants.AddressZero,
-        fakePostMessage
-      );
       console.log("deposit vizingValue", vizingValue[0]);
       console.log("seposit user amount", estimateAmount);
       const totalValue = vizingValue[0].add(estimateAmount);
       estimateVizingBridgeGas({
         account,
         destinationAddress: connectedProvider.data.account,
-        from: bridgeChain,
-        to: vizingChain,
+        from,
+        to,
         token,
         totalValue,
         userInputValue: estimateAmount,
@@ -174,7 +148,7 @@ export const BridgeConfirmation: FC = () => {
           console.error("Get L2 estimated gas failed:", error);
         });
     }
-  }, [env, estimateVizingBridgeGas, formData, connectedProvider, tokenBalance]);
+  }, [estimateVizingBridgeGas, formData, connectedProvider, tokenBalance]);
 
   useEffect(() => {
     if (

@@ -1,11 +1,10 @@
-import { BigNumber, CallOverrides, ethers, utils as ethersUtils } from "ethers";
-import { parseUnits, zeroPad } from "ethers/lib/utils";
+import { BigNumber, ethers, utils as ethersUtils } from "ethers";
+import { parseUnits } from "ethers/lib/utils";
 import { ChangeEvent, FC, useCallback, useEffect, useState } from "react";
 
 import { toast } from "react-toastify";
 import { addCustomToken, getChainCustomTokens, removeCustomToken } from "src/adapters/storage";
 import { EnvString, EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
-import { ReactComponent as ArrowDown } from "src/assets/icons/arrow-down.svg";
 import { ReactComponent as CaretDown } from "src/assets/icons/caret-down.svg";
 import { DEPOSIT_FEE, DEPOSIT_LIMIT, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
@@ -21,7 +20,6 @@ import { formatTokenAmount } from "src/utils/amounts";
 import { calculateMaxTxFee } from "src/utils/fees";
 import { isTokenEther, selectTokenAddress } from "src/utils/tokens";
 import { isAsyncTaskDataAvailable } from "src/utils/types";
-import { AmountInput } from "src/views/home/components/amount-input/amount-input.view";
 import { useBridgeDepositFormStyles } from "src/views/home/components/bridge-deposit-form/bridge-deposit-form.styles";
 import { BridgeGasFee } from "src/views/home/components/bridge-gas-fee/bridge-gas-fee.view";
 import { TokenSelector } from "src/views/home/components/token-selector/token-selector.view";
@@ -46,8 +44,6 @@ interface SelectedChains {
   from: Chain;
   to: Chain;
 }
-
-type EnvMode = "development" | "test" | "production";
 
 const DEBOUNCE_TIME_IN_MS = 750;
 
@@ -75,25 +71,18 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
   const [chains, setChains] = useState<Chain[]>();
   const [tokens, setTokens] = useState<Token[]>();
   const [isTokenListOpen, setIsTokenListOpen] = useState(false);
-  const { setFormData } = useFormContext();
-  const [l1EstimatedGas, setL1EstimatedGas] = useState<BigNumber>();
-  const [l2EstimatedGas, setL2EstimatedGas] = useState<BigNumber>();
-  const [isMaxClicked, setIsMaxClicked] = useState(false);
+  const [l1EstimatedGas, setL1EstimatedGas] = useState<BigNumber>(BigNumber.from(0));
+  const [l2EstimatedGas, setL2EstimatedGas] = useState<BigNumber>(BigNumber.from(0));
   const [valueUserWillGet, setValueUserWillGet] = useState("");
-  const [invalidInputMsg, setInvalidInputMsg] = useState("");
   const [showL2Gas, setShowL2Gas] = useState(false);
-  // const [] useState()
   // amount input state
   const defaultInputValue = amount && token ? formatTokenAmount(amount, token) : "";
   const [inputValue, setInputValue] = useState(defaultInputValue);
   const [debounceFormData, setDebounceFormData] = useState<FormData>();
   const debounceAmountValue = useDebounce(amount, DEBOUNCE_TIME_IN_MS);
-  // const debounceFormData ={
-  //   amount: debounceAmountValue,
-  //   from: selectedChains.from,
-  //   to: selectedChains.to,
-  //   token: token,
-  // }
+  const [maxAmountConsideringFee, setMaxAmountConsideringFee] = useState<BigNumber>(
+    BigNumber.from(0)
+  );
 
   const onAmountInputChange = ({ amount, error }: { amount?: BigNumber; error?: string }) => {
     setAmount(amount);
@@ -197,26 +186,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     [account, getErc20TokenBalance]
   );
 
-  const Msg = ({ text, title }: { text: string; title: string }) => {
-    return (
-      <div className={classes.txMsgBox}>
-        <p className={classes.txMsgTitle}>{title}</p>
-        <p className={classes.txMsgText}>{text}</p>
-      </div>
-    );
-  };
-
-  // const toaster = (myProps, toastProps): Id =>
-  //   toast(<Msg {...myProps} />, { ...toastProps });
-
-  // toaster.success = (myProps, toastProps): Id =>
-  //   toast.success(<Msg {...myProps} />, { ...toastProps });
-
   const handleToast = (type: "pending" | "success" | "fail") => {
-    // const masProps = {
-    //   text: "The transaction has been submitted for processing.",
-    //   title: "Transaction Submitted",
-    // };
     // pending and update
     const id = toast.loading(
       <TxToastContent
@@ -294,6 +264,12 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     });
   };
 
+  // const showMaxAmount = () => {
+  //   if (maxAmountConsideringFee) {
+  //     console.log("maxAmountConsideringFee", ethers.utils.formatUnits(maxAmountConsideringFee, 18));
+  //   }
+  // };
+
   const getL1EstimatedGas = useCallback(() => {
     const ethereumChain = env?.chains.find((chain) => {
       return chain.key === "ethereum";
@@ -323,39 +299,18 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
   }, [connectedProvider, estimateBridgeGas, env, token]);
 
   const getL2EstimatedGas = useCallback(async () => {
-    const bridgeChain = env?.chains.find((chain) => {
-      return chain.key === "base";
-    });
-    const vizingChain = env?.chains.find((chain) => {
-      return chain.key === "vizing";
-    });
-    console.log("env", env?.chains.length);
-    console.log("bridgeChain", bridgeChain);
-    console.log("vizingChain", vizingChain);
-    if (!bridgeChain || !vizingChain) {
+    if (!selectedChains) {
+      return;
+    }
+    const { from, to } = selectedChains;
+    if (from.key === "ethereum") {
       return;
     }
     // Estimate L2 gas like L1
-    const estimateAmount = BigNumber.from(1);
-    console.log("Estimate L2 gas connectedProvider", connectedProvider);
-    console.log("Estimate L2 gas bridgeChain", bridgeChain);
-    console.log("Estimate L2 gas vizingChain", vizingChain);
-    console.log("Estimate L2 gas token", token);
-    console.log("Estimate L2 gas amount", estimateAmount);
-    if (
-      connectedProvider.status === "successful" &&
-      bridgeChain &&
-      vizingChain &&
-      token
-      // && amount
-    ) {
-      const contractAddress = bridgeChain.bridgeContractAddress;
-      const provider = bridgeChain.provider;
-      // const provider = connectedProvider.data.provider;
-      console.log("getL2EstimatedGas connectedProvider.provider", provider);
-      console.log("from chain provider", bridgeChain.provider);
-      console.log("let contractAddress", contractAddress);
-      console.log("L2 Bridge__factory contractAddress", contractAddress);
+    const estimateAmount = BigNumber.from(0);
+    if (connectedProvider.status === "successful" && token) {
+      const contractAddress = from.bridgeContractAddress;
+      const provider = from.provider;
       const contract = Bridge__factory.connect(contractAddress, provider);
 
       const fakePostMessage = ethersUtils.solidityPack(
@@ -363,10 +318,11 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
         [4, account, 50000]
       );
 
+      let vizingValue = [BigNumber.from(0)];
       try {
-        const vizingValue = await contract.functions.estimateGas(
+        vizingValue = await contract.functions.estimateGas(
           estimateAmount,
-          vizingChain.chainId,
+          to.chainId,
           ethers.constants.AddressZero,
           fakePostMessage
         );
@@ -374,37 +330,26 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
         console.error("deposit form contract.functions.estimateGas error", error);
       }
 
-      const vizingValue = await contract.functions.estimateGas(
-        estimateAmount,
-        vizingChain.chainId,
-        ethers.constants.AddressZero,
-        fakePostMessage
-      );
-
-      console.log("deposit vizingValue", vizingValue[0]);
-      console.log("seposit user amount", estimateAmount);
       const totalValue = vizingValue[0].add(estimateAmount);
       estimateVizingBridgeGas({
         account,
         destinationAddress: connectedProvider.data.account,
-        from: bridgeChain,
-        to: vizingChain,
+        from,
+        to,
         token,
         totalValue,
         userInputValue: estimateAmount,
       })
         .then((gas: Gas) => {
           const newFee = calculateMaxTxFee(gas);
-          console.log("getL2EstimatedGas gas", gas);
-          console.log("getL2EstimatedGas gas format", formatTokenAmount(gas.data.gasLimit, token));
-          console.log("getL2EstimatedGas newFee format", formatTokenAmount(newFee, token));
+
           setL2EstimatedGas(newFee);
         })
         .catch((error) => {
           console.error("Get L2 estimated gas failed:", error);
         });
     }
-  }, [env, estimateVizingBridgeGas, token, connectedProvider, account]);
+  }, [estimateVizingBridgeGas, token, connectedProvider, account, selectedChains]);
 
   // amount input logic out
   const processOnChangeCallback = (amount?: BigNumber) => {
@@ -419,7 +364,6 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     }
   };
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log("input changing...");
     if (!token) {
       return;
     }
@@ -437,37 +381,25 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     }
   };
   const onMax = () => {
-    if (!token || !l2EstimatedGas || !l1EstimatedGas) {
+    if (!token) {
       return;
     }
     const balance =
       balanceFrom && isAsyncTaskDataAvailable(balanceFrom) ? balanceFrom.data : BigNumber.from(0);
-    // console.log("onMax balance base10", balance.toString());
-    console.log("onMax token", token);
-    console.log("onMax balance in readable", ethers.utils.formatUnits(balance, token.decimals));
     const bigNumberDepositFee = ethers.utils.parseEther(DEPOSIT_FEE);
-    // Max data should show: balance - contractFee -  gas
-    // contractFee: DEPOSIT_FEE
-    // gas: L1 or L2
-    // L1 gas: estimateBridgeGas
-    // L2 gas: Launch.getEstimatedGas
+    // Max data should be: balance - contractFee -  gas
     let maxTransactionValueConsideringFee;
-    console.log("selectedChains", selectedChains);
     if (selectedChains?.from.key === "ethereum") {
       // L1 gas: estimateBridgeGas
       if (isTokenEther(token)) {
         maxTransactionValueConsideringFee = balance.sub(l1EstimatedGas);
-        console.log("l1 gas", formatTokenAmount(l1EstimatedGas, token));
       } else {
         maxTransactionValueConsideringFee = balance;
       }
     } else {
       // L2 gas: Launch.getEstimatedGas
       maxTransactionValueConsideringFee = balance.sub(bigNumberDepositFee).sub(l2EstimatedGas);
-      console.log("l2 gas", formatTokenAmount(l2EstimatedGas, token));
     }
-    console.log("vizingFee", formatTokenAmount(bigNumberDepositFee, token));
-    console.log("maxTxValue", formatTokenAmount(maxTransactionValueConsideringFee, token));
     if (balance.gt(0)) {
       // setInputValue(formatTokenAmount(balance, token));
       // processOnChangeCallback(balance);
@@ -477,7 +409,6 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
       setInputValue("");
       processOnChangeCallback();
     }
-    setIsMaxClicked(true);
   };
   useEffect(() => {
     // Reset the input when the chain or the token are changed
@@ -493,9 +424,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
       const { from } = selectedChains;
       const chainTokens = [...getChainCustomTokens(from), ...defaultTokens];
       // console.log("chainTokens when select chain", chainTokens);
-      console.log("load all tokens", chainTokens);
       const selectedChainTokens = getSelectedChainTokens(from);
-      console.log("selectedChainTokens", selectedChainTokens);
       setToken(getEtherToken(from));
       if (from.key === "ethereum") {
         setShowL2Gas(false);
@@ -683,12 +612,38 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     // }
   }, [inputValue, selectedChains, balanceFrom]);
 
-  console.log("before spinner if tokens", tokens);
+  // set MaxAmountConsideringFee
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+    const balance =
+      balanceFrom && isAsyncTaskDataAvailable(balanceFrom) ? balanceFrom.data : BigNumber.from(0);
+    // console.log("onMax token", token);
+    // console.log("onMax balance in readable", ethers.utils.formatUnits(balance, token.decimals));
+    const bigNumberDepositFee = ethers.utils.parseEther(DEPOSIT_FEE);
+    // Max data should be: balance - contractFee -  gas
+    let maxTransactionValueConsideringFee;
+    // console.log("onMax selectedChains", selectedChains);
+    if (selectedChains?.from.key === "ethereum") {
+      // L1 gas: estimateBridgeGas
+      if (isTokenEther(token)) {
+        const safeL1EstimatedGas = l1EstimatedGas.mul(3).div(2);
+        maxTransactionValueConsideringFee = balance.sub(safeL1EstimatedGas);
+        // console.log("l1 gas", formatTokenAmount(l1EstimatedGas, token));
+      } else {
+        maxTransactionValueConsideringFee = balance;
+      }
+    } else {
+      // L2 gas: Launch.getEstimatedGas
+      const safeL2EstimatedGas = l2EstimatedGas.mul(3).div(2);
+      maxTransactionValueConsideringFee = balance.sub(bigNumberDepositFee).sub(safeL2EstimatedGas);
+      // console.log("l2 gas", formatTokenAmount(l2EstimatedGas, token));
+    }
+    setMaxAmountConsideringFee(maxTransactionValueConsideringFee);
+  }, [balanceFrom, l1EstimatedGas, l2EstimatedGas, selectedChains, token]);
+
   if (!env || !selectedChains || !tokens || !token) {
-    console.log("spinner env", env);
-    console.log("spinner selectedChains", selectedChains);
-    console.log("spinner tokens", tokens);
-    console.log("spinner token", token);
     return (
       <div className={classes.spinner}>
         <Spinner />
@@ -777,7 +732,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
         </div>
       </Card>
       {debounceFormData && (
-        <BridgeGasFee formData={debounceFormData} l2Gas={l2EstimatedGas} showL2Gas={showL2Gas} />
+        <BridgeGasFee formData={debounceFormData} l1Gas={l1EstimatedGas} l2Gas={l2EstimatedGas} />
       )}
       <div className={classes.button}>
         <Button disabled={!amount || amount.isZero() || inputError !== undefined} type="submit">
@@ -786,6 +741,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
         {/* {amount && inputError && <ErrorMessage error={inputError} />} */}
       </div>
       {/* <button onClick={() => handleToast("pending")}>toast</button> */}
+      {/* <span onClick={showMaxAmount}>showMaxAmount</span> */}
       {chains && (
         <ChainList
           chains={chains}

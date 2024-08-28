@@ -561,10 +561,10 @@ export const DefaultBridgeWithdrawForm: FC<DefaultBridgeWithdrawFormProps> = ({
     // }
   }, [inputValue, selectedChains, balanceFrom]);
 
-  useEffect(() => {
-    void getL2EstimatedGas();
-    getL1EstimatedGas();
-  }, [getL2EstimatedGas, getL1EstimatedGas]);
+  // useEffect(() => {
+  //   void getL2EstimatedGas();
+  //   getL1EstimatedGas();
+  // }, [getL2EstimatedGas, getL1EstimatedGas]);
 
   console.log("withdraw from env", env);
   console.log("withdraw from selectedChains", selectedChains);
@@ -674,14 +674,7 @@ export const DefaultBridgeWithdrawForm: FC<DefaultBridgeWithdrawFormProps> = ({
           <div className={classes.toChainRowRightBox}>{valueUserWillGet}</div>
         </div>
       </Card>
-      {debounceFormData && (
-        <BridgeGasFee
-          defaultForm={true}
-          formData={debounceFormData}
-          l1Gas={l1EstimatedGas}
-          l2Gas={l2EstimatedGas}
-        />
-      )}
+      {debounceFormData && <BridgeGasFee defaultForm={true} formData={debounceFormData} />}
       <div className={classes.connectWalletButtonWrap}>
         <ConnectWalletButton />
       </div>

@@ -269,53 +269,21 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
   }, [connectedProvider, estimateBridgeGas, env, token]);
 
   const getL2EstimatedGas = useCallback(async () => {
-    const bridgeChain = env?.chains.find((chain) => {
-      return chain.key === "base";
-    });
-    const vizingChain = env?.chains.find((chain) => {
-      return chain.key === "vizing";
-    });
-    // console.log("getL2EstimatedGas 111");
-    console.log("env", env?.chains.length);
-    console.log("bridgeChain", bridgeChain);
-    console.log("vizingChain", vizingChain);
-    if (!bridgeChain || !vizingChain) {
+    if (!selectedChains || !env) {
       return;
     }
-    // old logic
-    // const contract = Bridge__factory.connect(
-    //   bridgeChain.bridgeContractAddress,
-    //   bridgeChain.provider
-    // );
-    // const fakePostMessage = ethersUtils.solidityPack(
-    //   ["uint8", "uint256", "uint24"],
-    //   [4, account, 500000]
-    // );
-    // contract.functions
-    //   .estimateGas(
-    //     BigNumber.from("1"),
-    //     bridgeChain.chainId,
-    //     ethers.constants.AddressZero,
-    //     fakePostMessage
-    //   )
-    //   .then((res) => {
-    //     setL2EstimatedGas(res[0]);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Get L2 estimated gas failed:", error);
-    //   });
+    const { from, to } = selectedChains;
+    if (to.key === "ethereum") {
+      return;
+    }
+    const vizingChain = env.chains.find((chain) => {
+      return chain.key === "vizing";
+    });
     // Estimate L2 gas like L1
-    const estimateAmount = BigNumber.from(1);
-    console.log("Estimate L2 gas connectedProvider", connectedProvider);
-    console.log("Estimate L2 gas bridgeChain", bridgeChain);
-    console.log("Estimate L2 gas vizingChain", vizingChain);
-    console.log("Estimate L2 gas token", token);
-    console.log("Estimate L2 gas amount", estimateAmount);
-    if (connectedProvider.status === "successful" && bridgeChain && vizingChain && token) {
+    const estimateAmount = BigNumber.from(0);
+    if (connectedProvider.status === "successful" && token && vizingChain) {
       const contractAddress = vizingChain.omniContractAddress;
       const provider = vizingChain.provider;
-      console.log("let contractAddress", contractAddress);
-      console.log("L2 Bridge__factory contractAddress", contractAddress);
       const contract = Bridge__factory.connect(contractAddress, provider);
 
       const fakePostMessage = ethersUtils.solidityPack(
@@ -323,10 +291,11 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
         [4, account, 50000]
       );
 
+      let vizingValue = [BigNumber.from(0)];
       try {
-        const vizingValue = await contract.functions.estimateGas(
+        vizingValue = await contract.functions.estimateGas(
           estimateAmount,
-          bridgeChain.chainId,
+          to.chainId,
           ethers.constants.AddressZero,
           fakePostMessage
         );
@@ -334,40 +303,25 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
         console.error("withdraw form contract.functions.estimateGas error", error);
       }
 
-      const vizingValue = await contract.functions.estimateGas(
-        estimateAmount,
-        bridgeChain.chainId,
-        ethers.constants.AddressZero,
-        fakePostMessage
-      );
-
-      console.log("withdraw vizingValue", vizingValue[0]);
-      console.log("withdraw user amount", estimateAmount);
       const totalValue = vizingValue[0].add(estimateAmount);
       estimateVizingBridgeGas({
         account,
         destinationAddress: connectedProvider.data.account,
         from: vizingChain,
-        to: bridgeChain,
+        to,
         token,
         totalValue,
         userInputValue: estimateAmount,
       })
         .then((gas: Gas) => {
           const newFee = calculateMaxTxFee(gas);
-          console.log("withdraw getL2EstimatedGas gas", gas);
-          console.log(
-            "withdraw getL2EstimatedGas gas format",
-            formatTokenAmount(gas.data.gasLimit, token)
-          );
-          console.log("withdraw getL2EstimatedGas newFee format", formatTokenAmount(newFee, token));
           setL2EstimatedGas(newFee);
         })
         .catch((error) => {
           console.error("Get L2 estimated gas failed:", error);
         });
     }
-  }, [account, env, estimateVizingBridgeGas, token, connectedProvider]);
+  }, [account, env, estimateVizingBridgeGas, token, connectedProvider, selectedChains]);
 
   // amount input logic out
   const processOnChangeCallback = (amount?: BigNumber) => {
@@ -382,7 +336,6 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
     }
   };
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log("input changing...");
     if (!token) {
       return;
     }
@@ -400,14 +353,11 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
     }
   };
   const onMax = () => {
-    console.log("onMax l1EstimatedGas", l1EstimatedGas);
-    console.log("onMax l2EstimatedGas", l2EstimatedGas);
     if (!token || !l2EstimatedGas || !l1EstimatedGas) {
       return;
     }
     const balance =
       balanceFrom && isAsyncTaskDataAvailable(balanceFrom) ? balanceFrom.data : BigNumber.from(0);
-    console.log("onMax balance", balance);
     const bigNumberWithdrawFee = ethers.utils.parseEther(WITHDRAW_FEE);
     // Max data should show: balance - contractFee -  gas
     // contractFee: DEPOSIT_FEE
@@ -415,7 +365,6 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
     // L1 gas: old logic
     // L2 gas: Launch.getEstimatedGas
     let maxTransactionValueConsideringFee;
-    console.log("selectedChains", selectedChains);
     if (selectedChains?.to.key === "ethereum") {
       // L1 gas: old logic
       if (isTokenEther(token)) {
@@ -427,10 +376,7 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
     } else {
       // L2 gas: Launch.getEstimatedGas
       maxTransactionValueConsideringFee = balance.sub(bigNumberWithdrawFee).sub(l2EstimatedGas);
-      console.log("l2 gas", formatTokenAmount(l2EstimatedGas, token));
     }
-    console.log("vizingFee", formatTokenAmount(bigNumberWithdrawFee, token));
-    console.log("maxTxValue", formatTokenAmount(maxTransactionValueConsideringFee, token));
     if (balance.gt(0)) {
       // setInputValue(formatTokenAmount(balance, token));
       setInputValue(formatTokenAmount(maxTransactionValueConsideringFee, token));
@@ -452,9 +398,7 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
     if (selectedChains && defaultTokens) {
       const { from, to } = selectedChains;
       const chainTokens = [...getChainCustomTokens(from), ...defaultTokens];
-      console.log("load all tokens", chainTokens);
       const selectedChainTokens = getSelectedChainTokens(to, selectedChains.from);
-      console.log("selectedChainTokens withdraw", selectedChainTokens);
       setToken(getEtherToken(from));
       setValueUserWillGet("");
       if (to.key === "ethereum") {
@@ -758,7 +702,7 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
         </div>
       </Card>
       {debounceFormData && (
-        <BridgeGasFee formData={debounceFormData} l2Gas={l2EstimatedGas} showL2Gas={showL2Gas} />
+        <BridgeGasFee formData={debounceFormData} l1Gas={l1EstimatedGas} l2Gas={l2EstimatedGas} />
       )}
       <div className={classes.button}>
         <Button disabled={!amount || amount.isZero() || inputError !== undefined} type="submit">
