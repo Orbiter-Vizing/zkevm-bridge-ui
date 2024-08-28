@@ -567,7 +567,8 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
 
         const id = serializeBridgeId({
           depositCount,
-          networkId: from.networkId,
+          networkId: to.chainId,
+          // networkId: from.networkId,
         });
 
         switch (claim.status) {
@@ -636,6 +637,14 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
 
   const REFRESH_PAGE_SIZE = 100;
 
+  // poll-reloading params
+  // {
+  //   abortSignal: fetchBridgesAbortController.current.signal,
+  //   env,
+  //   ethereumAddress: connectedProvider.data.account,
+  //   quantity: lastLoadedItem,
+  //   type: "reload",
+  // }
   const refreshBridges = useCallback(
     async ({
       abortSignal,
@@ -686,6 +695,14 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
   //   limit: PAGE_SIZE,
   //   offset: 0,
   //   type: "load",
+  // }
+  // poll-reloading params
+  // {
+  //   abortSignal: fetchBridgesAbortController.current.signal,
+  //   env,
+  //   ethereumAddress: connectedProvider.data.account,
+  //   quantity: lastLoadedItem,
+  //   type: "reload",
   // }
   const fetchBridges = useCallback(
     async (

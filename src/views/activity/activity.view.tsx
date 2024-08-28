@@ -27,7 +27,6 @@ import { BridgeCard } from "src/views/activity/components/bridge-card/bridge-car
 import { InfiniteScroll } from "src/views/activity/components/infinite-scroll/infinite-scroll.view";
 import { Card } from "src/views/shared/card/card.view";
 import { ConnectWalletButton } from "src/views/shared/connect-wallet-button/connect-wallet-button.view";
-import { Header } from "src/views/shared/header/header.view";
 import { PageLoader } from "src/views/shared/page-loader/page-loader.view";
 import { Typography } from "src/views/shared/typography/typography.view";
 
@@ -124,6 +123,7 @@ export const Activity: FC = () => {
       setApiBridges({ data: bridges, status: "successful" });
       getPendingBridges(bridges)
         .then((data) => {
+          console.log("getPendingBridges(bridges) data", data);
           callIfMounted(() => {
             setPendingBridges({ data, status: "successful" });
           });
@@ -153,6 +153,7 @@ export const Activity: FC = () => {
   );
 
   const onLoadNextPage = () => {
+    console.log("onLoadNextPage call");
     if (
       env &&
       isAsyncTaskDataAvailable(connectedProvider) &&
@@ -171,7 +172,7 @@ export const Activity: FC = () => {
         type: "reload",
       })
         .then(({ bridges, total }) => {
-          console.log("bridges data", bridges);
+          console.log("onLoadNextPage bridges data", bridges);
           callIfMounted(() => {
             processFetchBridgesSuccess(bridges);
             setTotal(total);
@@ -309,6 +310,8 @@ export const Activity: FC = () => {
   }, [connectedProvider]);
 
   const mergeBridges = (apiBridges: Bridge[], pendingBridges: PendingBridge[]) => {
+    console.log("mergeBridges - apiBridges", apiBridges);
+    console.log("mergeBridges - pendingBridges", pendingBridges);
     return [
       ...pendingBridges.filter(
         (pendingBridge) =>
@@ -443,13 +446,15 @@ export const Activity: FC = () => {
     case "loading-more-items":
     case "reloading": {
       const allBridges = mergeBridges(apiBridges.data, pendingBridges.data);
+      console.log("after mergeBridges allBridges", allBridges);
       const splitedBridgesByIsCompleted = splitBridgesByIsCompleted(allBridges);
       // const filteredList = displayAll ? allBridges : pendingBridges.data;
+      console.log("splitBridgesByIsCompleted", splitedBridgesByIsCompleted);
       const filteredList = displayAll
         ? splitedBridgesByIsCompleted.success
         : splitedBridgesByIsCompleted.notSuccess;
       console.log("splited by is completed, filteredList:", filteredList);
-      const successBridgesLength = splitedBridgesByIsCompleted.success.length;
+      // const successBridgesLength = splitedBridgesByIsCompleted.success.length;
       const pendingBridgesLength = splitedBridgesByIsCompleted.notSuccess.length;
 
       return (
@@ -458,7 +463,7 @@ export const Activity: FC = () => {
             <div ref={headerBorderObserved}></div>
             <div className={classes.stickyContent} ref={headerBorderTarget}>
               <div className={classes.contentWrapper}>
-                <Tabs all={successBridgesLength} pending={pendingBridgesLength} />
+                <Tabs all={total} pending={pendingBridgesLength} />
               </div>
             </div>
             <div className={classes.txContent}>
