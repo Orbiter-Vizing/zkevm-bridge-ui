@@ -1,6 +1,5 @@
 import {
   BigNumber,
-  BigNumberish,
   CallOverrides,
   ContractTransaction,
   ethers,
@@ -25,7 +24,6 @@ import {
   FIAT_DISPLAY_PRECISION,
   GAS_PRICE_INCREASE_PERCENTAGE,
   PENDING_TX_TIMEOUT,
-  getEtherToken,
 } from "src/constants";
 import { useEnvContext } from "src/contexts/env.context";
 import { usePriceOracleContext } from "src/contexts/price-oracle.context";
@@ -42,10 +40,9 @@ import {
   PendingBridge,
   Token,
   TokenSpendPermission,
-  VizingChain,
 } from "src/domain";
 import { Bridge__factory } from "src/types/contracts/bridge";
-import { formatTokenAmount, multiplyAmounts } from "src/utils/amounts";
+import { multiplyAmounts } from "src/utils/amounts";
 import { serializeBridgeId } from "src/utils/serializers";
 import { isTokenEther, selectTokenAddress } from "src/utils/tokens";
 import { isAsyncTaskDataAvailable } from "src/utils/types";
@@ -153,11 +150,6 @@ interface BridgeContext {
   }>;
   getPendingBridges: (bridges?: Bridge[]) => Promise<PendingBridge[]>;
   pushBridge: (params: PushBridgeParams) => Promise<void>;
-}
-
-enum TransactionType {
-  L1 = "l1",
-  L2 = "l2",
 }
 
 const bridgeContextNotReadyErrorMsg = "The bridge context is not yet ready";
@@ -429,7 +421,6 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
           }
 
           return acc.then((accDeposits) => {
-            const zeroAddress = ethers.constants.AddressZero;
             if (orig_net === 0 || dest_net === 0) {
               return getToken({
                 env,
@@ -949,9 +940,9 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
         ? { from: destinationAddress, value: totalValue }
         : { from: destinationAddress };
       console.log("estimateVizingBridgeGas 222");
-      const tokenAddress = selectTokenAddress(token, from);
-      const forceUpdateGlobalExitRoot =
-        from.key === "vizing" ? true : env.forceUpdateGlobalExitRootForL1;
+      // const tokenAddress = selectTokenAddress(token, from);
+      // const forceUpdateGlobalExitRoot =
+      //   from.key === "vizing" ? true : env.forceUpdateGlobalExitRootForL1;
 
       // if (!isAsyncTaskDataAvailable(connectedProvider)) {
       //   throw new Error("Connected provider is not available");
@@ -965,7 +956,7 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
       );
 
       console.log("before Launch gasLimit");
-      let gasLimit;
+      let gasLimit = BigNumber.from(0);
       try {
         gasLimit = await contract.estimateGas // contract is bridge contract
           .Launch(
@@ -1172,8 +1163,9 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
           console.log("before contract.functions.estimateGas amount", amount);
           console.log("before contract.functions.estimateGas toChain", to);
           console.log("before contract.functions.estimateGas fakePostMessage", fakePostMessage);
+          let vizingValue = [BigNumber.from(0)];
           try {
-            const vizingValue = await contract.functions.estimateGas(
+            vizingValue = await contract.functions.estimateGas(
               amount,
               to.chainId,
               ethers.constants.AddressZero,
@@ -1182,12 +1174,12 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
           } catch (error) {
             console.error("try estimate error", error);
           }
-          const vizingValue = await contract.functions.estimateGas(
-            amount,
-            to.chainId,
-            ethers.constants.AddressZero,
-            fakePostMessage
-          );
+          // const vizingValue = await contract.functions.estimateGas(
+          //   amount,
+          //   to.chainId,
+          //   ethers.constants.AddressZero,
+          //   fakePostMessage
+          // );
           console.log("vizingValue", vizingValue[0]);
           console.log("user amount", amount);
           // const vizingFeeBigNumber = ethers.BigNumber.from(vizingValue);
@@ -1208,7 +1200,6 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
               })
             ).data,
           };
-          console.log("overrides", overrides);
           // const
           return contract
             .Launch(
@@ -1256,26 +1247,25 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
               console.log("newTxHashQueue l2", newTxHashQueue);
               setTxQueue(newTxHashQueue);
               // push bridge info
-              const weiAmount = ethers.utils.parseUnits(amount.toString(), "wei");
-              const weiAmountString = weiAmount.toString();
-              console.log("weiAmount", weiAmount);
-              console.log("weiAmountString", weiAmountString);
-              pushBridge({
-                // abortSignal,
-                amount: weiAmountString,
-                destinationAddress: account,
-                detinationNetwork: to.chainId,
-                env,
-                originAddress: account,
-                originNetwork: from.chainId,
-                txHash: txData.hash,
-              })
-                .then((res) => {
-                  console.log("pushBridge res after launch", res);
-                })
-                .catch((error) => {
-                  console.log("pushBridge error after launch", error);
-                });
+              // const weiAmount = ethers.utils.parseUnits(amount.toString(), "wei");
+              // const weiAmountString = weiAmount.toString();
+              // console.log("weiAmount", weiAmount);
+              // console.log("weiAmountString", weiAmountString);
+              // pushBridge({
+              //   amount: weiAmountString,
+              //   destinationAddress: account,
+              //   detinationNetwork: to.chainId,
+              //   env,
+              //   originAddress: account,
+              //   originNetwork: from.chainId,
+              //   txHash: txData.hash,
+              // })
+              //   .then((res) => {
+              //     console.log("pushBridge res after launch", res);
+              //   })
+              //   .catch((error) => {
+              //     console.log("pushBridge error after launch", error);
+              //   });
 
               return txData;
             });
@@ -1302,7 +1292,6 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
       estimateBridgeGas,
       estimateVizingBridgeGas,
       changeNetwork,
-      pushBridge,
       txQueue,
       setTxQueue,
     ]
