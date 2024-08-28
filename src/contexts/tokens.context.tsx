@@ -191,15 +191,9 @@ const TokensProvider: FC<PropsWithChildren> = (props) => {
       if (!env) {
         throw Error("The env is not ready");
       }
-      console.log("Erc20__factory.connect address", address);
-      console.log("Erc20__factory.connect chain.provider1", chain.provider);
       const erc20Contract = Erc20__factory.connect(address, chain.provider);
-      console.log("after Erc20__factory.connect");
-      console.log("erc20Contract", erc20Contract);
       const name = await erc20Contract.name();
-      console.log("Erc20__factory name", name);
       const decimals = await erc20Contract.decimals();
-      console.log("Erc20__factory decimals", decimals);
       const symbol = await erc20Contract.symbol();
       const trustWalletLogoUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`;
       const logoURI = await axios
@@ -251,20 +245,16 @@ const TokensProvider: FC<PropsWithChildren> = (props) => {
     // tokenOriginAddress: orig_addr,
     async ({ env, originNetwork, tokenOriginAddress }: GetTokenParams): Promise<Token> => {
       const chain = env.chains.find((chain) => chain.networkId === originNetwork);
-      console.log("getToken env.chains", env.chains);
-      console.log("getToken chain", chain);
       if (!chain) {
         throw new Error(
           `The chain with the originNetwork "${originNetwork}" could not be found in the list of supported Chains`
         );
       }
-      console.log("getToken tokens", tokens);
       const token = [
         ...getCustomTokens(),
         ...(tokens || [getEtherToken(chain)]),
         ...fetchedTokens.current,
       ].find((token) => {
-        console.log("token find", token);
         return (
           // l1 to l2
           (token.address === tokenOriginAddress && token.chainId === chain.chainId) ||
@@ -275,8 +265,6 @@ const TokensProvider: FC<PropsWithChildren> = (props) => {
           // ||
         );
       });
-
-      console.log("getToken token", token);
 
       if (token) {
         return token;
@@ -302,11 +290,8 @@ const TokensProvider: FC<PropsWithChildren> = (props) => {
       if (isTokenEther) {
         return Promise.reject(new Error("Ether is not supported as ERC20 token"));
       }
-      console.log("getErc20TokenBalance chain", chain.key);
-      console.log("getErc20TokenBalance tokenAddress", tokenAddress);
       const erc20Contract = Erc20__factory.connect(tokenAddress, chain.provider);
       const balance = await erc20Contract.balanceOf(accountAddress);
-      console.log("getErc20TokenBalance", balance);
       return balance;
       // return await erc20Contract.balanceOf(accountAddress);
     },
@@ -339,7 +324,6 @@ const TokensProvider: FC<PropsWithChildren> = (props) => {
   useEffect(() => {
     if (env) {
       const ethereumChain = env.chains[0];
-      console.log("ethereumChain", ethereumChain);
       getEthereumErc20Tokens()
         .then((ethereumErc20Tokens) =>
           Promise.all(
@@ -348,9 +332,7 @@ const TokensProvider: FC<PropsWithChildren> = (props) => {
               .map((token) => addWrappedToken({ token }))
           )
             .then((chainTokens) => {
-              console.log("initialize chainTokens", chainTokens);
               const tokens = [getEtherToken(ethereumChain), ...chainTokens];
-              console.log("initialize all tokens", tokens);
               cleanupCustomTokens(tokens);
               setTokens(tokens);
             })
