@@ -565,11 +565,12 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
               )
             : undefined;
 
-        const id = serializeBridgeId({
-          depositCount,
-          networkId: to.chainId,
-          // networkId: from.networkId,
-        });
+        const id = depositTxHash;
+        // const id = serializeBridgeId({
+        //   depositCount,
+        //   networkId: to.chainId,
+        //   // networkId: from.networkId,
+        // });
 
         switch (claim.status) {
           case "pending": {
@@ -1009,8 +1010,6 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
 
       console.log("estimatedVizingGas from chain", from);
       const { gasPrice, maxFeePerGas } = await from.provider.getFeeData();
-      console.log("estimatedVizingGas getFeeData() gasPrice", gasPrice);
-      console.log("estimatedVizingGas getFeeData() maxFeePerGas", maxFeePerGas);
       // ethers.utils.formatUnits(gasPrice, 'gwei');
       // console.log("estimatedVizingGas gasPrice", ethers.utils.formatUnits(gasPrice, "gwei"));
       // console.log(
