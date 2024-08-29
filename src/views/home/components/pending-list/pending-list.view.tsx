@@ -134,7 +134,7 @@ export const PendingList: FC = () => {
   const filterBridges = (allBridges: Bridge[]) => {
     const result: (PendingBridge | InitiatedBridge | OnHoldBridge)[] = [];
     allBridges.forEach((bridge) => {
-      if (bridge.status !== "completed") {
+      if (bridge.status !== "completed" && bridge.to.key === "ethereum") {
         result.push(bridge);
       }
     });
@@ -307,6 +307,7 @@ export const PendingList: FC = () => {
     case "reloading": {
       const filteredBridgesResult = filterBridges(apiBridges.data);
       console.log("filteredBridgesResult", filteredBridgesResult);
+
       // const filteredList = displayAll ? allBridges : pendingBridges.data;
       // const filteredList = displayAll
       //   ? splitedBridgesByIsCompleted.success

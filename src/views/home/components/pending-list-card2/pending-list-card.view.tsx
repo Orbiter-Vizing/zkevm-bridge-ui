@@ -57,7 +57,7 @@ export const PendingListCard: FC<PendingListCardProps> = ({
     bridge.status !== "pending" ? [bridge.blockNumber, bridge.from.key] : [undefined, undefined];
 
   useEffect(() => {
-    if (status === "initiated" && fromKey === "polygon-zkevm") {
+    if (status === "initiated" && fromKey === "vizing") {
       setBatchNumberOfL2Block((currentBatchNumberOfL2Block) =>
         isAsyncTaskDataAvailable(currentBatchNumberOfL2Block)
           ? { data: currentBatchNumberOfL2Block.data, status: "reloading" }
