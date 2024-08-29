@@ -6,7 +6,7 @@ import { parseError } from "src/adapters/error";
 import { getPermit, isContractAllowedToSpendToken } from "src/adapters/ethereum";
 import { getCurrency } from "src/adapters/storage";
 import { ReactComponent as ArrowRightIcon } from "src/assets/icons/arrow-right.svg";
-import { FIAT_DISPLAY_PRECISION, getEtherToken } from "src/constants";
+import { DEPOSIT_FEE, FIAT_DISPLAY_PRECISION, WITHDRAW_FEE, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
 import { useErrorContext } from "src/contexts/error.context";
@@ -45,25 +45,9 @@ interface BridgeGasFeeProps {
   l2Gas?: BigNumber | undefined;
   showL1Gas?: boolean;
   showL2Gas?: boolean;
-  // amount: BigNumber;
-  // fromChain: Chain;
-  // toChain: Chain;
-  // transactionToken: Token;
 }
 
-export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
-  // amount,
-  // fromChain,
-  // toChain,
-  // transactionToken,
-  defaultForm,
-  defaultGas,
-  formData,
-  l1Gas,
-  l2Gas,
-  showL1Gas,
-  showL2Gas,
-}) => {
+export const BridgeGasFee: FC<BridgeGasFeeProps> = ({ defaultForm, formData, l1Gas, l2Gas }) => {
   // export const BridgeGasFee: FC = () => {
   console.log("bridgeGasFee render", formData.amount);
   const callIfMounted = useCallIfMounted();
@@ -73,7 +57,6 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
   const { notifyError } = useErrorContext();
   const { bridge, estimateBridgeGas } = useBridgeContext();
   // const { formData, setFormData } = useFormContext();
-  const { openSnackbar } = useUIContext();
   const { connectedProvider } = useProvidersContext();
   const { getTokenPrice } = usePriceOracleContext();
   const { approve, getErc20TokenBalance, tokens } = useTokensContext();
@@ -84,9 +67,6 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
   const [etherTokenFiatPrice, setEtherTokenFiatPrice] = useState<BigNumber>();
   const [error, setError] = useState<string>();
   const [tokenSpendPermission, setTokenSpendPermission] = useState<TokenSpendPermission>();
-  const [approvalTask, setApprovalTask] = useState<AsyncTask<null, string>>({
-    status: "pending",
-  });
   const [estimatedGas, setEstimatedGas] = useState<AsyncTask<Gas, string>>({
     status: "pending",
   });
@@ -332,11 +312,6 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
   console.log("estimatedGas", estimatedGas);
 
   if (defaultForm) {
-    // for default case no need to show gas
-    // const { from, to } = formData;
-    // const etherToken = getEtherToken(from);
-    // const calculateGas = from.key === "ethereum" || to.key === "ethereum" ? l1Gas : l2Gas;
-    // const gasString = formatTokenAmount(calculateGas || BigNumber.from("0"), etherToken);
     const bridgeTimeText =
       formData.from.key === "vizing" && formData.to.key === "ethereum" ? "~3 days" : "~1 minute";
     return (
@@ -344,7 +319,6 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
         <div className={classes.row}>
           <div className={classes.dataName}>Estimated gas fee</div>
           <div className={classes.data}>
-            {/* <span className={classes.dataEth}>~{gasString}</span> */}
             <span className={classes.dataEth}>-</span>
           </div>
         </div>
@@ -400,6 +374,8 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
       ? formatTokenAmount(l1Gas || BigNumber.from(0), etherToken)
       : formatTokenAmount(l2Gas || BigNumber.from(0), etherToken);
 
+  const bridgeFee = formData.from.key === "vizing" ? WITHDRAW_FEE : DEPOSIT_FEE;
+
   const bridgeTimeText =
     formData.from.key === "vizing" && formData.to.key === "ethereum" ? "~3 days" : "~1 minute";
 
@@ -408,7 +384,13 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({
       <div className={classes.row}>
         <div className={classes.dataName}>Estimated gas fee</div>
         <div className={classes.data}>
-          <span className={classes.dataEth}>~{gasString}</span>
+          <span className={classes.dataEth}>~{gasString} ETH</span>
+        </div>
+      </div>
+      <div className={classes.row}>
+        <div className={classes.dataName}>Bridge fee</div>
+        <div className={classes.data}>
+          <span className={classes.dataEth}>{bridgeFee} ETH</span>
         </div>
       </div>
       <div className={classes.row}>

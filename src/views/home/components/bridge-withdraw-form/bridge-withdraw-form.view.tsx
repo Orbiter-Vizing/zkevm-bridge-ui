@@ -5,10 +5,10 @@ import { ChangeEvent, FC, useCallback, useEffect, useState } from "react";
 import { addCustomToken, getChainCustomTokens, removeCustomToken } from "src/adapters/storage";
 import { EnvString, EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
 import { ReactComponent as CaretDown } from "src/assets/icons/caret-down.svg";
+import { getOmniChainGasLimit } from "src/assets/omni-chain-gas-limit";
 import { WITHDRAW_FEE, WITHDRAW_LIMIT, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
-import { useFormContext } from "src/contexts/form.context";
 import { useProvidersContext } from "src/contexts/providers.context";
 import { useTokensContext } from "src/contexts/tokens.context";
 import { AsyncTask, Chain, FormData, Gas, Token } from "src/domain";
@@ -207,8 +207,6 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
   };
 
   const handleWrapClick = () => {
-    // computeWrappedTokenAddress params
-    // { nativeChain, otherChain, token }
     if (!selectedChains) {
       return;
     }
@@ -286,9 +284,11 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
       const provider = vizingChain.provider;
       const contract = Bridge__factory.connect(contractAddress, provider);
 
+      const omniGasLimit = getOmniChainGasLimit(from.chainId, to.chainId);
+      console.log("omniGasLimit", omniGasLimit);
       const fakePostMessage = ethersUtils.solidityPack(
         ["uint8", "uint256", "uint24"],
-        [4, account, 50000]
+        [4, account, omniGasLimit]
       );
 
       let vizingValue = [BigNumber.from(0)];

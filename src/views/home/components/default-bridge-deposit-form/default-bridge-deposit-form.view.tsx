@@ -12,6 +12,7 @@ import {
 } from "src/adapters/storage";
 import { EnvString, EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
 import { ReactComponent as CaretDown } from "src/assets/icons/caret-down.svg";
+import { getOmniChainGasLimit } from "src/assets/omni-chain-gas-limit";
 import { DEPOSIT_FEE, DEPOSIT_LIMIT, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
@@ -272,9 +273,11 @@ export const DefaultBridgeDepositForm: FC<DefaultBridgeDepositFormProps> = ({
       console.log("L2 Bridge__factory contractAddress", contractAddress);
       const contract = Bridge__factory.connect(contractAddress, provider);
 
+      const omniGasLimit = getOmniChainGasLimit(bridgeChain.chainId, vizingChain.chainId);
+      console.log("omniGasLimit", omniGasLimit);
       const fakePostMessage = ethersUtils.solidityPack(
         ["uint8", "uint256", "uint24"],
-        [4, estimateAccount, 50000]
+        [4, estimateAccount, omniGasLimit]
       );
       try {
         const vizingValue = await contract.functions.estimateGas(

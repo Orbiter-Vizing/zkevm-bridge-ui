@@ -6,10 +6,10 @@ import { toast } from "react-toastify";
 import { addCustomToken, getChainCustomTokens, removeCustomToken } from "src/adapters/storage";
 import { EnvString, EthereumErc20TokensConfig } from "src/assets/ethereum-erc20-tokens";
 import { ReactComponent as CaretDown } from "src/assets/icons/caret-down.svg";
+import { getOmniChainGasLimit } from "src/assets/omni-chain-gas-limit";
 import { DEPOSIT_FEE, DEPOSIT_LIMIT, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
-import { useFormContext } from "src/contexts/form.context";
 import { useProvidersContext } from "src/contexts/providers.context";
 import { useTokensContext } from "src/contexts/tokens.context";
 import { AsyncTask, Chain, FormData, Gas, Token } from "src/domain";
@@ -26,7 +26,6 @@ import { TokenSelector } from "src/views/home/components/token-selector/token-se
 import { Button } from "src/views/shared/button/button.view";
 import { Card } from "src/views/shared/card/card.view";
 import { ChainList } from "src/views/shared/chain-list/chain-list.view";
-import { ErrorMessage } from "src/views/shared/error-message/error-message.view";
 import { Icon } from "src/views/shared/icon/icon.view";
 import { Spinner } from "src/views/shared/spinner/spinner.view";
 import { TokenBalance } from "src/views/shared/token-balance/token-balance.view";
@@ -55,7 +54,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
 }) => {
   const classes = useBridgeDepositFormStyles();
   const callIfMounted = useCallIfMounted();
-  const { bridge, estimateBridgeGas, estimateVizingBridgeGas } = useBridgeContext();
+  const { estimateBridgeGas, estimateVizingBridgeGas } = useBridgeContext();
   const env = useEnvContext();
   const { getErc20TokenBalance, tokens: defaultTokens } = useTokensContext();
   const { connectedProvider } = useProvidersContext();
@@ -186,68 +185,18 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     [account, getErc20TokenBalance]
   );
 
-  const handleToast = (type: "pending" | "success" | "fail") => {
-    // pending and update
-    const id = toast.loading(
-      <TxToastContent
-        text="The transaction has been submitted for processing."
-        title="Transaction Submitted"
-        type="pending"
-      />,
-      {
-        isLoading: false,
-      }
-    );
-    //do something else
-    // setTimeout(() => {
-    //   toast.update(id, {
-    //     isLoading: false,
-    //     render: "All is good",
-    //     type: "success",
-    //   });
-    // }, 3000);
-    // setTimeout(() => {
-    //   toast.update(id, {
-    //     isLoading: false,
-    //     render: "Or pending one more time",
-    //     type: "default",
-    //   });
-    // }, 4000);
-    // setTimeout(() => {
-    //   toast.update(id, {
-    //     autoClose: 2000,
-    //     isLoading: false,
-    //     render: "Finally seccess",
-    //     type: "default",
-    //   });
-    // }, 5000);
-
-    // const title = "Transaction Submitted";
-    // const text = "The transaction has been submitted for processing.";
-    // toast(
-    //   // <Msg {...masProps} />
-    //   <TxToastContent text={text} title={title} type={type} />
-    //   //   {
-    //   //   autoClose: 5000,
-    //   //   closeOnClick: true,
-    //   //   draggable: true,
-    //   //   hideProgressBar: false,
-    //   //   pauseOnHover: true,
-    //   //   position: "top-right",
-    //   //   progress: undefined,
-    //   //   theme: "light",
-    //   //   transition: Bounce,
-    //   // }
-    // );
-
-    // toaster.success(
-    //   {
-    //     title: "You did it!",
-    //     text: "Good job!",
-    //   },
-    //   { autoClose: false }
-    // );
-  };
+  // const handleToast = (type: "pending" | "success" | "fail") => {
+  //   const id = toast.loading(
+  //     <TxToastContent
+  //       text="The transaction has been submitted for processing."
+  //       title="Transaction Submitted"
+  //       type="pending"
+  //     />,
+  //     {
+  //       isLoading: false,
+  //     }
+  //   );
+  // };
 
   const getSelectedChainTokens = (selectedChain: Chain) => {
     // const envString = import.meta.env.MODE as EnvMode;
@@ -313,9 +262,11 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
       const provider = from.provider;
       const contract = Bridge__factory.connect(contractAddress, provider);
 
+      const omniGasLimit = getOmniChainGasLimit(from.chainId, to.chainId);
+      console.log("omniGasLimit", omniGasLimit);
       const fakePostMessage = ethersUtils.solidityPack(
         ["uint8", "uint256", "uint24"],
-        [4, account, 50000]
+        [4, account, omniGasLimit]
       );
 
       let vizingValue = [BigNumber.from(0)];
@@ -422,7 +373,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
     // Load all the tokens for the selected chain without their balance
     if (selectedChains && defaultTokens) {
       const { from } = selectedChains;
-      const chainTokens = [...getChainCustomTokens(from), ...defaultTokens];
+      // const chainTokens = [...getChainCustomTokens(from), ...defaultTokens];
       // console.log("chainTokens when select chain", chainTokens);
       const selectedChainTokens = getSelectedChainTokens(from);
       setToken(getEtherToken(from));
