@@ -1,32 +1,16 @@
 import { BigNumber } from "ethers";
 import { FC, useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 
-import { ReactComponent as ClockIcon } from "src/assets/icons/clock.svg";
-import { ReactComponent as SettingIcon } from "src/assets/icons/setting.svg";
-import { ReactComponent as PolygonZkEVMLogo } from "src/assets/vizing-logo.svg";
-// import { AUTO_REFRESH_RATE } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
 import { useProvidersContext } from "src/contexts/providers.context";
-import {
-  AsyncTask,
-  Bridge,
-  CompletedBridge,
-  InitiatedBridge,
-  OnHoldBridge,
-  PendingBridge,
-} from "src/domain";
+import { AsyncTask, Bridge, InitiatedBridge, OnHoldBridge, PendingBridge } from "src/domain";
 import { useCallIfMounted } from "src/hooks/use-call-if-mounted";
-import { routes } from "src/routes";
 import { ProofOfEfficiency__factory } from "src/types/contracts/proof-of-efficiency";
-import { areSettingsVisible } from "src/utils/feature-toggles";
-import { isAsyncTaskDataAvailable, isMetaMaskUserRejectedRequestError } from "src/utils/types";
+import { isAsyncTaskDataAvailable } from "src/utils/types";
 import { usePendingListStyles } from "src/views/home/components/pending-list/pending-list.styles";
 import { PendingListCard } from "src/views/home/components/pending-list-card2/pending-list-card.view";
-import { NetworkSelector } from "src/views/shared/network-selector/network-selector.view";
 import { PageLoader } from "src/views/shared/page-loader/page-loader.view";
-import { Typography } from "src/views/shared/typography/typography.view";
 
 export const PAGE_SIZE = 50;
 const AUTO_REFRESH_RATE = 3000;
@@ -156,6 +140,19 @@ export const PendingList: FC = () => {
     //     });
     //   });
   }, []);
+
+  const sortBridgesForClaim = (pendingList: (OnHoldBridge | InitiatedBridge | PendingBridge)[]) => {
+    const readyToClaimItems: OnHoldBridge[] = [];
+    const notReadyToClaimItems: (PendingBridge | InitiatedBridge)[] = [];
+    pendingList.forEach((bridge) => {
+      if (bridge.status === "on-hold") {
+        readyToClaimItems.push(bridge);
+      } else {
+        notReadyToClaimItems.push(bridge);
+      }
+    });
+    return [...readyToClaimItems, ...notReadyToClaimItems];
+  };
 
   useEffect(() => {
     // Polling lastVerifiedBatch
@@ -297,7 +294,8 @@ export const PendingList: FC = () => {
   switch (apiBridges.status) {
     case "pending":
     case "loading": {
-      return <div>{loader}</div>;
+      // return <div>{loader}</div>;
+      return <div></div>;
     }
     case "failed": {
       return <div>There are no pending bridges at the moment</div>;
@@ -306,64 +304,56 @@ export const PendingList: FC = () => {
     case "loading-more-items":
     case "reloading": {
       const filteredBridgesResult = filterBridges(apiBridges.data);
-      console.log("filteredBridgesResult", filteredBridgesResult);
+      const sortedBridgesResult = sortBridgesForClaim(filteredBridgesResult);
 
-      // const filteredList = displayAll ? allBridges : pendingBridges.data;
-      // const filteredList = displayAll
-      //   ? splitedBridgesByIsCompleted.success
-      //   : splitedBridgesByIsCompleted.notSuccess;
-      return (
-        <div className={classes.pendingListWrap}>
-          {/* <div style={{ position: "relative" }}>
-            <button
-              onClick={() => getBridgesList()}
-              style={{ bottom: "100%", left: "3px", position: "absolute" }}
-            >
-              click
-            </button>
-          </div> */}
-          <div className={classes.header}>
-            <span className={classes.headerText}>Pending</span>
-            <span className={classes.pendingTxNumber}>{filteredBridgesResult.length}</span>
-          </div>
-          <div className={classes.cardListScrollWrap}>
-            <div className={classes.cardListWrap}>
-              {filteredBridgesResult.map((bridge) => {
-                if (!bridge) {
-                  return;
-                }
-                return bridge.status === "pending" ? (
-                  <div
-                    className={classes.cardWrap}
-                    key={bridge.depositTxHash || bridge.claimTxHash}
-                  >
-                    <PendingListCard
-                      bridge={bridge}
-                      env={env}
-                      isFinaliseDisabled={true}
-                      lastVerifiedBatch={lastVerifiedBatch}
-                      networkError={false}
-                      showFiatAmount={false}
-                    />
-                  </div>
-                ) : (
-                  <div className={classes.cardWrap} key={bridge.id}>
-                    <PendingListCard
-                      bridge={bridge}
-                      env={env}
-                      // isFinaliseDisabled={areBridgesDisabled}
-                      isFinaliseDisabled={false}
-                      lastVerifiedBatch={lastVerifiedBatch}
-                      networkError={false}
-                      onClaim={() => onClaim(bridge)}
-                      showFiatAmount={false}
-                    />
-                  </div>
-                );
-              })}
+      return filteredBridgesResult.length > 0 ? (
+        <div className={classes.pendingContentWrap}>
+          <div className={classes.pendingListWrap}>
+            <div className={classes.header}>
+              <span className={classes.headerText}>Pending</span>
+              <span className={classes.pendingTxNumber}>{filteredBridgesResult.length}</span>
+            </div>
+            <div className={classes.cardListScrollWrap}>
+              <div className={classes.cardListWrap}>
+                {sortedBridgesResult.map((bridge) => {
+                  if (!bridge) {
+                    return;
+                  }
+                  return bridge.status === "pending" ? (
+                    <div
+                      className={classes.cardWrap}
+                      key={bridge.depositTxHash || bridge.claimTxHash}
+                    >
+                      <PendingListCard
+                        bridge={bridge}
+                        env={env}
+                        isFinaliseDisabled={true}
+                        lastVerifiedBatch={lastVerifiedBatch}
+                        networkError={false}
+                        showFiatAmount={false}
+                      />
+                    </div>
+                  ) : (
+                    <div className={classes.cardWrap} key={bridge.id}>
+                      <PendingListCard
+                        bridge={bridge}
+                        env={env}
+                        // isFinaliseDisabled={areBridgesDisabled}
+                        isFinaliseDisabled={false}
+                        lastVerifiedBatch={lastVerifiedBatch}
+                        networkError={false}
+                        onClaim={() => onClaim(bridge)}
+                        showFiatAmount={false}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
+      ) : (
+        <div></div>
       );
     }
   }

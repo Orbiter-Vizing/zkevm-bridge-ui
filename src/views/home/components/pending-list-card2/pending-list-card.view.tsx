@@ -63,7 +63,13 @@ export const PendingListCard: FC<PendingListCardProps> = ({
           ? { data: currentBatchNumberOfL2Block.data, status: "reloading" }
           : { status: "loading" }
       );
-      getBatchNumberOfL2Block(env.chains[1].provider, blockNumber)
+      const vizingChain = env.chains.find((chain) => {
+        return chain.key === "vizing";
+      });
+      if (!vizingChain) {
+        return;
+      }
+      getBatchNumberOfL2Block(vizingChain.provider, blockNumber)
         .then((newBatchNumberOfL2Block) => {
           setBatchNumberOfL2Block({
             data: newBatchNumberOfL2Block,
@@ -110,10 +116,6 @@ export const PendingListCard: FC<PendingListCardProps> = ({
       isAsyncTaskDataAvailable(lastVerifiedBatch) &&
       isAsyncTaskDataAvailable(batchNumberOfL2Block)
     ) {
-      console.log("batches:");
-      console.log(batchNumberOfL2Block);
-      console.log(lastVerifiedBatch.data);
-      console.log(batchNumberOfL2Block.data.sub(lastVerifiedBatch.data).toNumber());
       return `Waiting for validity proof. The transaction will be confirmed after ${Math.max(
         batchNumberOfL2Block.data.sub(lastVerifiedBatch.data).toNumber(),
         0

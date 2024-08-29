@@ -56,14 +56,6 @@ export const useHomeStyles = createUseStyles((theme: Theme) => ({
     maxWidth: theme.maxWidth,
     width: "100%",
   },
-  pendingListWrap: {
-    background: theme.palette.dark.main,
-    borderRadius: 24,
-    height: 647,
-    margin: [theme.spacing(3), "auto"],
-    padding: theme.spacing(3),
-    width: 608,
-  },
   selectedTab: {
     background: theme.palette.themeRed,
   },
