@@ -167,6 +167,7 @@ export const useBridgeCardStyles = createUseStyles((theme: Theme) => ({
       cursor: "pointer",
     },
     borderBottom: "1px solid transparent",
+    fontSize: 14,
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",

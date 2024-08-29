@@ -79,6 +79,17 @@ export const BridgeCard: FC<BridgeCardProps> = ({
     }
   };
 
+  const getTxHashShortcut = (hash: string | undefined) => {
+    if (!hash) {
+      return "";
+    }
+    const headLength = 6;
+    const tailLength = 4;
+    const head = hash.substring(0, headLength);
+    const tail = hash.substring(hash.length - tailLength);
+    return `${head}...${tail}`;
+  };
+
   const onCardClick = (bridge: Exclude<Bridge, PendingBridge>) => {
     navigate(`${routes.bridgeDetails.path.split(":")[0]}${bridge.id}`);
   };
@@ -168,7 +179,7 @@ export const BridgeCard: FC<BridgeCardProps> = ({
               {bridge.from.name}
             </div>
             <a href={bridgeTxUrl} rel="noreferrer" target="_blank">
-              <div className={classes.txHash}>{bridge.depositTxHash}</div>
+              <div className={classes.txHash}>{getTxHashShortcut(bridge.depositTxHash)}</div>
             </a>
           </div>
           <div className={classes.toInfo}>
@@ -179,7 +190,11 @@ export const BridgeCard: FC<BridgeCardProps> = ({
               {bridge.to.name}
             </div>
             <a href={claimTxUrl} rel="noreferrer" target="_blank">
-              {claimTxUrl ? <div className={classes.txHash}>{claimTxHash}</div> : "-"}
+              {claimTxUrl ? (
+                <div className={classes.txHash}>{getTxHashShortcut(claimTxHash)}</div>
+              ) : (
+                "-"
+              )}
             </a>
           </div>
           <div className={classes.timeInfo}>
@@ -218,7 +233,7 @@ export const BridgeCard: FC<BridgeCardProps> = ({
               {bridge.from.name}
             </div>
             <a href={bridgeTxUrl} rel="noreferrer" target="_blank">
-              <div className={classes.txHash}>{bridge.depositTxHash}</div>
+              <div className={classes.txHash}>{getTxHashShortcut(bridge.depositTxHash)}</div>
             </a>
           </div>
           <div className={classes.toInfo}>
@@ -318,7 +333,7 @@ export const BridgeCard: FC<BridgeCardProps> = ({
               {bridge.from.name}
             </div>
             <a href={bridgeTxUrl} rel="noreferrer" target="_blank">
-              <div className={classes.txHash}>{bridge.depositTxHash}</div>
+              <div className={classes.txHash}>{getTxHashShortcut(bridge.depositTxHash)}</div>
             </a>
           </div>
           <div className={classes.toInfo}>
@@ -430,7 +445,7 @@ export const BridgeCard: FC<BridgeCardProps> = ({
               {bridge.from.name}
             </div>
             <a href={bridgeTxUrl} rel="noreferrer" target="_blank">
-              <div className={classes.txHash}>{bridge.depositTxHash}</div>
+              <div className={classes.txHash}>{getTxHashShortcut(bridge.depositTxHash)}</div>
             </a>
           </div>
           <div className={classes.toInfo}>
@@ -441,7 +456,7 @@ export const BridgeCard: FC<BridgeCardProps> = ({
               {bridge.to.name}
             </div>
             <a href={claimTxUrl} rel="noreferrer" target="_blank">
-              <div className={classes.txHash}>{bridge.claimTxHash}</div>
+              <div className={classes.txHash}>{getTxHashShortcut(bridge.claimTxHash)}</div>
             </a>
           </div>
           <div className={classes.timeInfo}>

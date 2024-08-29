@@ -72,7 +72,6 @@ export const useBridgeConfirmationStyles = createUseStyles((theme: Theme) => ({
   contentWrapper: {
     background: theme.palette.dark.main,
     borderRadius: 12,
-    height: 552,
     margin: [theme.spacing(7), "auto"],
     padding: theme.spacing(3),
     width: 608,
@@ -93,7 +92,7 @@ export const useBridgeConfirmationStyles = createUseStyles((theme: Theme) => ({
     },
     display: "flex",
     flexDirection: "column",
-    marginBottom: 20,
+    marginBottom: 10,
   },
   dollarData: {
     color: theme.palette.white.transparency40,

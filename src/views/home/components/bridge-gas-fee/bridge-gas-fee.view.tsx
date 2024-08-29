@@ -379,6 +379,8 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({ defaultForm, formData, l1G
   const bridgeTimeText =
     formData.from.key === "vizing" && formData.to.key === "ethereum" ? "~3 days" : "~1 minute";
 
+  const isL1Bridge = formData.from.key === "ethereum" || formData.to.key === "ethereum";
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.row}>
@@ -387,12 +389,14 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({ defaultForm, formData, l1G
           <span className={classes.dataEth}>~{gasString} ETH</span>
         </div>
       </div>
-      <div className={classes.row}>
-        <div className={classes.dataName}>Bridge fee</div>
-        <div className={classes.data}>
-          <span className={classes.dataEth}>{bridgeFee} ETH</span>
+      {!isL1Bridge && (
+        <div className={classes.row}>
+          <div className={classes.dataName}>Bridge fee</div>
+          <div className={classes.data}>
+            <span className={classes.dataEth}>{bridgeFee} ETH</span>
+          </div>
         </div>
-      </div>
+      )}
       <div className={classes.row}>
         <div className={classes.dataName}>Time to bridge</div>
         <div className={`${classes.data} ${classes.dataTime}`}>{bridgeTimeText}</div>

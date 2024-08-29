@@ -187,10 +187,16 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
 
   // const handleToast = (type: "pending" | "success" | "fail") => {
   //   const id = toast.loading(
+  //     // <TxToastContent
+  //     //   text="The transaction has been submitted for processing."
+  //     //   title="Transaction Submitted"
+  //     //   type="pending"
+  //     // />
   //     <TxToastContent
-  //       text="The transaction has been submitted for processing."
-  //       title="Transaction Submitted"
-  //       type="pending"
+  //       explorerUrl="https://www.google.com"
+  //       text="0x24F4F8e83eA08b7DCb7A579B1236fc3155300854"
+  //       title="Transaction Successful"
+  //       type="success"
   //     />,
   //     {
   //       isLoading: false,
@@ -691,7 +697,7 @@ export const BridgeDepositForm: FC<BridgeDepositFormProps> = ({
         </Button>
         {/* {amount && inputError && <ErrorMessage error={inputError} />} */}
       </div>
-      {/* <button onClick={() => handleToast("pending")}>toast</button> */}
+      {/* <button onClick={() => handleToast("success")}>toast</button> */}
       {/* <span onClick={showMaxAmount}>showMaxAmount</span> */}
       {chains && (
         <ChainList

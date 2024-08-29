@@ -17,11 +17,11 @@ import {
   permit,
 } from "src/adapters/ethereum";
 import * as storage from "src/adapters/storage";
+import IconETH from "src/assets/icons/tokens/eth-icon.svg";
 import { getOmniChainGasLimit } from "src/assets/omni-chain-gas-limit";
 import {
   BRIDGE_CALL_GAS_LIMIT_INCREASE_PERCENTAGE,
   BRIDGE_CALL_PERMIT_GAS_LIMIT_INCREASE,
-  ETH_TOKEN_LOGO_URI,
   FIAT_DISPLAY_PRECISION,
   GAS_PRICE_INCREASE_PERCENTAGE,
   PENDING_TX_TIMEOUT,
@@ -48,7 +48,6 @@ import { serializeBridgeId } from "src/utils/serializers";
 import { isTokenEther, selectTokenAddress } from "src/utils/tokens";
 import { isAsyncTaskDataAvailable } from "src/utils/types";
 import { TxToastContent } from "src/views/shared/tx-toast-content/tx-toast-content.view";
-// import { formatTokenAmount } from "src/utils/amounts";
 
 interface EstimateBridgeGasParams {
   destinationAddress: string;
@@ -465,7 +464,7 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
                 address: ethers.constants.AddressZero,
                 chainId: orig_net,
                 decimals: 18,
-                logoURI: ETH_TOKEN_LOGO_URI,
+                logoURI: IconETH,
                 name: "Ether",
                 symbol: "ETH",
               };
@@ -1065,7 +1064,7 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
               });
 
               // store tx hash and toast id
-              console.log("old txQueue l1", txQueue);
+              // console.log("old txQueue l1", txQueue);
               const id = toast.loading(
                 <TxToastContent
                   text="The transaction has been submitted for processing."
