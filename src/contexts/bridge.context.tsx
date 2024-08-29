@@ -17,6 +17,7 @@ import {
   permit,
 } from "src/adapters/ethereum";
 import * as storage from "src/adapters/storage";
+import { getOmniChainGasLimit } from "src/assets/omni-chain-gas-limit";
 import {
   BRIDGE_CALL_GAS_LIMIT_INCREASE_PERCENTAGE,
   BRIDGE_CALL_PERMIT_GAS_LIMIT_INCREASE,
@@ -922,37 +923,24 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
       token,
       totalValue,
       userInputValue,
-    }: // tokenSpendPermission,
-    EstimateVizingBridgeGasParams): Promise<Gas> => {
+    }: EstimateVizingBridgeGasParams): Promise<Gas> => {
       if (!env) {
         throw new Error("Env is not available");
       }
-      console.log("estimateVizingBridgeGas 111");
       let contractAddress = from.bridgeContractAddress;
-      console.log("estimateVizingBridgeGas from contractAddress", contractAddress);
       if (from.key === "vizing") {
         contractAddress = from.omniContractAddress;
       }
       const contract = Bridge__factory.connect(contractAddress, from.provider);
-      // const amount = BigNumber.from(0);
-      // console.log("amount xxx", amount);
+
       const overrides: CallOverrides = isTokenEther(token)
         ? { from: destinationAddress, value: totalValue }
         : { from: destinationAddress };
-      console.log("estimateVizingBridgeGas 222");
-      // const tokenAddress = selectTokenAddress(token, from);
-      // const forceUpdateGlobalExitRoot =
-      //   from.key === "vizing" ? true : env.forceUpdateGlobalExitRootForL1;
-
-      // if (!isAsyncTaskDataAvailable(connectedProvider)) {
-      //   throw new Error("Connected provider is not available");
-      // }
-      console.log("estimateVizingBridgeGas 333");
-      // const { account, chainId, provider } = connectedProvider.data;
-
+      const omniGasLimit = getOmniChainGasLimit(from.chainId, to.chainId);
+      console.log("omniGasLimit", omniGasLimit);
       const fakePostMessage = ethersUtils.solidityPack(
         ["uint8", "uint256", "uint24"],
-        [4, account, 50000]
+        [4, account, omniGasLimit]
       );
 
       console.log("before Launch gasLimit");
@@ -974,39 +962,8 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
         console.error("estimateGas.Launch error", error);
       }
       console.log("Launch gasLimit", gasLimit);
-      console.log("Launch gasLimit format", ethers.utils.formatUnits(gasLimit, "gwei"));
-      // from.key === "ethereum"
-      //   ? await contract.estimateGas // contract is bridge contract
-      //       .bridgeAsset(
-      //         to.networkId,
-      //         destinationAddress,
-      //         amount,
-      //         tokenAddress,
-      //         forceUpdateGlobalExitRoot,
-      //         "0x",
-      //         overrides
-      //       )
-      //       .then((gasLimit) => {
-      //         const gasLimitIncrease = gasLimit
-      //           .div(BigNumber.from(100))
-      //           .mul(BRIDGE_CALL_GAS_LIMIT_INCREASE_PERCENTAGE);
 
-      //         const increasedGasLimit = gasLimit.add(gasLimitIncrease);
-
-      //         return tokenSpendPermission.type === "permit"
-      //           ? increasedGasLimit.add(BRIDGE_CALL_PERMIT_GAS_LIMIT_INCREASE)
-      //           : increasedGasLimit;
-      //       })
-      //   : BigNumber.from(300000);
-
-      console.log("estimatedVizingGas from chain", from);
       const { gasPrice, maxFeePerGas } = await from.provider.getFeeData();
-      // ethers.utils.formatUnits(gasPrice, 'gwei');
-      // console.log("estimatedVizingGas gasPrice", ethers.utils.formatUnits(gasPrice, "gwei"));
-      // console.log(
-      //   "estimatedVizingGas maxFeePerGas",
-      //   ethers.utils.formatUnits(maxFeePerGas, "gwei")
-      // );
 
       if (maxFeePerGas) {
         return { data: { gasLimit, maxFeePerGas }, type: "eip-1559" };
@@ -1142,6 +1099,7 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
             .then(executeBridge);
         }
       } else {
+        // l2 bridge
         const executeBridge = async () => {
           console.log("excute launch");
           console.log("from chain info");
@@ -1156,9 +1114,11 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
           console.log("L2 Bridge__factory contractAddress", contractAddress);
           const contract = Bridge__factory.connect(contractAddress, provider.getSigner());
           console.log("L2 contract", contract);
+          const omniGasLimit = getOmniChainGasLimit(from.chainId, to.chainId);
+          console.log("omniGasLimit", omniGasLimit);
           const fakePostMessage = ethersUtils.solidityPack(
             ["uint8", "uint256", "uint24"],
-            [4, account, 50000]
+            [4, account, omniGasLimit]
           );
           console.log("before contract.functions.estimateGas amount", amount);
           console.log("before contract.functions.estimateGas toChain", to);
@@ -1174,19 +1134,13 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
           } catch (error) {
             console.error("try estimate error", error);
           }
-          // const vizingValue = await contract.functions.estimateGas(
-          //   amount,
-          //   to.chainId,
-          //   ethers.constants.AddressZero,
-          //   fakePostMessage
-          // );
-          console.log("vizingValue", vizingValue[0]);
-          console.log("user amount", amount);
-          // const vizingFeeBigNumber = ethers.BigNumber.from(vizingValue);
+          // ethers.utils.formatUnits(vizingValue[0], 18)
+          console.log("vizingValue", ethers.utils.formatUnits(vizingValue[0], 18));
+          console.log("user amount", ethers.utils.formatUnits(amount, 18));
+
           const totalValue = vizingValue[0].add(amount);
           console.log("totalValue", totalValue);
           const overrides: CallOverrides = {
-            // value: isTokenEther(token) ? vizingValue[0]._hex + userinput : undefined,
             value: isTokenEther(token) ? totalValue : undefined,
             ...(
               await estimateVizingBridgeGas({
@@ -1273,7 +1227,6 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
         console.log("check network from.chainId", from.chainId);
         console.log("check network connectedProvider.data.chainId", chainId);
         if (from.chainId === chainId) {
-          // return executeBridge();
           console.log("network is right");
           return executeBridge();
         } else {

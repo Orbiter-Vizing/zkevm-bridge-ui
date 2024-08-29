@@ -7,6 +7,7 @@ import { getPermit, isContractAllowedToSpendToken } from "src/adapters/ethereum"
 import { getCurrency } from "src/adapters/storage";
 import { ReactComponent as ArrowRightIcon } from "src/assets/icons/arrow-right.svg";
 import { ReactComponent as IconBack } from "src/assets/icons/icon-back.svg";
+import { getOmniChainGasLimit } from "src/assets/omni-chain-gas-limit";
 import { FIAT_DISPLAY_PRECISION, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
@@ -87,9 +88,10 @@ export const BridgeConfirmation: FC = () => {
 
       const contract = Bridge__factory.connect(contractAddress, provider);
 
+      const omniGasLimit = getOmniChainGasLimit(from.chainId, to.chainId);
       const fakePostMessage = ethersUtils.solidityPack(
         ["uint8", "uint256", "uint24"],
-        [4, account, 50000]
+        [4, account, omniGasLimit]
       );
 
       let vizingValue = [BigNumber.from(0)];
