@@ -1139,9 +1139,11 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
           console.log("user amount", ethers.utils.formatUnits(amount, 18));
 
           const totalValue = vizingValue[0].add(amount);
+          const amountMinusVinzingFee = amount.sub(vizingValue[0]);
           console.log("totalValue", totalValue);
           const overrides: CallOverrides = {
-            value: isTokenEther(token) ? totalValue : undefined,
+            // value: isTokenEther(token) ? totalValue : undefined,
+            value: isTokenEther(token) ? amount : undefined,
             ...(
               await estimateVizingBridgeGas({
                 account,
@@ -1149,8 +1151,10 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
                 from,
                 to,
                 token,
-                totalValue,
-                userInputValue: amount,
+                // totalValue,
+                totalValue: amount,
+                // userInputValue: amount,
+                userInputValue: amountMinusVinzingFee,
               })
             ).data,
           };
@@ -1161,7 +1165,8 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
               0, // latestArrivalTimestamp
               ethers.constants.AddressZero, // relayer
               account, // sender
-              amount, // value
+              // amount, // value
+              amountMinusVinzingFee,
               to.chainId, // destChainid
               "0x", // additionalParams
               fakePostMessage, // usrMessage
