@@ -1065,7 +1065,7 @@ const BridgeProvider: FC<PropsWithChildren> = (props) => {
               });
 
               // store tx hash and toast id
-              console.log("old txQueue l1", txQueue);
+              // console.log("old txQueue l1", txQueue);
               const id = toast.loading(
                 <TxToastContent
                   text="The transaction has been submitted for processing."

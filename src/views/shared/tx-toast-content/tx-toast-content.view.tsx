@@ -29,6 +29,7 @@ export const TxToastContent: FC<TxToastContentProps> = ({ explorerUrl, text, tit
         <p className={classes.txToastTitle}>{title}</p>
       </div>
       {type !== "success" && <p className={classes.txToastText}>{text}</p>}
+      {type === "success" && <div className={classes.txToastText}>{text}</div>}
       {type === "success" && (
         <a href={claimTxUrl} rel="noreferrer" target="_blank">
           <p className={classes.txLink}>View on explorer</p>

@@ -8,7 +8,7 @@ import { getCurrency } from "src/adapters/storage";
 import { ReactComponent as ArrowRightIcon } from "src/assets/icons/arrow-right.svg";
 import { ReactComponent as IconBack } from "src/assets/icons/icon-back.svg";
 import { getOmniChainGasLimit } from "src/assets/omni-chain-gas-limit";
-import { FIAT_DISPLAY_PRECISION, getEtherToken } from "src/constants";
+import { DEPOSIT_FEE, FIAT_DISPLAY_PRECISION, WITHDRAW_FEE, getEtherToken } from "src/constants";
 import { useBridgeContext } from "src/contexts/bridge.context";
 import { useEnvContext } from "src/contexts/env.context";
 import { useErrorContext } from "src/contexts/error.context";
@@ -545,6 +545,9 @@ export const BridgeConfirmation: FC = () => {
   const bridgeTimeText =
     formData.from.key === "vizing" && formData.to.key === "ethereum" ? "~3 days" : "~1 minute";
 
+  const isL1Bridge = formData.from.key === "ethereum" || formData.to.key === "ethereum";
+  const bridgeFee = formData.from.key === "vizing" ? WITHDRAW_FEE : DEPOSIT_FEE;
+
   return (
     <div className={classes.contentWrapper}>
       <div className={classes.header}>
@@ -577,9 +580,16 @@ export const BridgeConfirmation: FC = () => {
           <div className={classes.detailName}>Estimated gas fee</div>
           <div className={classes.detailData}>
             <div className={classes.tokenData}>{feeString}</div>
-            {/* <div className={classes.dollarData}>$64.62</div> */}
           </div>
         </div>
+        {!isL1Bridge && (
+          <div className={classes.detailRow}>
+            <div className={classes.detailName}>Bridge fee</div>
+            <div className={classes.detailData}>
+              <div className={classes.tokenData}>{bridgeFee} ETH</div>
+            </div>
+          </div>
+        )}
         <div className={classes.detailRow}>
           <div className={classes.detailName}>Time to bridge</div>
           <div className={classes.detailData}>

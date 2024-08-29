@@ -23,7 +23,7 @@ interface TargetTxInterface {
 export const PAGE_SIZE = 10;
 
 export const TxToast: FC<TxToastProps> = ({ example }) => {
-  const classes = useTxToastStyles();
+  // const classes = useTxToastStyles();
   const env = useEnvContext();
   const { connectedProvider } = useProvidersContext();
   const { setTxQueue, txQueue } = useTxStatusContext();
