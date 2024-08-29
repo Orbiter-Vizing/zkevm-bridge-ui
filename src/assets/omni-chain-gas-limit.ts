@@ -153,5 +153,9 @@ export const getOmniChainGasLimit = (from: number, to: number) => {
   const target = config.find((item) => {
     return item.id === id;
   });
-  return target?.gasLimit;
+  if (target) {
+    return target.gasLimit;
+  } else {
+    return from === 28516 || from === 28518 ? 500000 : 50000;
+  }
 };
