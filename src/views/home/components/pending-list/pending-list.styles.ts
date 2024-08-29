@@ -7,7 +7,6 @@ export const usePendingListStyles = createUseStyles((theme: Theme) => ({
     "&::-webkit-scrollbar": {
       display: "none",
     },
-    height: 570,
     overflow: "scroll",
   },
   cardListWrap: {},
@@ -29,7 +28,6 @@ export const usePendingListStyles = createUseStyles((theme: Theme) => ({
   pendingContentWrap: {
     background: theme.palette.dark.main,
     borderRadius: 24,
-    height: 647,
     margin: [theme.spacing(3), "auto"],
     padding: theme.spacing(3),
     width: 608,

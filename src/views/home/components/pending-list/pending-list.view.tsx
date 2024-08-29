@@ -141,6 +141,19 @@ export const PendingList: FC = () => {
     //   });
   }, []);
 
+  const sortBridgesForClaim = (pendingList: (OnHoldBridge | InitiatedBridge | PendingBridge)[]) => {
+    const readyToClaimItems: OnHoldBridge[] = [];
+    const notReadyToClaimItems: (PendingBridge | InitiatedBridge)[] = [];
+    pendingList.forEach((bridge) => {
+      if (bridge.status === "on-hold") {
+        readyToClaimItems.push(bridge);
+      } else {
+        notReadyToClaimItems.push(bridge);
+      }
+    });
+    return [...readyToClaimItems, ...notReadyToClaimItems];
+  };
+
   useEffect(() => {
     // Polling lastVerifiedBatch
     if (env) {
@@ -291,7 +304,7 @@ export const PendingList: FC = () => {
     case "loading-more-items":
     case "reloading": {
       const filteredBridgesResult = filterBridges(apiBridges.data);
-      console.log("filteredBridgesResult", filteredBridgesResult);
+      const sortedBridgesResult = sortBridgesForClaim(filteredBridgesResult);
 
       return filteredBridgesResult.length > 0 ? (
         <div className={classes.pendingContentWrap}>
@@ -302,7 +315,7 @@ export const PendingList: FC = () => {
             </div>
             <div className={classes.cardListScrollWrap}>
               <div className={classes.cardListWrap}>
-                {filteredBridgesResult.map((bridge) => {
+                {sortedBridgesResult.map((bridge) => {
                   if (!bridge) {
                     return;
                   }
