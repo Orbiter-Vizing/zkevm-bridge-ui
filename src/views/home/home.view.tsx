@@ -146,9 +146,10 @@ export const Home = (): JSX.Element => {
             {/* {selectedTab === BridgeTab.WITHDRAW && "withdraw form"} */}
           </div>
           {selectedTab === BridgeTab.WITHDRAW && (
-            <div className={classes.pendingListWrap}>
-              <PendingList />
-            </div>
+            <PendingList />
+            // <div className={classes.pendingListWrap}>
+            //   <PendingList />
+            // </div>
           )}
           {/* {depositWarningModal.status === "open" && (
             <DepositWarningModal
