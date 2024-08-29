@@ -79,7 +79,7 @@ export const TxToast: FC<TxToastProps> = ({ example }) => {
               if (targetTx) {
                 console.log("find target tx", targetTx);
                 toast.update(targetTx.toastId, {
-                  autoClose: 1000,
+                  autoClose: 3000,
                   isLoading: false,
                   // render: `${targetTx.claimHash} success`,
                   render: (
