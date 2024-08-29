@@ -384,13 +384,13 @@ export const BridgeGasFee: FC<BridgeGasFeeProps> = ({ defaultForm, formData, l1G
       <div className={classes.row}>
         <div className={classes.dataName}>Estimated gas fee</div>
         <div className={classes.data}>
-          <span className={classes.dataEth}>~{gasString}</span>
+          <span className={classes.dataEth}>~{gasString} ETH</span>
         </div>
       </div>
       <div className={classes.row}>
         <div className={classes.dataName}>Bridge fee</div>
         <div className={classes.data}>
-          <span className={classes.dataEth}>{bridgeFee}</span>
+          <span className={classes.dataEth}>{bridgeFee} ETH</span>
         </div>
       </div>
       <div className={classes.row}>
