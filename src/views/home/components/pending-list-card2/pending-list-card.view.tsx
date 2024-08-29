@@ -114,7 +114,7 @@ export const PendingListCard: FC<PendingListCardProps> = ({
       console.log(batchNumberOfL2Block);
       console.log(lastVerifiedBatch.data);
       console.log(batchNumberOfL2Block.data.sub(lastVerifiedBatch.data).toNumber());
-      return `Waiting for validity proof. Tx will be confirmed in ${Math.max(
+      return `Waiting for validity proof. The transaction will be confirmed after ${Math.max(
         batchNumberOfL2Block.data.sub(lastVerifiedBatch.data).toNumber(),
         0
       )} batches`;
