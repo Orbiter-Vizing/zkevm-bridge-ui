@@ -60,8 +60,8 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
   } = useTokensContext();
   const { connectedProvider } = useProvidersContext();
   const { estimateBridgeGas, estimateVizingBridgeGas } = useBridgeContext();
-  const [l1EstimatedGas, setL1EstimatedGas] = useState<BigNumber>();
-  const [l2EstimatedGas, setL2EstimatedGas] = useState<BigNumber>();
+  const [l1EstimatedGas, setL1EstimatedGas] = useState<BigNumber>(BigNumber.from(0));
+  const [l2EstimatedGas, setL2EstimatedGas] = useState<BigNumber>(BigNumber.from(0));
   const [balanceFrom, setBalanceFrom] = useState<AsyncTask<BigNumber, string>>({
     status: "pending",
   });
@@ -353,7 +353,7 @@ export const BridgeWithdrawForm: FC<BridgeWithdrawFormProps> = ({
     }
   };
   const onMax = () => {
-    if (!token || !l2EstimatedGas || !l1EstimatedGas) {
+    if (!token) {
       return;
     }
     const balance =

@@ -116,7 +116,7 @@ export const PendingListCard: FC<PendingListCardProps> = ({
       isAsyncTaskDataAvailable(lastVerifiedBatch) &&
       isAsyncTaskDataAvailable(batchNumberOfL2Block)
     ) {
-      return `Waiting for validity proof. The transaction will be confirmed after ${Math.max(
+      return `Withdrawals require a 3-day period for validity proof. The transaction will be confirmed after ${Math.max(
         batchNumberOfL2Block.data.sub(lastVerifiedBatch.data).toNumber(),
         0
       )} batches`;
@@ -126,6 +126,17 @@ export const PendingListCard: FC<PendingListCardProps> = ({
       return "Waiting for validity proof";
     }
   })();
+
+  const getTxHashShortcut = (hash: string | undefined) => {
+    if (!hash) {
+      return "";
+    }
+    const headLength = 13;
+    const tailLength = 8;
+    const head = hash.substring(0, headLength);
+    const tail = hash.substring(hash.length - tailLength);
+    return `${head}...${tail}`;
+  };
 
   // const BridgeAmount = (
   //   <div className={classes.token}>
@@ -202,7 +213,7 @@ export const PendingListCard: FC<PendingListCardProps> = ({
             {/* <div className={classes.address}>0x7e161af8042...2bd98306</div> */}
             <div className={classes.addressWrap}>
               <a href={bridgeTxUrl} rel="noreferrer" target="_blank">
-                <div className={classes.address}>{bridge.depositTxHash}</div>
+                <div className={classes.address}>{getTxHashShortcut(bridge.depositTxHash)}</div>
               </a>
             </div>
           </div>
@@ -270,7 +281,7 @@ export const PendingListCard: FC<PendingListCardProps> = ({
             {/* <div className={classes.address}>0x7e161af8042...2bd98306</div> */}
             <div className={classes.addressWrap}>
               <a href={bridgeTxUrl} rel="noreferrer" target="_blank">
-                <div className={classes.address}>{bridge.depositTxHash}</div>
+                <div className={classes.address}>{getTxHashShortcut(bridge.depositTxHash)}</div>
               </a>
             </div>
           </div>
@@ -387,7 +398,7 @@ export const PendingListCard: FC<PendingListCardProps> = ({
             {/* <div className={classes.address}>0x7e161af8042...2bd98306</div> */}
             <div className={classes.addressWrap}>
               <a href={bridgeTxUrl} rel="noreferrer" target="_blank">
-                <div className={classes.address}>{bridge.depositTxHash}</div>
+                <div className={classes.address}>{getTxHashShortcut(bridge.depositTxHash)}</div>
               </a>
             </div>
           </div>

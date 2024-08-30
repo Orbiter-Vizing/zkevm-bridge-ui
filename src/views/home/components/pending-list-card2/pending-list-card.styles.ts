@@ -5,7 +5,7 @@ import { Theme } from "src/styles/theme";
 export const usePendingListCardStyles = createUseStyles((theme: Theme) => ({
   address: {
     color: theme.palette.white.default,
-    display: "block",
+    display: "flex",
     fontWeight: 500,
     justifyContent: "flex-end",
     lineHeight: "16px",
@@ -20,6 +20,7 @@ export const usePendingListCardStyles = createUseStyles((theme: Theme) => ({
   },
   bridgeAmount: {
     alignItems: "center",
+    color: theme.palette.white.default,
     display: "flex",
     flex: 1,
     justifyContent: "flex-end",
